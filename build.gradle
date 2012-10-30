@@ -1,0 +1,120 @@
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
+apply plugin: 'jetty'
+apply plugin: 'project-report'
+
+project.version = 3.0
+project.group = "com.jyams"
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+dependencies {
+
+    compile "org.springframework:spring-webmvc:${rootProject['versions.spring']}"
+    compile "org.springframework:spring-jdbc:${rootProject['versions.spring']}"
+
+    compile 'com.jolbox:bonecp:0.7.1.RELEASE'
+    compile "org.codehaus.jackson:jackson-mapper-asl:1.9.6"
+    compile "commons-codec:commons-codec:1.6"
+    providedCompile 'org.apache.tomcat:tomcat-servlet-api:7.0.28'
+	compile 'org.hibernate:hibernate-validator:4.1.0.Final'
+	compile 'org.aspectj:aspectjrt:1.6.12'
+	compile 'org.aspectj:aspectjweaver:1.6.12'
+	
+    runtime "mysql:mysql-connector-java:5.0.8"
+    runtime "cglib:cglib:2.2.2"
+    compile "com.alibaba:fastjson:1.1.23"
+    compile 'com.google.guava:guava:13.0.1'
+    compile 'joda-time:joda-time:2.1'
+    compile 'org.apache.shiro:shiro-root:1.2.1'
+    compile 'org.mybatis:mybatis:3.1.1'
+    compile 'org.mybatis:mybatis-spring:1.1.1'
+    compile 'org.lazyluke:log4jdbc-remix:0.2.7'
+
+    //Log configuration
+    compile "org.slf4j:slf4j-api:${rootProject['versions.slf4j']}"
+    compile "org.slf4j:jcl-over-slf4j:${rootProject['versions.slf4j']}"
+    compile "org.slf4j:log4j-over-slf4j:${rootProject['versions.slf4j']}"
+    configurations.all{
+        it.exclude group: 'commons-logging', module: 'commons-logging'
+        it.exclude group: 'log4j', module: 'log4j'
+    }
+
+    testCompile "junit:junit:${rootProject['versions.junit']}"
+    testCompile "org.easymock:easymock:3.0"
+
+    testRuntime module('net.sourceforge.cobertura:cobertura:1.9.4') {
+        dependencies "asm:asm:3.1", "oro:oro:2.0.8", "asm:asm-tree:3.0"
+    }
+    testRuntime('org.apache.ant:ant-junit:1.8.2'){transitive = false}
+}
+
+
+repositories {
+    maven {
+        url rootProject['mavenRepositoryUrl']
+    }
+}
+
+//START warExplode
+task warExplode(dependsOn: 'classes') << {
+    def libDir = new File(projectDir, "/src/main/webapp/WEB-INF/lib")
+    def classesDir = new File(projectDir, "/src/main/webapp/WEB-INF/classes")
+    def libsPath = project.configurations.runtime.asPath
+
+    ant {
+        mkdir(dir: libDir)
+        copy(toDir: libDir, flatten:true) {
+            path (path: libsPath)
+
+        }
+        mkdir(dir: classesDir)
+        copy(toDir: classesDir) {
+            fileset(dir: new File(projectDir, "build/classes/main/"))
+            fileset(dir: new File(projectDir, "src/main/resources"))
+        }
+    }
+}
+
+task cleanExplode << {
+    def libDir = new File(projectDir, "/src/main/webapp/WEB-INF/lib")
+    def classesDir = new File(projectDir, "/src/main/webapp/WEB-INF/classes")
+    ant {
+        delete(dir: libDir)
+        delete(dir: classesDir)
+    }
+}
+
+task updateExplode(dependsOn: 'classes') << {
+    def classesDir = new File(projectDir, "/src/main/webapp/WEB-INF/classes")
+    ant {
+        mkdir(dir: classesDir)
+        copy(toDir: classesDir) {
+            fileset(dir: new File(projectDir, "build/classes/main/"))
+            fileset(dir: new File(projectDir, "src/main/resources"))
+        }
+    }
+}
+
+eclipse {
+    classpath {
+        file {
+            withXml {
+                xml -> xml.asNode().classpathentry.findAll{
+                    it.@path == 'org.eclipse.jst.j2ee.internal.web.container'
+                }.each {
+                    it.parent().remove(it)
+                }
+            }
+        }
+    }
+}
+
+clean.dependsOn(cleanExplode)
+//END warExplode
