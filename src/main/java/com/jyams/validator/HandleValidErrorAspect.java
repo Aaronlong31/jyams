@@ -29,7 +29,7 @@ public class HandleValidErrorAspect {
 
     private Validator validator;
 
-    @Before("execution(* com.liba.api..*Controller.*(..,@com.liba.spring.rest.PreValidated (*),..))")
+    @Before("execution(* com.jyams..*Controller.*(..,@com.jyams.validator.PreValidated (*),..))")
     public void catchError(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         Method invocationMethod = ((MethodSignature) joinPoint.getSignature()).getMethod();
