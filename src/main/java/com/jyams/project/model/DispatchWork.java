@@ -3,8 +3,8 @@ package com.jyams.project.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import com.jyams.common.SalaryCalculator;
 import com.jyams.util.DateTimeUtils;
+import com.jyams.util.SalaryCalculator;
 
 /**
  * 派工工作

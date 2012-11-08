@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.jyams.common.DataPage;
+import com.jyams.util.DataPage;
 import com.jyams.util.DateTimeUtils;
 import com.jyams.util.SQLUtils;
 

@@ -1,4 +1,4 @@
-package com.jyams.common;
+package com.jyams.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;

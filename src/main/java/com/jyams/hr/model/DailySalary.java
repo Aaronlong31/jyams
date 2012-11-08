@@ -1,7 +1,7 @@
 package com.jyams.hr.model;
 
-import com.jyams.common.SalaryCalculator;
 import com.jyams.util.DateTimeUtils;
+import com.jyams.util.SalaryCalculator;
 
 /**
  * @author zhanglong<br>

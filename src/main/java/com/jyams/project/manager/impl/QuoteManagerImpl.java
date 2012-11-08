@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.jyams.common.DataPage;
 import com.jyams.hr.manager.ClientManager;
 import com.jyams.hr.model.Client;
 import com.jyams.project.dao.QuoteDao;
@@ -20,6 +19,7 @@ import com.jyams.project.dao.QuoteItemDao;
 import com.jyams.project.manager.QuoteManager;
 import com.jyams.project.model.Quote;
 import com.jyams.project.model.QuoteItem;
+import com.jyams.util.DataPage;
 import com.jyams.util.IdUtil;
 
 /**

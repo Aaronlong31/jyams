@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.jyams.common.DataPage;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.dao.DispatchDao;
 import com.jyams.project.dao.DispatchWorkDao;
@@ -16,6 +15,7 @@ import com.jyams.project.manager.BuildingProjectManager;
 import com.jyams.project.manager.DispatchWorkQuery;
 import com.jyams.project.model.Dispatch;
 import com.jyams.project.model.DispatchWork;
+import com.jyams.util.DataPage;
 import com.jyams.util.DateTimeUtils;
 import com.jyams.util.IdUtil;
 

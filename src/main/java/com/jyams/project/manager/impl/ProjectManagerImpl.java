@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jyams.common.DataPage;
 import com.jyams.hr.manager.ClientManager;
 import com.jyams.hr.model.Client;
 import com.jyams.hr.model.ClientPrincipal;
@@ -19,6 +18,7 @@ import com.jyams.project.manager.BuildingProjectManager;
 import com.jyams.project.manager.ProjectManager;
 import com.jyams.project.manager.ProjectQuery;
 import com.jyams.project.model.Project;
+import com.jyams.util.DataPage;
 import com.jyams.util.KeyGenerator;
 
 @Service

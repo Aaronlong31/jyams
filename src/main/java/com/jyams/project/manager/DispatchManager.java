@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jyams.common.DataPage;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.model.Dispatch;
 import com.jyams.project.model.DispatchWork;
+import com.jyams.util.DataPage;
 
 /**
  * 派工管理接口

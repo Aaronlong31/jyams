@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jyams.common.DataPage;
 import com.jyams.exception.BusinessException;
 import com.jyams.hr.model.Client;
 import com.jyams.hr.model.ClientPrincipal;
+import com.jyams.util.DataPage;
 
 @Transactional(rollbackFor = Exception.class)
 public interface ClientManager {

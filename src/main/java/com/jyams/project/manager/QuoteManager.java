@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jyams.common.DataPage;
 import com.jyams.project.model.Quote;
+import com.jyams.util.DataPage;
 
 /**
  * 

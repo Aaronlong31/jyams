@@ -7,9 +7,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Maps;
-import com.jyams.common.DataPage;
 import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.ChangeStatusType;
+import com.jyams.util.DataPage;
 import com.jyams.util.dao.IBatisEntityDao;
 
 @Repository

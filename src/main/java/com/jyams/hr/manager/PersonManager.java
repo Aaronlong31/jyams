@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jyams.common.DataPage;
 import com.jyams.hr.model.Job;
 import com.jyams.hr.model.Person;
+import com.jyams.util.DataPage;
 
 @Transactional(rollbackFor = Exception.class)
 public interface PersonManager {

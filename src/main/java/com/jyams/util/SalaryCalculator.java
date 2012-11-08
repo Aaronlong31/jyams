@@ -1,4 +1,4 @@
-package com.jyams.common;
+package com.jyams.util;
 
 /**
  * @author zhanglong<br>

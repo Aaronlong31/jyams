@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.util.Assert;
 
 import com.google.common.collect.Maps;
-import com.jyams.common.DataPage;
+import com.jyams.util.DataPage;
 import com.jyams.util.search.Query;
 
 /**
