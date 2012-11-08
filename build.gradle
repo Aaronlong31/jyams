@@ -27,6 +27,12 @@ dependencies {
 	compile 'org.aspectj:aspectjrt:1.6.12'
 	compile 'org.aspectj:aspectjweaver:1.6.12'
 	compile 'org.apache.directory.studio:org.apache.commons.lang:2.6'
+	compile 'org.apache.ibatis:ibatis-sqlmap:2.3.4.726'
+	compile 'org.apache.poi:poi:3.8'
+	compile 'commons-beanutils:commons-beanutils:1.8.3'
+	compile 'org.springframework:spring-ibatis:2.0.8'
+	compile 'org.springframework.security:spring-security-core:3.1.2.RELEASE'
+	compile 'org.springframework.security:spring-security-web:3.1.2.RELEASE'
 
     runtime "mysql:mysql-connector-java:5.0.8"
     runtime "cglib:cglib:2.2.2"
