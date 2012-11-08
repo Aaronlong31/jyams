@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jyams.exception.BusinessException;
 import com.jyams.project.model.Project;
+import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;
 
 /**

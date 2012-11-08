@@ -8,7 +8,9 @@ import java.lang.annotation.Target;
 
 /**
  * 
- * @author zhanglong 2012-7-24 下午5:58:17
+ * @author zhanglong
+ * 
+ *         Nov 8, 2012 11:03:25 PM
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

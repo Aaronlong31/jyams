@@ -16,8 +16,8 @@ import com.jyams.hr.model.ClientPrincipal;
 import com.jyams.project.dao.ProjectDao;
 import com.jyams.project.manager.BuildingProjectManager;
 import com.jyams.project.manager.ProjectManager;
-import com.jyams.project.manager.ProjectQuery;
 import com.jyams.project.model.Project;
+import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;
 import com.jyams.util.KeyGenerator;
 
@@ -55,7 +55,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
     /**
      * 修改项目<br>
-     * 可修改：完工日期、可延后时间、订单内容、客户负责人、公司负责人、报价单编号、备注 如果客户负责人修改了，且没有记录，则新增客户负责人
+     * 可修改：完工日期、可延后时间、订单内容、客户负责人、公司负责人、报价单编号、备注 <br>
+     * 如果客户负责人修改了，且没有记录，则新增客户负责人
      * 
      * @param project
      *            必须包含以下属性：<br>

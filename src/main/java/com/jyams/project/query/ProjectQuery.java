@@ -1,4 +1,4 @@
-package com.jyams.project.manager;
+package com.jyams.project.query;
 
 import com.jyams.project.model.Project;
 import com.jyams.util.search.Query;

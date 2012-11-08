@@ -3,7 +3,6 @@ package com.jyams.validator;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,9 +18,13 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Maps;
+
 /**
  * 
- * @author zhanglong 2012-7-24 下午4:06:39
+ * @author zhanglong
+ * 
+ *         Nov 8, 2012 11:03:35 PM
  */
 @Component
 @Aspect
@@ -80,7 +83,7 @@ public class HandleValidErrorAspect {
     }
 
     private Map<Integer, PreValidated> findObjectToValidate(Method method) {
-        Map<Integer, PreValidated> objectAndIndexs = new HashMap<Integer, PreValidated>();
+        Map<Integer, PreValidated> objectAndIndexs = Maps.newHashMap();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         for (int i = 0; i < parameterAnnotations.length; i++) {
             for (Annotation annotation : parameterAnnotations[i]) {

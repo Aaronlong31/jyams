@@ -1,6 +1,7 @@
 package com.jyams.project.manager;
 
 import com.jyams.project.model.Project;
+import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;
 
 /**

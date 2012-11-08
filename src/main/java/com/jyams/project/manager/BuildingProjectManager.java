@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.Project;
+import com.jyams.project.query.BuildingProjectQuery;
 import com.jyams.purchase.model.PurchaseItem;
 import com.jyams.util.DataPage;
 

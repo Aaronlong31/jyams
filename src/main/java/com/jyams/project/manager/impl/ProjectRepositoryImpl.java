@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jyams.project.dao.ProjectDao;
-import com.jyams.project.manager.ProjectQuery;
 import com.jyams.project.manager.ProjectRepository;
 import com.jyams.project.model.Project;
+import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;
 
 @Service

@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Maps;
-import com.jyams.project.manager.ProjectQuery;
 import com.jyams.project.model.Project;
+import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;
 import com.jyams.util.dao.IBatisEntityDao;
 
