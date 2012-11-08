@@ -26,7 +26,8 @@ dependencies {
 	compile 'org.hibernate:hibernate-validator:4.1.0.Final'
 	compile 'org.aspectj:aspectjrt:1.6.12'
 	compile 'org.aspectj:aspectjweaver:1.6.12'
-	
+	compile 'org.apache.directory.studio:org.apache.commons.lang:2.6'
+
     runtime "mysql:mysql-connector-java:5.0.8"
     runtime "cglib:cglib:2.2.2"
     compile "com.alibaba:fastjson:1.1.23"
@@ -57,9 +58,7 @@ dependencies {
 
 
 repositories {
-    maven {
-        url rootProject['mavenRepositoryUrl']
-    }
+    mavenCentral()
 }
 
 //START warExplode
