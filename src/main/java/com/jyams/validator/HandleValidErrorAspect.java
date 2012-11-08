@@ -32,36 +32,42 @@ public class HandleValidErrorAspect {
     @Before("execution(* com.jyams..*Controller.*(..,@com.jyams.validator.PreValidated (*),..))")
     public void catchError(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
-        Method invocationMethod = ((MethodSignature) joinPoint.getSignature()).getMethod();
+        Method invocationMethod = ((MethodSignature) joinPoint.getSignature())
+                .getMethod();
         handlerError(invocationMethod, args);
     }
 
     private void handlerError(Method method, Object[] args) {
-        Map<Integer, PreValidated> annotationAndIndexs = this.findObjectToValidate(method);
+        Map<Integer, PreValidated> annotationAndIndexs = this
+                .findObjectToValidate(method);
         if (annotationAndIndexs.isEmpty()) {
             return;
         }
 
         List<String> errorMessages = new ArrayList<String>();
 
-        for (Entry<Integer, PreValidated> annotationAndIndex : annotationAndIndexs.entrySet()) {
-            errorMessages.addAll(validate(annotationAndIndex.getValue(), args[annotationAndIndex.getKey()]));
+        for (Entry<Integer, PreValidated> annotationAndIndex : annotationAndIndexs
+                .entrySet()) {
+            errorMessages.addAll(validate(annotationAndIndex.getValue(),
+                    args[annotationAndIndex.getKey()]));
         }
 
         if (errorMessages.isEmpty()) {
             return;
         }
 
-        //throw new http(errorMessages.toString());
+        // throw new http(errorMessages.toString());
     }
 
-    private List<String> validate(PreValidated annotation, Object objectToValidate) {
+    private List<String> validate(PreValidated annotation,
+            Object objectToValidate) {
         List<String> errorMessages = new ArrayList<String>();
         if (objectToValidate == null) {
             return errorMessages;
         }
 
-        Set<ConstraintViolation<Object>> validateResult = validator.validate(objectToValidate, annotation.value());
+        Set<ConstraintViolation<Object>> validateResult = validator.validate(
+                objectToValidate, annotation.value());
 
         if (validateResult.isEmpty()) {
             return errorMessages;

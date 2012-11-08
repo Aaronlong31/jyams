@@ -13,13 +13,15 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  *         2012-10-24
  */
-public class RequestParameterExceptionResolver implements HandlerExceptionResolver {
+public class RequestParameterExceptionResolver implements
+        HandlerExceptionResolver {
 
     @Override
-    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
-            Exception ex) {
+    public ModelAndView resolveException(HttpServletRequest request,
+            HttpServletResponse response, Object handler, Exception ex) {
         if (ex instanceof MissingServletRequestParameterException) {
-            return handleMissingServletRequestParameterException((MissingServletRequestParameterException) ex, response);
+            return handleMissingServletRequestParameterException(
+                    (MissingServletRequestParameterException) ex, response);
         }
         if (ex instanceof ServletRequestBindingException) {
             return handleServletRequestBindingException(ex, response);
@@ -27,11 +29,13 @@ public class RequestParameterExceptionResolver implements HandlerExceptionResolv
         return null;
     }
 
-    private ModelAndView handleServletRequestBindingException(Exception ex, HttpServletResponse response) {
+    private ModelAndView handleServletRequestBindingException(Exception ex,
+            HttpServletResponse response) {
         return null;
     }
 
-    private ModelAndView handleMissingServletRequestParameterException(MissingServletRequestParameterException ex,
+    private ModelAndView handleMissingServletRequestParameterException(
+            MissingServletRequestParameterException ex,
             HttpServletResponse response) {
         return null;
     }

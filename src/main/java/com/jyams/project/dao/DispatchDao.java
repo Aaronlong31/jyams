@@ -13,18 +13,19 @@ import com.jyams.util.dao.IBatisEntityDao;
 @SuppressWarnings("unchecked")
 public class DispatchDao extends IBatisEntityDao<Dispatch> {
 
-	public DataPage<Dispatch> selectDispatchs(Long projectId, String personName, Integer month,
-			Integer day, Integer pageNo, Integer pageSize) {
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("projectId", projectId);
-		map.put("personName", personName);
-		if (month != null) {
-			map.put("dispatchDayStart", month * 100 + 1);
-			map.put("dispatchDayEnd", month * 100 + 31);
-		}
-		map.put("dispatchDay", day);
-		return pagedQuery("com.jyams.project.dao.DispatchDao.selectDispatchs", map, pageNo,
-				pageSize);
-	}
+    public DataPage<Dispatch> selectDispatchs(Long projectId,
+            String personName, Integer month, Integer day, Integer pageNo,
+            Integer pageSize) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("projectId", projectId);
+        map.put("personName", personName);
+        if (month != null) {
+            map.put("dispatchDayStart", month * 100 + 1);
+            map.put("dispatchDayEnd", month * 100 + 31);
+        }
+        map.put("dispatchDay", day);
+        return pagedQuery("com.jyams.project.dao.DispatchDao.selectDispatchs",
+                map, pageNo, pageSize);
+    }
 
 }

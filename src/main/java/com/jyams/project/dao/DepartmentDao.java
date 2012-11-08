@@ -13,11 +13,11 @@ import com.jyams.util.dao.IBatisEntityDao;
 @SuppressWarnings("unchecked")
 public class DepartmentDao extends IBatisEntityDao<Department> {
 
-	public List<Department> getWithPersons(Short salaryType) {
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("salaryType", salaryType);
-		return getSqlMapClientTemplate().queryForList(
-				"com.jyams.project.dao.DepartmentDao.getWithPersons", map);
-	}
+    public List<Department> getWithPersons(Short salaryType) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("salaryType", salaryType);
+        return getSqlMapClientTemplate().queryForList(
+                "com.jyams.project.dao.DepartmentDao.getWithPersons", map);
+    }
 
 }

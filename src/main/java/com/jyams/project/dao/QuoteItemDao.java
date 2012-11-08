@@ -11,16 +11,17 @@ import com.jyams.util.dao.IBatisEntityDao;
 @Repository
 public class QuoteItemDao extends IBatisEntityDao<QuoteItem> {
 
-	public void batchInsert(List<QuoteItem> quoteItems) {
-		try {
-			getSqlMapClient().startBatch();
-			for (QuoteItem quoteItem : quoteItems) {
-				getSqlMapClient().insert("com.jyams.project.model.QuoteItem.insert", quoteItem);
-			}
-			getSqlMapClient().executeBatch();
-		} catch (SQLException e) {
-			throw new RuntimeException(e.getMessage());
-		}
-	}
+    public void batchInsert(List<QuoteItem> quoteItems) {
+        try {
+            getSqlMapClient().startBatch();
+            for (QuoteItem quoteItem : quoteItems) {
+                getSqlMapClient().insert(
+                        "com.jyams.project.model.QuoteItem.insert", quoteItem);
+            }
+            getSqlMapClient().executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
 }

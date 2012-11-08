@@ -15,36 +15,37 @@ import com.jyams.util.dao.IBatisEntityDao;
 @SuppressWarnings("unchecked")
 public class ProjectDao extends IBatisEntityDao<Project> {
 
-	public DataPage<Project> selectProjects(Long projectId,
-			String companyPrincipalName, String clientName,
-			String clientPrincipalName, String orderString, Integer pageNo,
-			Integer pageSize) {
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("projectId", projectId);
-		map.put("companyPrincipalName", companyPrincipalName);
-		map.put("clientName", clientName);
-		map.put("clientPrincipalName", clientPrincipalName);
-		map.put("orderString", orderString);
-		return pagedQuery("com.jyams.project.dao.ProjectDao.selectProjects",
-				map, pageNo, pageSize);
-	}
+    public DataPage<Project> selectProjects(Long projectId,
+            String companyPrincipalName, String clientName,
+            String clientPrincipalName, String orderString, Integer pageNo,
+            Integer pageSize) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("projectId", projectId);
+        map.put("companyPrincipalName", companyPrincipalName);
+        map.put("clientName", clientName);
+        map.put("clientPrincipalName", clientPrincipalName);
+        map.put("orderString", orderString);
+        return pagedQuery("com.jyams.project.dao.ProjectDao.selectProjects",
+                map, pageNo, pageSize);
+    }
 
-	/**
-	 * 简单查询项目，只包含项目标识和名称
-	 * @param status
-	 * @return
-	 */
-	public List<Project> listProjectsSimple(int status, Long clientId) {
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("status", status);
-		map.put("clientId", clientId);
-		return getSqlMapClientTemplate().queryForList(
-				"com.jyams.project.dao.ProjectDao.listProjectsSimple", map);
-	}
+    /**
+     * 简单查询项目，只包含项目标识和名称
+     * 
+     * @param status
+     * @return
+     */
+    public List<Project> listProjectsSimple(int status, Long clientId) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("status", status);
+        map.put("clientId", clientId);
+        return getSqlMapClientTemplate().queryForList(
+                "com.jyams.project.dao.ProjectDao.listProjectsSimple", map);
+    }
 
-	public DataPage<Project> pageQueryBasic(ProjectQuery projectQuery) {
-		return pageQuery("com.jyams.project.dao.ProjectDao.pageQueryBasic",
-				projectQuery);
-	}
+    public DataPage<Project> pageQueryBasic(ProjectQuery projectQuery) {
+        return pageQuery("com.jyams.project.dao.ProjectDao.pageQueryBasic",
+                projectQuery);
+    }
 
 }

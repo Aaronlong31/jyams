@@ -14,30 +14,33 @@ import com.jyams.util.dao.IBatisEntityDao;
 @SuppressWarnings("unchecked")
 public class QuoteDao extends IBatisEntityDao<Quote> {
 
-	public DataPage<Quote> listQuotes(Long quoteId, Integer version, String clientName,
-			String quoterName, String attnName, Long startTimestamp, Long endTimestamp,
-			Integer pageNo, Integer pageSize) {
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("quoteId", quoteId);
-		map.put("version", version);
-		map.put("clientName", clientName);
-		map.put("quoterName", quoterName);
-		map.put("attnName", attnName);
-		map.put("startTimestamp", startTimestamp);
-		map.put("endTimestamp", endTimestamp);
-		return pagedQuery("com.jyams.project.dao.QuoteDao.listQuotes", map, pageNo, pageSize);
-	}
+    public DataPage<Quote> listQuotes(Long quoteId, Integer version,
+            String clientName, String quoterName, String attnName,
+            Long startTimestamp, Long endTimestamp, Integer pageNo,
+            Integer pageSize) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("quoteId", quoteId);
+        map.put("version", version);
+        map.put("clientName", clientName);
+        map.put("quoterName", quoterName);
+        map.put("attnName", attnName);
+        map.put("startTimestamp", startTimestamp);
+        map.put("endTimestamp", endTimestamp);
+        return pagedQuery("com.jyams.project.dao.QuoteDao.listQuotes", map,
+                pageNo, pageSize);
+    }
 
-	public int getNextVersion(long quoteId) {
-		Integer version = (Integer) getSqlMapClientTemplate().queryForObject(
-				"com.jyams.project.dao.QuoteDao.getMaxVersion", quoteId);
-		if (version == null) {
-			return 'A';
-		}
-		return version + 1;
-	}
+    public int getNextVersion(long quoteId) {
+        Integer version = (Integer) getSqlMapClientTemplate().queryForObject(
+                "com.jyams.project.dao.QuoteDao.getMaxVersion", quoteId);
+        if (version == null) {
+            return 'A';
+        }
+        return version + 1;
+    }
 
-	public List<Quote> listIds() {
-		return getSqlMapClientTemplate().queryForList("com.jyams.project.dao.QuoteDao.listIds");
-	}
+    public List<Quote> listIds() {
+        return getSqlMapClientTemplate().queryForList(
+                "com.jyams.project.dao.QuoteDao.listIds");
+    }
 }

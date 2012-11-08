@@ -13,19 +13,22 @@ import com.jyams.util.dao.IBatisEntityDao;
 @SuppressWarnings("unchecked")
 public class ClientPrincipalDao extends IBatisEntityDao<ClientPrincipal> {
 
-	public int addPriority(long clientPrincipalId) {
-		return getSqlMapClientTemplate().update("com.jyams.hr.dao.ClientPrincipalDao.addPriority",
-				clientPrincipalId);
-	}
+    public int addPriority(long clientPrincipalId) {
+        return getSqlMapClientTemplate().update(
+                "com.jyams.hr.dao.ClientPrincipalDao.addPriority",
+                clientPrincipalId);
+    }
 
-	public DataPage<ClientPrincipal> listClientPrincipals(Long clientId, String clientNameLike,
-			String clientPrincipalNameLike, Integer pageNo, Integer pageSize) {
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("clientId", clientId);
-		map.put("clientNameLike", clientNameLike);
-		map.put("clientPrincipalNameLike", clientPrincipalNameLike);
-		return pagedQuery("com.jyams.hr.dao.ClientPrincipalDao.listClientPrincipals", map, pageNo,
-				pageSize);
-	}
+    public DataPage<ClientPrincipal> listClientPrincipals(Long clientId,
+            String clientNameLike, String clientPrincipalNameLike,
+            Integer pageNo, Integer pageSize) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("clientId", clientId);
+        map.put("clientNameLike", clientNameLike);
+        map.put("clientPrincipalNameLike", clientPrincipalNameLike);
+        return pagedQuery(
+                "com.jyams.hr.dao.ClientPrincipalDao.listClientPrincipals",
+                map, pageNo, pageSize);
+    }
 
 }

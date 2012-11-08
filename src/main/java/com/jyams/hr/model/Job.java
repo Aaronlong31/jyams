@@ -1,6 +1,5 @@
 package com.jyams.hr.model;
 
-
 /**
  * 职位
  * 

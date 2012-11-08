@@ -6,9 +6,9 @@ import com.jyams.hr.model.MultiDay;
 
 public interface SystemManager {
 
-	void saveMultiDays(List<String> days, int times);
-	
-	MultiDay getMultiDay(String day);
-	
-	List<MultiDay> listMultiDay();
+    void saveMultiDays(List<String> days, int times);
+
+    MultiDay getMultiDay(String day);
+
+    List<MultiDay> listMultiDay();
 }

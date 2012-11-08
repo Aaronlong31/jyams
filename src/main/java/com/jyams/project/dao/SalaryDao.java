@@ -16,32 +16,32 @@ import com.jyams.util.dao.IBatisEntityDao;
 
 /**
  * @author zhanglong<br>
- * 2012-2-18 下午12:50:59<br>
+ *         2012-2-18 下午12:50:59<br>
  */
 @Repository
 @SuppressWarnings("unchecked")
 public class SalaryDao extends IBatisEntityDao<Salary> {
 
-	/**
-	 * @param month
-	 * @return
-	 */
-	public List<MonthlySalary> listMonthlySalary(int month) {
-		return getSqlMapClientTemplate().queryForList(
-				"com.jyams.project.dao.SalaryDao.listMonthlySalary", month);
-	}
+    /**
+     * @param month
+     * @return
+     */
+    public List<MonthlySalary> listMonthlySalary(int month) {
+        return getSqlMapClientTemplate().queryForList(
+                "com.jyams.project.dao.SalaryDao.listMonthlySalary", month);
+    }
 
-	/**
-	 * @param personId
-	 * @param month
-	 * @return
-	 */
-	public List<DailySalary> listDailySalary(long personId, int month) {
-		Map<String, Object> hashMap = Maps.newHashMap();
-		hashMap.put("personId", personId);
-		hashMap.put("month", month);
-		return getSqlMapClientTemplate().queryForList(
-				"com.jyams.project.dao.SalaryDao.listDailySalary", hashMap);
-	}
+    /**
+     * @param personId
+     * @param month
+     * @return
+     */
+    public List<DailySalary> listDailySalary(long personId, int month) {
+        Map<String, Object> hashMap = Maps.newHashMap();
+        hashMap.put("personId", personId);
+        hashMap.put("month", month);
+        return getSqlMapClientTemplate().queryForList(
+                "com.jyams.project.dao.SalaryDao.listDailySalary", hashMap);
+    }
 
 }

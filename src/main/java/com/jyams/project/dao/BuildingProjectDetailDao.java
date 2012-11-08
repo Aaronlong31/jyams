@@ -10,15 +10,15 @@ import com.jyams.util.dao.IBatisEntityDao;
 
 @Repository
 public class BuildingProjectDetailDao extends
-		IBatisEntityDao<BuildingProjectDetail> {
+        IBatisEntityDao<BuildingProjectDetail> {
 
-	public void removeByReferIdAndTypes(String referId, short[] costTypes) {
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("referId", referId);
-		map.put("costTypes", costTypes);
-		getSqlMapClientTemplate()
-				.delete("com.jyams.project.dao.BuildingProjectDetailDao.removeByReferIdAndTypes",
-						map);
-	}
+    public void removeByReferIdAndTypes(String referId, short[] costTypes) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("referId", referId);
+        map.put("costTypes", costTypes);
+        getSqlMapClientTemplate()
+                .delete("com.jyams.project.dao.BuildingProjectDetailDao.removeByReferIdAndTypes",
+                        map);
+    }
 
 }
