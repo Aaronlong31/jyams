@@ -21,16 +21,20 @@ public class WorkbookUtils {
      * @return
      */
     public static String getStringValue(Sheet sheet, int rowNum, int cellNum) {
-        if (sheet == null)
+        if (sheet == null) {
             return null;
+        }
         Row row = sheet.getRow(rowNum);
-        if (row == null)
+        if (row == null) {
             return null;
+        }
         Cell cell = row.getCell(cellNum);
-        if (cell == null)
+        if (cell == null) {
             return null;
-        if (cell.getCellType() == Cell.CELL_TYPE_STRING)
+        }
+        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
             return cell.getStringCellValue();
+        }
         return null;
     }
 
@@ -43,16 +47,20 @@ public class WorkbookUtils {
      * @return
      */
     public static Double getNumberValue(Sheet sheet, int rowNum, int cellNum) {
-        if (sheet == null)
+        if (sheet == null) {
             return null;
+        }
         Row row = sheet.getRow(rowNum);
-        if (row == null)
+        if (row == null) {
             return null;
+        }
         Cell cell = row.getCell(cellNum);
-        if (cell == null)
+        if (cell == null) {
             return null;
-        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+        }
+        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
             return cell.getNumericCellValue();
+        }
         return null;
     }
 
@@ -80,10 +88,5 @@ public class WorkbookUtils {
     public static float getFloatValue(Sheet sheet, int rowNum, int cellNum) {
         Double value = getNumberValue(sheet, rowNum, cellNum);
         return value == null ? 0 : value.floatValue();
-    }
-
-    public static void main(String[] args) {
-        Double d = 12.99;
-        System.out.println(d.floatValue());
     }
 }

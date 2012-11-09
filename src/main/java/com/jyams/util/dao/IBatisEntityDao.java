@@ -30,9 +30,9 @@ public class IBatisEntityDao<T> extends IBatisGenericDao {
     /**
      * DAO所管理的Entity类型.
      */
-    protected Class<T> entityClass;
+    private final Class<T> entityClass;
 
-    protected String primaryKeyName;
+    private String primaryKeyName;
 
     /**
      * 在构造函数中将泛型T.class赋给entityClass.
@@ -128,8 +128,9 @@ public class IBatisEntityDao<T> extends IBatisGenericDao {
     }
 
     public String getPrimaryKeyName() {
-        if (StringUtils.isEmpty(primaryKeyName))
+        if (StringUtils.isEmpty(primaryKeyName)) {
             primaryKeyName = "id";
+        }
         return primaryKeyName;
     }
 
@@ -159,14 +160,15 @@ public class IBatisEntityDao<T> extends IBatisGenericDao {
         try {
             primaryKey = getPrimaryKeyValue(o);
         } catch (Exception e) {
-            // TODO throw new ObjectRetrievalFailureException(entityClass, e);
+            // TODO ObjectRetrievalFailureException(entityClass, e);
             return;
         }
 
-        if (primaryKey == null)
+        if (primaryKey == null) {
             insert(o);
-        else
+        } else {
             update(o);
+        }
     }
 
     public void setPrimaryKeyName(String primaryKeyName) {

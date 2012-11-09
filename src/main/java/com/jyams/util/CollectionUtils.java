@@ -12,7 +12,10 @@ import com.google.common.collect.Lists;
  * @author zhanglong
  * 
  */
-public class CollectionUtils {
+public final class CollectionUtils {
+
+    private CollectionUtils() {
+    }
 
     /**
      * 判断一个集合是否只包含给定的元素

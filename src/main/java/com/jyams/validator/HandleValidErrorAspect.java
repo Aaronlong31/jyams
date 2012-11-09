@@ -59,7 +59,6 @@ public class HandleValidErrorAspect {
             return;
         }
 
-        // throw new http(errorMessages.toString());
     }
 
     private List<String> validate(PreValidated annotation,

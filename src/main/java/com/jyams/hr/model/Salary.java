@@ -7,9 +7,9 @@ package com.jyams.hr.model;
  */
 public class Salary {
 
-    protected long personId;
-    protected String personName;
-    protected float cost;
+    private long personId;
+    private String personName;
+    private float cost;
 
     public String getPersonId() {
         return personId + "";

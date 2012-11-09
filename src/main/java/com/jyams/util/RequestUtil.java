@@ -38,10 +38,4 @@ public class RequestUtil {
         return null;
     }
 
-    public static void main(String[] args) {
-        System.out.println(StringUtils.isBlank(" "));
-        System.out.println(StringUtils.isEmpty(" "));
-        System.out.println(StringUtils.capitalize(null));
-
-    }
 }

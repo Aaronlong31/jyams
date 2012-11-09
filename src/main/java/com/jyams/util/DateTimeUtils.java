@@ -14,7 +14,7 @@ import org.apache.commons.lang.time.DateUtils;
  * @author zhanglong
  * 
  */
-public class DateTimeUtils {
+public final class DateTimeUtils {
 
     /** * 每秒钟的毫秒数 */
     public static final int SECOND = 1000;
@@ -32,8 +32,8 @@ public class DateTimeUtils {
      */
     private static final String DEFAULT_FULL_DATE = "yyyy-MM-dd";
 
-    // private static final String DEFAULT_YEAR = "yyyy";
-    // private static final String DEFAULT_INT_DATE = "yyyyMMdd";
+    private DateTimeUtils() {
+    }
 
     /**
      * 判断是否是同一天
@@ -250,5 +250,23 @@ public class DateTimeUtils {
         } catch (ParseException e) {
             return null;
         }
+    }
+
+    /**
+     * 得到某天的开始毫秒
+     */
+    public static Long getDayStartTimestamp(String stringDate) {
+        return DateTimeUtils.convertStringToLong(stringDate);
+    }
+
+    /**
+     * 得到某天的结束毫秒
+     */
+    public static Long getDayEndTimestamp(String stringDate) {
+        Long timeStart = DateTimeUtils.convertStringToLong(stringDate);
+        if (timeStart != null) {
+            return timeStart + DateTimeUtils.DAY - 1;
+        }
+        return null;
     }
 }

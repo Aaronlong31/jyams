@@ -1,7 +1,8 @@
-package com.jyams.purchase.manager;
+package com.jyams.purchase;
 
 import org.junit.Test;
 
+import com.jyams.purchase.manager.PurchaseQuery;
 import com.jyams.util.search.SqlOrder;
 
 public class PurchaseQueryTest {

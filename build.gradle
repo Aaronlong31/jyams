@@ -3,6 +3,7 @@ apply plugin: 'eclipse-wtp'
 apply plugin: 'war'
 apply plugin: 'jetty'
 apply plugin: 'project-report'
+apply plugin: 'sonar'
 
 project.version = 3.0
 project.group = "com.jyams"
@@ -123,3 +124,18 @@ eclipse {
 
 clean.dependsOn(cleanExplode)
 //END warExplode
+
+sonar {
+    server {
+        url = "http://localhost:9000/sonar"
+    }
+    database {
+        url = "jdbc:mysql://localhost:3306/sonar"
+        driverClassName = "com.mysql.jdbc.Driver"
+        username = "sonar"
+        password = "sonar"
+    }
+    project {
+        language = "java"
+    }
+}

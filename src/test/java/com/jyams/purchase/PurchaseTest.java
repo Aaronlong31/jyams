@@ -1,4 +1,4 @@
-package com.jyams.purchase.model;
+package com.jyams.purchase;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
+import com.jyams.purchase.model.Purchase;
+import com.jyams.purchase.model.PurchaseItem;
 
 public class PurchaseTest {
 

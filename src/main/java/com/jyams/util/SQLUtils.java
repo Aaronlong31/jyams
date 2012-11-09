@@ -1,6 +1,9 @@
 package com.jyams.util;
 
-public class SQLUtils {
+public final class SQLUtils {
+
+    private SQLUtils() {
+    }
 
     /**
      * 替换sql语句中的特殊字符，防止SQL注入

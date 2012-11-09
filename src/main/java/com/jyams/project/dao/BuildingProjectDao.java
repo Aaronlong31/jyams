@@ -156,7 +156,6 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
             return getSqlMapClientTemplate().update(
                     "com.jyams.project.dao.BuildingProjectDao.collection", map);
         } catch (DataAccessException e) {
-            e.printStackTrace();
             throw e;
         }
     }

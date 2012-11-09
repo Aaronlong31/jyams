@@ -64,10 +64,11 @@ public class DataPage<T> implements Serializable {
      */
     // @JSON(name = "total")
     public int getTotalPageCount() {
-        if (totalCount % pageSize == 0)
+        if (totalCount % pageSize == 0) {
             return totalCount / pageSize;
-        else
+        } else {
             return totalCount / pageSize + 1;
+        }
     }
 
     /**

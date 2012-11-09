@@ -143,8 +143,6 @@ public class Quote {
     }
 
     public String getId() {
-        // DecimalFormat df = new DecimalFormat("000000");
-        // return df.format(quoteId) + Character.toString((char) version);
         if (quoteId == null) {
             return null;
         }

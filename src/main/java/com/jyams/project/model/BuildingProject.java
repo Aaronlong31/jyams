@@ -344,8 +344,9 @@ public class BuildingProject {
     }
 
     public String getMargin() {
-        if (project == null || getContractPrice() <= 0)
+        if (project == null || getContractPrice() <= 0) {
             return "";
+        }
         double i = Math
                 .floor(((getContractPrice() - actualCost) / getContractPrice()) * 10000);
         return i / 100 + "%";

@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.jyams.util.DataPage;
-import com.jyams.util.DateTimeUtils;
 import com.jyams.util.SQLUtils;
 
 /**
@@ -28,11 +27,11 @@ public abstract class Query<T> {
 
     protected static final String SEARCH_FIELD = "searchField";
     protected static final String SEARCH_STRING = "searchString";
-    protected Integer pageNo = 1; // 页码
-    protected Integer pageSize = 20; // 每页记录数,默认值为20
-    protected List<SqlOrder> orders = Lists.newArrayList();
-    protected List<Short> includeStatus = Lists.newArrayList();// 包含的采购单状态
-    protected List<Short> excludeStatus = Lists.newArrayList();// 排除的采购单状态
+    private Integer pageNo = 1; // 页码
+    private Integer pageSize = 20; // 每页记录数,默认值为20
+    private List<SqlOrder> orders = Lists.newArrayList();
+    private List<Short> includeStatus = Lists.newArrayList();// 包含的采购单状态
+    private List<Short> excludeStatus = Lists.newArrayList();// 排除的采购单状态
 
     public Query() {
     }
@@ -51,7 +50,7 @@ public abstract class Query<T> {
         return DataPage.getStartOfPage(pageNo, pageSize);
     }
 
-    public Query<T> initSearcher(SearchFilter filter) {
+    private Query<T> initSearcher(SearchFilter filter) {
         List<SearchRule> rules = filter.getRules();
         Method[] methods = this.getClass().getMethods();
         for (SearchRule rule : rules) {
@@ -100,7 +99,7 @@ public abstract class Query<T> {
 
     }
 
-    public Query<T> initPager(ServletRequest request) {
+    private Query<T> initPager(ServletRequest request) {
         String rowsPara = request.getParameter("rows");
         if (StringUtils.isNotBlank(rowsPara)) {
             this.setPageSize(Integer.parseInt(rowsPara));
@@ -266,9 +265,4 @@ public abstract class Query<T> {
         return this;
     }
 
-    protected void setTimestamp(String timeString, Long timeStart, Long timeEnd) {
-        timeStart = DateTimeUtils.convertStringToLong(timeString);
-        if (timeStart != null)
-            timeEnd = timeStart + DateTimeUtils.DAY - 1;
-    }
 }

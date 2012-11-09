@@ -11,9 +11,12 @@ import java.security.SecureRandom;
  * @author zhanglong
  * 
  */
-public class IdUtil {
+public final class IdUtil {
 
     private static SecureRandom random = new SecureRandom();
+
+    private IdUtil() {
+    }
 
     /**
      * 使用SecureRandom 随机生成long型主键

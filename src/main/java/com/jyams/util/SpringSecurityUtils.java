@@ -17,7 +17,11 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
  * 
  * @author zhanglong
  */
-public class SpringSecurityUtils {
+public final class SpringSecurityUtils {
+
+    private SpringSecurityUtils() {
+    }
+
     /**
      * 取得当前用户, 返回值为SpringSecurity的User类或其子类, 如果当前用户未登录则返回null.
      */

@@ -124,12 +124,14 @@ public class KeyGenerator {
         } finally {
             try {
                 connection.close();
-                if (pstmt != null)
+                if (pstmt != null) {
                     pstmt.close();
-                if (rs != null)
+                }
+                if (rs != null) {
                     rs.close();
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("", e);
             }
         }
         return key;

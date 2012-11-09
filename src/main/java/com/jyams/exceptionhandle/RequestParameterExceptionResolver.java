@@ -31,12 +31,14 @@ public class RequestParameterExceptionResolver implements
 
     private ModelAndView handleServletRequestBindingException(Exception ex,
             HttpServletResponse response) {
+        ex.getMessage();
         return null;
     }
 
     private ModelAndView handleMissingServletRequestParameterException(
             MissingServletRequestParameterException ex,
             HttpServletResponse response) {
+        ex.getMessage();
         return null;
     }
 

@@ -9,6 +9,6 @@ import com.jyams.secure.model.Role;
 @Transactional(rollbackFor = Exception.class)
 public interface RoleManager {
 
-	@Transactional(readOnly = true)
-	List<Role> listRoles();
+    @Transactional(readOnly = true)
+    List<Role> listRoles();
 }

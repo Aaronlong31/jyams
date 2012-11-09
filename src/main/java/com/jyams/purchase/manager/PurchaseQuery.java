@@ -6,6 +6,7 @@ package com.jyams.purchase.manager;
 import org.apache.commons.lang.StringUtils;
 
 import com.jyams.purchase.model.Purchase;
+import com.jyams.util.DateTimeUtils;
 import com.jyams.util.search.Query;
 import com.jyams.util.search.SearchFilter;
 import com.jyams.util.search.SqlOrder;
@@ -53,10 +54,10 @@ public class PurchaseQuery extends Query<Purchase> {
     /**
      * 默认删除、取消、废弃的状态不查出
      */
-    protected void init() {
-        excludeStatus.add(Purchase.STATUS_CANCEL);
-        excludeStatus.add(Purchase.STATUS_DELETED);
-        excludeStatus.add(Purchase.STATUS_DISCARDED);
+    private void init() {
+        getExcludeStatus().add(Purchase.STATUS_CANCEL);
+        getExcludeStatus().add(Purchase.STATUS_DELETED);
+        getExcludeStatus().add(Purchase.STATUS_DISCARDED);
         this.addOrder(new SqlOrder("purchaseCode", true));
     }
 
@@ -74,8 +75,8 @@ public class PurchaseQuery extends Query<Purchase> {
 
         this.purchaseCode = purchaseCode;
         Purchase parseCode = Purchase.parseCode(purchaseCode);
-        this.purchaseNo = parseCode.getPurchaseNo();
-        this.version = parseCode.getVersion();
+        purchaseNo = parseCode.getPurchaseNo();
+        version = parseCode.getVersion();
         return this;
     }
 
@@ -190,10 +191,13 @@ public class PurchaseQuery extends Query<Purchase> {
     }
 
     public void setApplyTimestamp(String applyTimestamp) {
-        setTimestamp(applyTimestamp, applyTimestampStart, applyTimestampEnd);
+        applyTimestampStart = DateTimeUtils
+                .getDayStartTimestamp(applyTimestamp);
+        applyTimestampEnd = DateTimeUtils.getDayEndTimestamp(applyTimestamp);
     }
 
     public void setArrivalDate(String arrivalDate) {
-        setTimestamp(arrivalDate, arrivalDateStart, arrivalDateEnd);
+        arrivalDateStart = DateTimeUtils.getDayStartTimestamp(arrivalDate);
+        arrivalDateEnd = DateTimeUtils.getDayEndTimestamp(arrivalDate);
     }
 }

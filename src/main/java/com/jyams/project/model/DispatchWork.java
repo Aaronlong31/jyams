@@ -105,19 +105,19 @@ public class DispatchWork {
     }
 
     public void setStartTimeString(String startTimeString) {
-        this.startTime = DateTimeUtils.convertStringToMinute(startTimeString);
+        startTime = DateTimeUtils.convertStringToMinute(startTimeString);
     }
 
     public void setEndTimeString(String endTimeString) {
-        this.endTime = DateTimeUtils.convertStringToMinute(endTimeString);
+        endTime = DateTimeUtils.convertStringToMinute(endTimeString);
     }
 
     public String getStartTimeString() {
-        return DateTimeUtils.convertMinuteToString(this.startTime);
+        return DateTimeUtils.convertMinuteToString(startTime);
     }
 
     public String getEndTimeString() {
-        return DateTimeUtils.convertMinuteToString(this.endTime);
+        return DateTimeUtils.convertMinuteToString(endTime);
     }
 
     public int getTotalTime() {
@@ -155,13 +155,6 @@ public class DispatchWork {
         this.cost = cost;
     }
 
-    public static void main(String[] args) {
-        DispatchWork dw = new DispatchWork();
-        dw.setStartTime(540);
-        dw.setEndTime(1020);
-        System.out.println(dw.getHours());
-    }
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this,
@@ -172,6 +165,6 @@ public class DispatchWork {
      * 计算员工工资
      */
     public void calculateCost() {
-        this.cost = SalaryCalculator.calculate(startTime, endTime, salary);
+        cost = SalaryCalculator.calculate(startTime, endTime, salary);
     }
 }

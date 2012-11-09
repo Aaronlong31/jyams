@@ -45,8 +45,8 @@ public class BuildingProjectQuery extends Query<BuildingProject> {
         init();
     }
 
-    protected void init() {
-        excludeStatus.add(BuildingProject.STATUS_HIDDEN);
+    private void init() {
+        getExcludeStatus().add(BuildingProject.STATUS_HIDDEN);
         this.addOrder(new SqlOrder("bp.projectId", false));
     }
 

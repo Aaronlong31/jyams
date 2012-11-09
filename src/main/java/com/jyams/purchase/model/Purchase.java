@@ -25,36 +25,68 @@ public class Purchase {
             .newHashMap();
     public static final Map<Short, String> TYPE_STRING_MAP = Maps.newHashMap();
 
-    /**
-     * 采购单状态
-     */
-    public static final short STATUS_INIT = 0;// 草稿
-    public static final short STATUS_SUBMITED = 1;// 已提交
-    public static final short STATUS_IN_REVIEW = 2;// 复核中
-    public static final short STATUS_PASS_REVIEW = 3;// 通过复核
-    public static final short STATUS_NOTPASS_REVIEW = 4;// 未通过复核
-    public static final short STATUS_PASS_FIRST_APPROVAL = 5;// 通过一审
+    /** 采购单状态-草稿 */
+    public static final short STATUS_INIT = 0;
+
+    /** 采购单状态-已提交 */
+    public static final short STATUS_SUBMITED = 1;
+
+    /** 采购单状态-复核中 */
+    public static final short STATUS_IN_REVIEW = 2;
+
+    /** 采购单状态-通过复核 */
+    public static final short STATUS_PASS_REVIEW = 3;
+
+    /** 采购单状态-未通过复核 */
+    public static final short STATUS_NOTPASS_REVIEW = 4;
+
+    /** 采购单状态-通过一审 */
+    public static final short STATUS_PASS_FIRST_APPROVAL = 5;
 
     /**
-     * 使用{@link #STATUS_NOTPASS_APPROVAL}代替
+     * 采购单状态-未通过一审 使用{@link #STATUS_NOTPASS_APPROVAL}代替
      */
     @Deprecated
-    public static final short STATUS_NOTPASS_FIRST_APPROVAL = 6;// 未通过一审
-    public static final short STATUS_PASS_APPROVAL = 7;// 通过审批
-    public static final short STATUS_NOTPASS_APPROVAL = 8;// 未通过审批
-    public static final short STATUS_CANCEL = 9;// 已取消
-    public static final short STATUS_PART_ARRIVAL = 10;// 部分到货
-    public static final short STATUS_COMPLETED = 11;// 完成采购
-    public static final short STATUS_DISCARDED = 12;// 已废弃
-    public static final short STATUS_DELETED = 13;// 标记删除
+    public static final short STATUS_NOTPASS_FIRST_APPROVAL = 6;
 
-    public static final short APPROVAL_TYPE_FIRST = 1;// 一审通过
-    public static final short APPROVAL_TYPE_SECOND = 2;// 二审通过
-    public static final short APPROVAL_TYPE_DIS = 3;// 不通过
+    /** 采购单状态-通过审批 */
+    public static final short STATUS_PASS_APPROVAL = 7;
 
-    public static final short TYPE_MATERIAL = 1;// 物料采购单
-    public static final short TYPE_COMPANY = 2;// 公司采购单
-    public static final short TYPE_ORDER = 3;// 外包订单
+    /** 采购单状态-未通过审批 */
+    public static final short STATUS_NOTPASS_APPROVAL = 8;
+
+    /** 采购单状态-已取消 */
+    public static final short STATUS_CANCEL = 9;
+
+    /** 采购单状态-部分到货 */
+    public static final short STATUS_PART_ARRIVAL = 10;
+
+    /** 采购单状态-完成采购 */
+    public static final short STATUS_COMPLETED = 11;
+
+    /** 采购单状态-已废弃 */
+    public static final short STATUS_DISCARDED = 12;
+
+    /** 采购单状态-标记删除 */
+    public static final short STATUS_DELETED = 13;
+
+    /** 审批类型-一审通过 */
+    public static final short APPROVAL_TYPE_FIRST = 1;
+
+    /** 审批类型-二审通过 */
+    public static final short APPROVAL_TYPE_SECOND = 2;
+
+    /** 审批类型-不通过 */
+    public static final short APPROVAL_TYPE_DIS = 3;
+
+    /** 采购单类型-物料采购单 */
+    public static final short TYPE_MATERIAL = 1;
+
+    /** 采购单类型-公司采购单 */
+    public static final short TYPE_COMPANY = 2;
+
+    /** 采购单类型-外包订单 */
+    public static final short TYPE_ORDER = 3;
 
     static {
         STATUS_STRING_MAP.put(STATUS_INIT, "草稿");
@@ -69,7 +101,6 @@ public class Purchase {
         STATUS_STRING_MAP.put(STATUS_PART_ARRIVAL, "部分到货");
         STATUS_STRING_MAP.put(STATUS_COMPLETED, "完成采购");
         STATUS_STRING_MAP.put(STATUS_DISCARDED, "已废弃");
-        // statusString.put(STATUS_DELETED, "标记删除");
 
         TYPE_STRING_MAP.put(TYPE_MATERIAL, "物料采购单");
         TYPE_STRING_MAP.put(TYPE_COMPANY, "公司采购单");
@@ -78,30 +109,49 @@ public class Purchase {
 
     private Long purchaseId;
 
-    private long purchaseNo; // 采购(物料)单标识
-    private int version;// 采购(物料)单版本号
-    private short status; // 状态
-    private short type;// 类型
+    // 采购(物料)单标识
+    private long purchaseNo;
+    // 采购(物料)单版本号
+    private int version;
+    // 状态
+    private short status;
+    // 类型
+    private short type;
 
-    private Long applyTimestamp; // 申请时戳
-    private Long applierId;// 申购人标识
-    private String applierName;// 申购人姓名
+    // 申请时戳
+    private Long applyTimestamp;
+    // 申购人标识
+    private Long applierId;
+    private String applierName;
+    // 申购人姓名
 
-    private long arrivalDate;// 指定到货日期
-    private String deliveryAddress;// 送货地
-    private long consigneeId;// 收货人标识
-    private String consigneeName;// 收货人姓名
+    // 指定到货日期
+    private long arrivalDate;
+    // 送货地
+    private String deliveryAddress;
+    // 收货人标识
+    private long consigneeId;
+    // 收货人姓名
+    private String consigneeName;
 
-    private Long purchaseTimestamp; // 实际采购时戳
-    private Long purchaserId;// 采购经办人标识
-    private String purchaserName;// 采购经办人姓名
+    // 实际采购时戳
+    private Long purchaseTimestamp;
+    // 采购经办人标识
+    private Long purchaserId;
+    // 采购经办人姓名
+    private String purchaserName;
 
-    private String approvalOpinion;// 审批意见
-    private Long approvedTimestamp; // 审批时戳
-    private Long approverId;// 审批人标识
-    private String approverName;// 审批人姓名
+    // 审批意见
+    private String approvalOpinion;
+    // 审批时戳
+    private Long approvedTimestamp;
+    // 审批人标识
+    private Long approverId;
+    // 审批人姓名
+    private String approverName;
 
-    private long createdTimestamp; // 创建时戳
+    // 创建时戳
+    private long createdTimestamp;
     private long creatorId;
     private String creatorName;
 
