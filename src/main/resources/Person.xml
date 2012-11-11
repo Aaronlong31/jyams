@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Person">
+	<typeAlias alias="Person" type="com.jyams.hr.model.Person"/>
+
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<sql id="whereSql">
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="personNameLike" prepend="AND">
+				personName LIKE '%$personNameLike$%'
+			</isNotEmpty>
+			<isNotEmpty property="personName" prepend="AND">
+				personName = #personName#
+			</isNotEmpty>
+			<isNotEmpty property="departmentName" prepend="AND">
+				departmentName = #departmentName#
+			</isNotEmpty>
+			<isNotNull property="salaryType" prepend="AND">
+				salaryType = #salaryType#
+			</isNotNull>
+			<isNotNull property="status" prepend="AND">
+				status = #status#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<insert id="com.jyams.hr.model.Person.insert" parameterClass="Person">
+		INSERT INTO Person
+		(
+			personId, departmentId, departmentName, 
+			personName, mobilePhone, 
+			shortNumber, shoeSize, overallsSize, officeDate, 
+			dimissionDate, birthday, education, jobType, 
+			certificate, title, birthPlace, housePhone, 
+			idCardCode, domicileLocus, currentAddress, salaryType, 
+			salary, status, creatorId, creatorName, createdTimestamp
+		)VALUES(
+			#personId#, #departmentId#, #departmentName#, 
+			#personName#, #mobilePhone#,
+			#shortNumber#, #shoeSize#, #overallsSize#, #officeDate#, 
+			#dimissionDate#, #birthday#, #education#, #jobType#, 
+			#certificate#, #title#, #birthPlace#, #housePhone#, 
+			#idCardCode#, #domicileLocus#, #currentAddress#, #salaryType#, 
+			#salary#, #status#, #creatorId#, #creatorName#, #createdTimestamp#
+		)
+	</insert>
+	
+	<insert id="com.jyams.hr.dao.PersonDao.insertPersonJobs" parameterClass="hashMap">
+		INSERT INTO Person_Job VALUES 
+		<iterate property="jobs" conjunction=",">
+			(#personId#, #jobs[].jobId#)
+		</iterate>
+	</insert>
+	
+	<select id="com.jyams.hr.model.Person.select" parameterClass="long"
+		resultClass="Person">
+		SELECT * FROM Person
+		<isNotNull property="value" prepend="WHERE">
+			personId = #value#
+		</isNotNull>
+		ORDER BY departmentName , personName DESC	
+	</select>
+	
+	<select id="com.jyams.hr.model.Person.selectByMap" parameterClass="hashMap"
+		resultClass="Person">
+		SELECT *
+		FROM Person p 
+		<include refid="whereSql"/>	
+	</select>
+	
+	<select id="com.jyams.hr.dao.PersonDao.selectPersons" parameterClass="hashMap"
+		resultClass="Person">
+		SELECT personId, personName, salaryType, status, mobilePhone, jobType,
+			departmentId, departmentName
+		FROM Person
+		<include refid="whereSql"/>	
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.hr.dao.PersonDao.selectPersons.Count" 
+		parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1)
+		FROM Person p 
+		<include refid="whereSql"/>	
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.hr.dao.PersonDao.getJobTypes" resultClass="string">
+		SELECT DISTINCT(jobType) FROM Person 
+		WHERE jobType IS NOT NULL AND jobType &lt;&gt; "" 
+		ORDER BY jobType
+	</select>
+	
+	<select id="com.jyams.hr.dao.PersonDao.listNotUserPersons" resultClass="Person">
+		SELECT p.* FROM Person p WHERE p.personId NOT IN 
+		( SELECT u.userId FROM User u)
+	</select>
+	
+	<select id="com.jyams.hr.dao.PersonDao.listPersonByJob" 
+		parameterClass="string" resultClass="Person">
+		SELECT p.* 
+		FROM Person_Job pj 
+		JOIN Person p ON pj.personId = p.personId
+		JOIN Job j ON pj.jobId = j.jobId 
+		WHERE j.jobName = #value#
+	</select>
+	
+	<select id="com.jyams.hr.dao.PersonDao.listSimplePersons" 
+		parameterClass="short" resultClass="Person">
+		SELECT personId, personName FROM Person WHERE status = #value#	
+	</select>
+	
+	<update id="com.jyams.hr.model.Person.update" parameterClass="Person">
+		UPDATE Person SET
+			mobilePhone = #mobilePhone#,
+			shortNumber = #shortNumber#,
+			shoeSize = #shoeSize#,
+			salary = #salary#,
+			salaryType = #salaryType#,
+			departmentId = #departmentId#,
+			departmentName = #departmentName#,
+			officeDate = #officeDate#,
+			overallsSize = #overallsSize#,
+			birthday = #birthday#,
+			education = #education#,
+			jobType = #jobType#,
+			certificate = #certificate#,
+			title = #title#,
+			birthPlace = #birthPlace#,
+			housePhone = #housePhone#,
+			idCardCode = #idCardCode#,
+			domicileLocus = #domicileLocus#,
+			currentAddress = #currentAddress#
+		WHERE personId = #personId#
+	</update>
+	
+	<!-- 更改用户状态 -->
+	<update id="com.jyams.hr.dao.PersonDao.updatePersonStatus" 
+		parameterClass="hashMap">
+		UPDATE Person
+		SET status = #status#
+		WHERE
+		personId = #personId#
+	</update>
+	
+	<delete id="com.jyams.hr.model.Person.deleteByPrimaryKey" 
+		parameterClass="long">
+		DELETE FROM Person WHERE personId = #value#
+	</delete>
+
+	<!-- 删除员工的职位 -->
+	<delete id="com.jyams.hr.dao.PersonDao.deletePersonJob" 
+		parameterClass="long">
+		DELETE FROM Person_Job WHERE personId = #value#
+	</delete>
+</sqlMap>

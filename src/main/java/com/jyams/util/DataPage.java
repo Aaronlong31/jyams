@@ -7,6 +7,8 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * 分页对象. 包含当前页数据及分页信息如总记录数.
  * 
@@ -54,7 +56,7 @@ public class DataPage<T> implements Serializable {
     /**
      * 取总记录数.
      */
-    // @JSON(name = "records")
+    @JsonProperty("records")
     public int getTotalCount() {
         return this.totalCount;
     }
@@ -62,7 +64,7 @@ public class DataPage<T> implements Serializable {
     /**
      * 取总页数.
      */
-    // @JSON(name = "total")
+    @JsonProperty("total")
     public int getTotalPageCount() {
         if (totalCount % pageSize == 0) {
             return totalCount / pageSize;
@@ -81,7 +83,7 @@ public class DataPage<T> implements Serializable {
     /**
      * 取当前页中的记录.
      */
-    // @JSON(name = "rows")
+    @JsonProperty("rows")
     public List<T> getData() {
         return data;
     }
@@ -89,7 +91,7 @@ public class DataPage<T> implements Serializable {
     /**
      * 取该页当前页码,页码从1开始.
      */
-    // @JSON(name = "page")
+    @JsonProperty("page")
     public int getCurrentPageNo() {
         return start / pageSize + 1;
     }
@@ -156,27 +158,4 @@ public class DataPage<T> implements Serializable {
                 ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    // *************************为jqgrid准备的方法*******************************//
-
-    /**
-     * 返回页码 public int getPage() { return getCurrentPageNo(); }
-     */
-
-    /**
-     * 返回总页数
-     * 
-     * @return public int getTotal() { return this.getTotalPageCount(); }
-     */
-
-    /**
-     * 返回总记录数
-     * 
-     * @return public int getRecords() { return this.totalCount; }
-     */
-
-    /**
-     * 返回数据行
-     * 
-     * @return public List<T> getRows() { return this.data; }
-     */
 }

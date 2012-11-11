@@ -1,6 +1,7 @@
 package com.jyams.purchase.manager;
 
 import com.jyams.purchase.model.Purchase;
+import com.jyams.purchase.query.PurchaseQuery;
 import com.jyams.util.DataPage;
 import com.jyams.util.RestrictModifyException;
 

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/950/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase
+END
+listMyPurchases.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/954/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/listMyPurchases.jsp
+END
+listSuppliers.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/911/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/listSuppliers.jsp
+END
+purchasesStatus.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/951/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/purchasesStatus.jsp
+END

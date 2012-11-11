@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Client">
+	<typeAlias alias="Client" type="com.jyams.hr.model.Client"/>
+	<typeAlias alias="ClientPrincipal" type="com.jyams.hr.model.ClientPrincipal" />
+	
+	<resultMap class="ClientPrincipal" id="ClientPrincipalMap" groupBy="clientId">
+		<result property="clientPrincipalId" column="cp.clientPrincipalId"/>
+		<result property="name" column="cp.name"/>
+		<result property="clientId" column="c.clientId"/>
+	</resultMap>
+	
+	<resultMap class="Client" id="ClientMap" groupBy="clientId">
+		<result property="clientId" column="c.clientId"/>
+		<result property="clientName" column="c.clientName"/>
+		<result property="principals" resultMap="Client.ClientPrincipalMap"/>
+	</resultMap>
+	
+	<sql id="whereSql">
+		<dynamic prepend="WHERE">
+			<isNotNull property="clientId" prepend="AND">
+				clientId = #clientId#
+			</isNotNull>
+			<isNotEmpty property="clientName" prepend="AND">
+				clientName = #clientName#
+			</isNotEmpty>
+			<isNotEmpty property="clientNameLike" prepend="AND">
+				clientName LIKE '%$clientNameLike$%'
+			</isNotEmpty>
+			<isNotEmpty property="address" prepend="AND">
+				address = #address#
+			</isNotEmpty>
+			<isNotEmpty property="phone" prepend="AND">
+				phone = #phone#
+			</isNotEmpty>
+			<isNotEmpty property="email" prepend="AND">
+				email = #email#
+			</isNotEmpty>
+			<isNotNull property="priority" prepend="AND">
+				priority = #priority#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="com.jyams.hr.model.Client.select" parameterClass="long"
+		resultClass="Client">
+		SELECT * FROM Client
+		<isNotNull property="value" prepend="WHERE">
+			clientId = #value#
+		</isNotNull>
+		ORDER BY priority DESC
+	</select>
+	
+	<select id="com.jyams.hr.dao.ClientDao.getClients" resultMap="ClientMap">
+		SELECT c.clientId, c.clientName, cp.clientPrincipalId, cp.name
+		FROM Client c
+		LEFT JOIN ClientPrincipal cp
+		ON c.clientId = cp.clientId
+		ORDER BY c.priority DESC , cp.priority DESC
+	</select>
+	
+	<select id="com.jyams.hr.model.Client.selectByMap" 
+		parameterClass="hashMap" resultClass="Client">
+		SELECT * FROM Client 
+		<include refid="whereSql"/>
+		ORDER BY priority DESC
+	</select>
+	
+	<select id="com.jyams.hr.dao.ClientDao.listClients" 
+		parameterClass="hashMap" resultClass="Client">
+		SELECT * FROM Client 
+		<include refid="whereSql"/>
+		ORDER BY priority DESC
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.hr.dao.ClientDao.listClients.Count" 
+		parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1) FROM Client 
+		<include refid="whereSql"/>
+		ORDER BY priority DESC
+		<include refid="pageSql"/>
+	</select>
+	
+	<insert id="com.jyams.hr.model.Client.insert" parameterClass="Client">
+		INSERT INTO Client 
+		(
+			clientId, clientName, address, 
+			phone, email, priority
+		) VALUES (
+			#clientId#, #clientName#, #address#, 
+			#phone#, #email#, #priority#
+		)
+	</insert>
+	
+	<update id="com.jyams.hr.model.Client.update" parameterClass="Client">
+		UPDATE Client SET
+				clientName = #clientName#,
+				address = #address#,
+				phone = #phone#,
+				email = #email#,
+				priority = #priority#
+		WHERE clientId = #clientId#
+	</update>
+	
+	<update id="com.jyams.hr.dao.ClientDao.addClientPriority" parameterClass="long">
+		UPDATE Client SET priority = priority + 1 WHERE clientId = #value#
+	</update>
+	
+	<delete id="com.jyams.hr.model.Client.deleteByPrimaryKey" parameterClass="long">
+		DELETE FROM Client WHERE clientId = #value#
+	</delete>
+	
+</sqlMap>

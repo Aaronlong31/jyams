@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PurchaseItem">
+	<typeAlias alias="PurchaseItem" type="com.jyams.purchase.model.PurchaseItem"/>
+	
+	<sql id="writePriceSql">
+		<dynamic prepend=" ">
+			<isNotNull property="paymentType" prepend=" , ">
+				paymentType = #paymentType#
+			</isNotNull>
+			<isNotNull property="unitPrice" prepend=" , ">
+				unitPrice = #unitPrice#
+			</isNotNull>
+			<isNotNull property="supplier" prepend=" , ">
+				supplier = #supplier#
+			</isNotNull>
+			<isNotNull property="telephone" prepend=" , ">
+				telephone = #telephone#
+			</isNotNull>
+			<isNotNull property="fax" prepend=" , ">
+				fax = #fax#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<insert id="com.jyams.purchase.model.PurchaseItem.insert" parameterClass="PurchaseItem">
+		INSERT INTO PurchaseItem
+		(
+			purchaseItemId, projectId, projectName, purchaseId,  
+			materialName, specifications, count, unit, 
+			paymentType, unitPrice, status, stock,  remark, 
+			supplier, telephone, fax, ReviewTimestamp, 
+			ReviewerId, ReviewerName, sequence
+		) VALUES (
+			#purchaseItemId#, #projectId#, #projectName#, #purchaseId#,
+			#materialName#, #specifications#, #count#, #unit#, 
+			#paymentType#, #unitPrice#, #status#, 
+			#stock#, #remark#, #supplier#, #telephone#, #fax#, 
+			#reviewTimestamp#, #reviewerId#, #reviewerName#, #sequence#
+		)
+	</insert>
+	
+	<select id="com.jyams.purchase.model.PurchaseItem.select" 
+		parameterClass="long" resultClass="PurchaseItem">
+		SELECT * FROM PurchaseItem 
+		WHERE purchaseItemId = #value#
+	</select>
+	
+	<!-- 修改采购单的所有项的状态 -->
+	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.modifyStatus"
+		parameterClass="hashMap">
+		UPDATE PurchaseItem SET status = #status# 
+		WHERE purchaseId = #purchaseId#	
+	</update>
+	
+	<!-- 修改采购单项的状态 -->
+	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.modifySingleStatus" 
+		parameterClass="hashMap">
+		UPDATE PurchaseItem SET status = #status# 
+		WHERE purchaseItemId = #purchaseItemId#	
+	</update>
+	
+	<!-- 修改多个采购单项的状态 -->
+	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.batchModifyStatus"
+		parameterClass="hashMap">
+		UPDATE PurchaseItem SET status = #status#
+		WHERE purchaseItem IN
+		<iterate property="purchaseItemIds" open="(" close=")" conjunction=",">
+			#purchaseItemIds[]#
+		</iterate>	
+	</update>
+	
+	<!-- 复核采购单项 -->
+	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.review"
+		parameterClass="PurchaseItem">
+		UPDATE PurchaseItem SET 
+			status = #status#,
+			paymentType = #paymentType#,
+			unitPrice = #unitPrice#,
+			supplier = #supplier#,
+			telephone = #telephone#,
+			fax = #fax#,
+			reviewTimestamp = #reviewTimestamp#,
+			reviewerId = #reviewerId#,
+			reviewerName = #reviewerName#
+		WHERE purchaseItemId = #purchaseItemId#
+	</update>
+	
+	<!-- 确认到货 -->
+	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.arrive"
+		parameterClass="hashMap">
+		UPDATE PurchaseItem pi, Purchase p SET
+			pi.status = #status#,
+			pi.purchaseTimestamp = #purchaseTimestamp#,
+			p.purchaserId = #userId#,
+			p.purchaserName = #userName#
+		WHERE pi.purchaseId = p.purchaseId
+			AND purchaseItemId = #purchaseItemId#
+	</update>
+	
+	<update id="com.jyams.purchase.model.PurchaseItem.update" 
+		parameterClass="PurchaseItem">
+		UPDATE PurchaseItem SET
+			projectId = #projectId#,
+			projectName = #projectName#,
+			materialName = #materialName#,
+			specifications = #specifications#,
+			count = #count#,
+			unit = #unit#,
+			remark = #remark#
+		WHERE purchaseItemId = #purchaseItemId#
+	</update>
+	
+	<delete id="com.jyams.purchase.model.PurchaseItem.deleteByPrimaryKey" 
+		parameterClass="long">
+		DELETE FROM PurchaseItem WHERE purchaseItemId = #value#
+	</delete>
+</sqlMap>

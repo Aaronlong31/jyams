@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/843/trunk/code/jyams-web/WebContent/jsp
+END
+403.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/592/trunk/code/jyams-web/WebContent/jsp/403.jsp
+END
+taglibs.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/366/trunk/code/jyams-web/WebContent/jsp/taglibs.jsp
+END
+404.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/492/trunk/code/jyams-web/WebContent/jsp/404.jsp
+END
+expired-session.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/960/trunk/code/jyams-web/WebContent/jsp/expired-session.jsp
+END
+accessDenied.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/274/trunk/code/jyams-web/WebContent/jsp/accessDenied.jsp
+END
+timeout.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/960/trunk/code/jyams-web/WebContent/jsp/timeout.jsp
+END
+500.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/843/trunk/code/jyams-web/WebContent/jsp/500.jsp
+END
+password-error.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/502/trunk/code/jyams-web/WebContent/jsp/password-error.jsp
+END

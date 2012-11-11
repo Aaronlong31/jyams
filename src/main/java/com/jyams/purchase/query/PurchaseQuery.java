@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.jyams.purchase.manager;
+package com.jyams.purchase.query;
 
 import org.apache.commons.lang.StringUtils;
 

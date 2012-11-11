@@ -25,8 +25,7 @@ public class ProjectDao extends IBatisEntityDao<Project> {
         map.put("clientName", clientName);
         map.put("clientPrincipalName", clientPrincipalName);
         map.put("orderString", orderString);
-        return pagedQuery("com.jyams.project.dao.ProjectDao.selectProjects",
-                map, pageNo, pageSize);
+        return pagedQuery("ProjectDao.selectProjects", map, pageNo, pageSize);
     }
 
     /**
@@ -40,12 +39,11 @@ public class ProjectDao extends IBatisEntityDao<Project> {
         map.put("status", status);
         map.put("clientId", clientId);
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.project.dao.ProjectDao.listProjectsSimple", map);
+                "ProjectDao.listProjectsSimple", map);
     }
 
     public DataPage<Project> pageQueryBasic(ProjectQuery projectQuery) {
-        return pageQuery("com.jyams.project.dao.ProjectDao.pageQueryBasic",
-                projectQuery);
+        return pageQuery("ProjectDao.pageQueryBasic", projectQuery);
     }
 
 }

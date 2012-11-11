@@ -10,7 +10,10 @@ import org.apache.poi.ss.usermodel.Sheet;
  * @author zhanglong
  * 
  */
-public class WorkbookUtils {
+public final class WorkbookUtils {
+
+    private WorkbookUtils() {
+    }
 
     /**
      * 获取指定单元格的字符值

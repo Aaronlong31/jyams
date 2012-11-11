@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="OperateLog">
+	<typeAlias alias="OperateLog" type="com.jyams.secure.model.OperateLog"/>
+	<typeAlias alias="OperateLogQuery" type="com.jyams.secure.manager.OperateLogQuery"/>
+	
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<sql id="whereSql">
+		<dynamic prepend="WHERE">
+			<isNotNull property="operateType" prepend="AND">
+				operateType = #operateType#
+			</isNotNull>
+			<isNotNull property="operateModule" prepend="AND">
+				operateModule = #operateModule#
+			</isNotNull>
+			<isNotNull property="operateModel" prepend="AND">
+				operateModel = #operateModel#
+			</isNotNull>
+			<isNotNull property="modelId" prepend="AND">
+				modelId = #modelId#
+			</isNotNull>
+			<isNotNull property="operatorId" prepend="AND">
+				operatorId = #operatorId#
+			</isNotNull>
+			<isNotNull property="operatorName" prepend="AND">
+				operatorName = #operatorName#
+			</isNotNull>
+			<isNotNull property="startTime" prepend="AND">
+				operateTimestamp &gt;= #startTime#
+			</isNotNull>
+			<isNotNull property="endTime" prepend="AND">
+				operateTimestamp &lt;= #endTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="com.jyams.secure.model.OperateLog.select" 
+		parameterClass="long" resultClass="OperateLog">
+		SELECT * FROM OperateLog 
+		<isNotNull property="operateLogId" prepend="WHERE">
+			operateLogId = #operateLogId#
+		</isNotNull>
+	</select>
+	
+	<select id="com.jyams.secure.dao.OperateLogDao.listOperateLog" 
+		parameterClass="hashMap" resultClass="OperateLog">
+		SELECT * FROM OperateLog
+		<include refid="whereSql"/>
+		ORDER BY operateTimestamp DESC
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.secure.dao.OperateLogDao.listOperateLog.Count" 
+		parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1) FROM OperateLog
+		<include refid="whereSql"/>
+	</select>
+	
+	<select id="com.jyams.secure.dao.OperateLogDao.listOperateLogForModel" 
+		parameterClass="hashMap" resultClass="OperateLog">
+		SELECT * FROM OperateLog
+		WHERE modelId = #modelId#
+		AND operateModel = #operateModel#
+		ORDER BY operateTimestamp DESC
+		LIMIT #limit#
+	</select>
+	
+	<sql id="pageQueryWhere">
+		<dynamic prepend=" WHERE ">
+			<isNotNull property="operatorName" prepend=" AND ">
+				operatorName LIKE '%$operatorName$%'
+			</isNotNull>
+			<isNotNull property="operateInfo" prepend=" AND ">
+				operateInfo LIKE '%$operateInfo$%'
+			</isNotNull>
+			<isNotNull property="ip" prepend=" AND ">
+				ip LIKE '%$ip$%'
+			</isNotNull>
+			<isNotNull property="operateType" prepend=" AND ">
+				operateType = #operateType#
+			</isNotNull>
+			<isNotNull property="operateModule" prepend=" AND ">
+				operateModule = #operateModule#
+			</isNotNull>
+			<isNotNull property="modelId" prepend=" AND ">
+				modelId = #modelId#
+			</isNotNull>
+			<isNotNull property="operateModel" prepend=" AND ">
+				operateModel = #operateModel#
+			</isNotNull>
+			<isNotNull property="operateTimestampStart" prepend=" AND ">
+				operateTimestamp &gt;= #operateTimestampStart#
+			</isNotNull>
+			<isNotNull property="operateTimestampEnd" prepend=" AND ">
+				operateTimestamp &lt;= #operateTimestampEnd#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	 
+	 <!-- 分页查询 -->
+	<select id="com.jyams.secure.manager.OperateLogQuery.pageQuery" 
+		parameterClass="OperateLogQuery" resultClass="OperateLog">
+		SELECT * FROM OperateLog
+		<include refid="pageQueryWhere"/>
+		$orderString$
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.secure.manager.OperateLogQuery.pageQuery.Count" 
+		parameterClass="OperateLogQuery" resultClass="int">
+		SELECT COUNT(1) FROM OperateLog
+		<include refid="pageQueryWhere"/>
+	</select>
+</sqlMap>

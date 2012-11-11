@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/936/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr/person
+END
+viewPerson.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/954/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr/person/viewPerson.jsp
+END
+inputPerson.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/954/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr/person/inputPerson.jsp
+END
+listPersons.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/954/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr/person/listPersons.jsp
+END

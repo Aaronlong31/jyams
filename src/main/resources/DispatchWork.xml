@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DispatchWork">
+	<typeAlias alias="DispatchWork" type="com.jyams.project.model.DispatchWork"/>
+	<typeAlias alias="DispatchWorkQuery" type="com.jyams.project.query.DispatchWorkQuery"/>
+	
+	<resultMap class="com.jyams.project.model.DispatchWork" id="DispatchWorkMap">
+		<result property="dispatchWorkId" column="dw.dispatchWorkId"/>
+		<result property="dispatchId" column="dw.dispatchId"/>
+		<result property="personId" column="personId"/>
+		<result property="personName" column="personName"/>
+		<result property="personType" column="personType"/>
+		<result property="idCardCode" column="idCardCode"/>
+		<result property="salary" column="salary"/>
+		<result property="startTime" column="startTime"/>
+		<result property="endTime" column="endTime"/>
+		<result property="cost" column="cost"/>
+		<result property="dispatch.projectId" column="d.projectId"/>
+		<result property="dispatch.projectName" column="d.projectName"/>
+		<result property="dispatch.dispatchDay" column="d.dispatchDay"/>
+		<result property="dispatch.dispatchType" column="d.dispatchType"/>
+	</resultMap>
+		
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+	<insert id="com.jyams.project.model.DispatchWork.insert" 
+		parameterClass="DispatchWork">
+		INSERT INTO DispatchWork
+		(
+			dispatchWorkId, dispatchId, personId, personName, personType,
+			idCardCode, salary, startTime, endTime, cost
+		) VALUES (
+			#dispatchWorkId#, #dispatchId#, #personId#, #personName#, #personType#, 
+			#idCardCode#, #salary#, #startTime#, #endTime#, #cost#
+		)
+	</insert>
+	
+	<insert id="com.jyams.project.model.DispatchWork.batchInsert" 
+		parameterClass="hashMap">
+		INSERT INTO DispatchWork
+		(
+			dispatchWorkId, dispatchId, personId, personName, personType,
+			idCardCode, salary, startTime, endTime, cost
+		) VALUES 
+		<iterate property="dispatchWorks" conjunction=",">
+			(
+				#dispatchWorks[].dispatchWorkId#, #dispatchWorks[].dispatchId#, 
+				#dispatchWorks[].personId#, #dispatchWorks[].personName#, 
+				#dispatchWorks[].personType#, #dispatchWorks[].idCardCode#, 
+				#dispatchWorks[].salary#, #dispatchWorks[].startTime#, 
+				#dispatchWorks[].endTime#, #dispatchWorks[].cost#
+			)
+		</iterate>
+	</insert>
+	
+	<select id="com.jyams.project.model.DispatchWork.select" 
+		parameterClass="long" resultClass="DispatchWork">
+		SELECT * FROM DispatchWork
+		<isNotNull property="value" prepend="WHERE">
+			dispatchWorkId = #value#
+		</isNotNull>	
+	</select>
+	
+	<select id="com.jyams.project.model.DispatchWork.selectByMap" 
+		parameterClass="hashMap" resultMap="DispatchWorkMap">
+		SELECT dw.*, d.projectId, d.projectName, d.dispatchDay 
+		FROM DispatchWork	dw LEFT JOIN Dispatch d ON dw.dispatchId = d.dispatchId
+		<include refid="Dispatch.whereSql"/>
+		ORDER BY dispatchDay
+	</select>
+	
+	<select id="com.jyams.project.dao.DispatchWorkDao.listDispatchWorks" 
+		parameterClass="hashMap" resultMap="DispatchWorkMap">
+		SELECT dw.*, d.projectId, d.projectName, d.dispatchDay, d.dispatchType
+		FROM DispatchWork	dw LEFT JOIN Dispatch d ON dw.dispatchId = d.dispatchId
+		<include refid="Dispatch.whereSql"/>
+		ORDER BY dispatchDay desc, d.projectId
+		<include refid="Dispatch.pageSql"/>
+	</select>
+	
+	<select id="com.jyams.project.dao.DispatchWorkDao.listDispatchWorks.Count" 
+		parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1)
+		FROM DispatchWork	dw LEFT JOIN Dispatch d ON dw.dispatchId = d.dispatchId
+		<include refid="Dispatch.whereSql"/>
+	</select>
+	
+	<select id="com.jyams.project.dao.DispatchWorkDao.checkDuplicateTime" 
+		parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1) 
+		FROM Dispatch d LEFT JOIN DispatchWork dw ON d.dispatchId = dw.dispatchId
+		WHERE d.dispatchDay = #dispatchDay#
+		AND dw.personId = #personId#
+		AND dw.startTime &lt; #endTime# AND dw.endTime &gt; #startTime#
+	</select>
+	
+	<sql id="pageQueryWhere">
+		<dynamic prepend=" WHERE ">
+			<isNotNull property="personName" prepend="AND">
+				dw.personName LIKE '%$personName$%'				
+			</isNotNull>
+			<isNotNull property="startTime" prepend="AND">
+				dw.startTime = #startTime#				
+			</isNotNull>
+			<isNotNull property="endTime" prepend="AND">
+				dw.endTime = #endTime#	
+			</isNotNull>
+			<isNotNull property="projectId" prepend="AND">
+				d.projectId LIKE '%$projectId$%'					
+			</isNotNull>
+			<isNotNull property="projectName" prepend="AND">
+				d.projectName LIKE '%$projectName$%'
+			</isNotNull>
+			<isNotNull property="dispatchDay" prepend="AND">
+				d.dispatchDay LIKE '%$dispatchDay$%'
+			</isNotNull>
+			<isNotNull property="dispatchType" prepend="AND">
+				d.dispatchType = #dispatchType#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="com.jyams.project.manager.DispatchWorkQuery.pageQuery" 
+		parameterClass="DispatchWorkQuery" resultMap="DispatchWorkMap">
+		SELECT dw.*, d.projectId, d.projectName, d.dispatchDay, d.dispatchType 
+		FROM Dispatch d LEFT JOIN DispatchWork dw
+		ON d.dispatchId = dw.dispatchId	
+		<include refid="pageQueryWhere"/>
+		$orderString$
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.project.manager.DispatchWorkQuery.pageQuery.Count" 
+		parameterClass="DispatchWorkQuery" resultClass="int">
+		SELECT COUNT(1) FROM Dispatch d LEFT JOIN DispatchWork dw
+		ON d.dispatchId = dw.dispatchId	
+		<include refid="pageQueryWhere"/>
+	</select>
+</sqlMap>

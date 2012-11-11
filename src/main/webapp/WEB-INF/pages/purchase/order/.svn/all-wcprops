@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/919/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/order
+END
+secondApproveList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/951/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/order/secondApproveList.jsp
+END
+input.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/951/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/order/input.jsp
+END
+approveList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/951/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/order/approveList.jsp
+END
+approve.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/951/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/order/approve.jsp
+END
+print.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/958/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/order/print.jsp
+END
+view.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/958/trunk/code/jyams-web/WebContent/WEB-INF/pages/purchase/order/view.jsp
+END

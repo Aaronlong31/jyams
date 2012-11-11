@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Department">
+	<typeAlias alias="Department" type="com.jyams.hr.model.Department"/>
+	<typeAlias alias="Person" type="com.jyams.hr.model.Person"/>
+	
+	<resultMap class="Person" id="PersonMap">
+		<result property="personId" column="p.personId"/>
+		<result property="personName" column="p.personName"/>
+		<result property="salary" column="p.salary"/>
+		<result property="jobType" column="p.jobType"/>
+	</resultMap>
+	
+	<resultMap class="Department" id="DepartmentWithPersonMap" groupBy="departmentId">
+		<result property="departmentId" column="d.departmentId"/>
+		<result property="departmentName" column="d.departmentName"/>
+		<result property="persons" resultMap="Department.PersonMap"/>
+	</resultMap>
+	
+	<insert id="com.jyams.hr.model.Department.insert" parameterClass="Department">
+		INSERT INTO Department
+		(
+			departmentId, departmentName, superId, 
+			principalId, principalName
+		)
+		VALUES
+		(
+			#departmentId#, #departmentName#, #superId#, 
+			#principalId#, #principalName#
+		)
+	</insert>
+	
+	<select id="com.jyams.hr.model.Department.select" parameterClass="long"
+		resultClass="Department">
+		SELECT * FROM Department
+		<isNotNull property="value" prepend="WHERE">
+			departmentId = #value#
+		</isNotNull>	
+	</select>
+	
+	<select id="com.jyams.project.dao.DepartmentDao.getWithPersons" 
+		parameterClass="hashMap"
+		resultMap="DepartmentWithPersonMap">
+		SELECT d.departmentId, d.departmentName,
+			p.personId, p.personName, p.salary, p.jobType
+		FROM Department d, Person p
+		WHERE d.departmentId = p.departmentId
+		AND p.status = 1
+		<isNotNull property="salaryType" prepend="AND">
+			p.salaryType = #salaryType#
+		</isNotNull>
+	</select>
+	
+	<update id="com.jyams.hr.model.Department.update" parameterClass="Department">
+		UPDATE Department SET
+				departmentName = #departmentName#,
+				superId = #superId#,
+				principalId = #principalId#,
+				principalName = #principalName#
+		WHERE departmentId = #departmentId#
+	</update>
+	
+	<delete id="com.jyams.hr.model.Department.deleteByPrimaryKey" parameterClass="long">
+		DELETE FROM Department WHERE departmentId = #departmentId#
+	</delete>
+</sqlMap>

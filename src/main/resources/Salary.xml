@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Salary">
+	<typeAlias alias="MonthlySalary" type="com.jyams.hr.model.MonthlySalary"/>
+	<typeAlias alias="DailySalary" type="com.jyams.hr.model.DailySalary"/>
+	
+	<select id="com.jyams.project.dao.SalaryDao.listMonthlySalary" 
+		resultClass="MonthlySalary">
+		SELECT SUM(dw.cost) AS cost,
+			dw.personId AS personId,
+			dw.personName AS personName,
+			#value# AS month
+		FROM Dispatch d, DispatchWork dw
+		WHERE dw.dispatchId = d.dispatchId
+			AND d.dispatchDay &gt;= #value#*100
+			AND d.dispatchDay &lt;= #value#*100+31
+		GROUP BY dw.personId
+	</select>
+	
+	<select id="com.jyams.project.dao.SalaryDao.listDailySalary" 
+		parameterClass="hashMap" resultClass="DailySalary">
+		SELECT dw.personId AS personId,
+			dw.personName AS personName,
+			d.dispatchDay AS day,
+			dw.cost AS cost,
+			dw.startTime as startTime,
+			dw.endTime as endTime
+		FROM Dispatch d, DispatchWork dw
+		WHERE dw.dispatchId = d.dispatchId
+			AND personId = #personId#
+			AND d.dispatchDay &gt;= #month#*100
+			AND d.dispatchDay &lt;= #month#*100+31
+	</select>
+</sqlMap>

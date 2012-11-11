@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="User">
+	<typeAlias alias="User" type="com.jyams.secure.model.User"/>
+	<typeAlias alias="Authority" type="com.jyams.secure.model.Authority"/>
+	
+	<resultMap class="Authority" id="AuthorityMap" groupBy="authorityId">
+		<result property="authorityId" column="a.authorityId"/>
+		<result property="name" column="a.name"/>
+		<result property="description" column="a.description"/>
+	</resultMap>
+
+	<resultMap class="User" id="UserMap" groupBy="userId">
+		<result property="userId" column="u.userId"/>
+		<result property="username" column="u.username"/>
+		<result property="password" column="u.password"/>
+		<result property="status" column="u.status"/>
+		<result property="authorities" resultMap="User.AuthorityMap"/>
+	</resultMap>
+	
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<sql id="whereSql">
+		<dynamic prepend="WHERE">
+			<isNotNull property="usernameLike" prepend="AND">
+				username LIKE '%$usernameLike$%'
+			</isNotNull>
+			<isNotNull property="status" prepend="AND">
+				status = #status#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<insert id="com.jyams.secure.model.User.insert" parameterClass="User">
+		INSERT INTO User VALUES (
+			#userId#, #username#, #password#, #status#
+		)
+	</insert>
+
+	<insert id="com.jyams.secure.dao.UserDao.insertUserAuthorities" parameterClass="hashMap">
+		INSERT INTO User_Authority VALUES 
+		<iterate property="authorities" conjunction=",">
+			(#userId#, #authorities[].authorityId#)
+		</iterate>
+	</insert>
+
+	<select id="com.jyams.secure.model.User.select" parameterClass="long" resultClass="User">
+		SELECT * FROM User 
+		<isNotNull property="value" prepend="WHERE">
+			userId = #value#
+		</isNotNull>
+	</select>
+	
+	<select id="com.jyams.secure.model.User.selectByMap" parameterClass="hashMap" resultClass="User">
+		SELECT * FROM User 
+		<include refid="whereSql"/>
+	</select>
+	
+	<select id="com.jyams.secure.dao.UserDao.listUsers" parameterClass="hashMap" resultClass="User">
+		SELECT * FROM User
+		<include refid="whereSql"/>
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.secure.dao.UserDao.listUsers.Count" parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1) FROM User
+		<include refid="whereSql"/>
+	</select>
+	
+	<select id="com.jyams.secure.dao.UserDao.findUserByUsername" 
+		parameterClass="string" resultMap="UserMap">
+		SELECT u.username, u.password, u.userId, u.status, a.* 
+		FROM User u
+		LEFT JOIN User_Authority ua
+		ON u.userId = ua.userId
+		LEFT JOIN Authority a
+		ON ua.authorityId = a.authorityId
+		WHERE u.username = #value#
+	</select>
+	
+	<update id="com.jyams.secure.model.User.update" parameterClass="User">
+		UPDATE User SET 
+			status=#status#
+			<isNotEmpty property="password" prepend=",">
+				password = #password#
+			</isNotEmpty>
+		WHERE userId = #userId#
+	</update>
+		
+	<update id="com.jyams.secure.dao.UserDao.resetPassword" parameterClass="hashMap">
+		UPDATE User SET password = #password# WHERE userId = #userId#
+	</update>	
+	
+	<delete id="com.jyams.secure.dao.UserDao.deleteUserAuthority" 
+		parameterClass="long">
+		DELETE FROM User_Authority WHERE userId = #value#
+	</delete>
+	
+	<delete id="com.jyams.secure.model.User.deleteByPrimaryKey" parameterClass="long">
+		DELETE FROM User WHERE userId = #value#
+	</delete>
+</sqlMap>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Project">
+	<typeAlias alias="Project" type="com.jyams.project.model.Project" />
+	<typeAlias alias="ProjectQuery" type="com.jyams.project.query.ProjectQuery" />
+
+	<sql id="whereSql">
+		WHERE (bp.status &amp; 128) != 128
+		<isNotEmpty property="projectId" prepend="AND">
+			p.projectId = #projectId#
+		</isNotEmpty>
+		<isNotEmpty property="companyPrincipalName" prepend="AND">
+			companyPrincipalName = #companyPrincipalName#
+		</isNotEmpty>
+		<isNotEmpty property="clientName" prepend="AND">
+			clientName = #clientName#
+		</isNotEmpty>
+		<isNotEmpty property="clientPrincipalName" prepend="AND">
+			clientPrincipalName = #clientPrincipalName#
+		</isNotEmpty>
+		<isNotNull property="constructPlace" prepend="AND">
+			constructPlace = #constructPlace#
+		</isNotNull>
+		<isNotNull property="orderDate" prepend="AND">
+			orderDate = #orderDate#
+		</isNotNull>
+		<isNotNull property="requiredCompletionDate" prepend="AND">
+			requiredCompletionDate = #requiredCompletionDate#
+		</isNotNull>
+		<isNotNull property="canDelayDay" prepend="AND">
+			canDelayDay = #canDelayDay#
+		</isNotNull>
+	</sql>
+
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<insert id="Project.insert" parameterClass="Project">
+		INSERT INTO Project
+		(
+		projectId, projectName, companyPrincipalId, companyPrincipalName,
+		clientId, clientName, clientPrincipalId, clientPrincipalName,
+		constructPlace, orderId, orderDate, requiredCompletionDate,
+		canDelayDay, orderContent,
+		createdTimestamp, creatorId, creatorName, lastModifiedTimestamp,
+		lastModifierId, lastModifierName, quoteId
+		)
+		VALUES
+		(
+		#projectId#, #projectName#, #companyPrincipalId#, #companyPrincipalName#,
+		#clientId#, #clientName#, #clientPrincipalId#, #clientPrincipalName#,
+		#constructPlace#, #orderId#, #orderDate#, #requiredCompletionDate#,
+		#canDelayDay#, #orderContent#,
+		#createdTimestamp#, #creatorId#, #creatorName#, #lastModifiedTimestamp#,
+		#lastModifierId#, #lastModifierName#, #quoteId#
+		)
+	</insert>
+
+	<select id="Project.select" parameterClass="long" resultClass="Project">
+		SELECT * FROM Project
+		<isNotNull property="value" prepend="WHERE">
+			projectId = #value#
+		</isNotNull>
+	</select>
+
+	<select id="Project.selectProjects" parameterClass="hashMap"
+		resultClass="Project">
+		SELECT * FROM Project p left join BuildingProject bp on p.projectId =
+		bp.projectId
+		<include refid="whereSql" />
+		$orderString$
+		<include refid="pageSql" />
+	</select>
+
+	<select id="Project.selectProjects.Count" parameterClass="hashMap"
+		resultClass="int">
+		SELECT COUNT(1) FROM Project p left join BuildingProject bp on
+		p.projectId = bp.projectId
+		<include refid="whereSql" />
+	</select>
+
+	<select id="Project.listProjectsSimple" parameterClass="hashMap"
+		resultClass="Project">
+		SELECT p.projectId projectId, p.projectName projectName, p.clientId
+		clientId, p.clientName
+		FROM Project p LEFT JOIN BuildingProject bp
+		ON p.projectId = bp.projectId
+		WHERE bp.status &amp; #status# = #status#
+		and bp.status &amp; 128 != 128
+		<isNotNull property="clientId" prepend="and">
+			p.clientId =
+			#clientId#
+		</isNotNull>
+	</select>
+
+	<sql id="pageQueryWhere">
+		<dynamic prepend=" WHERE ">
+			<isNotNull property="projectId" prepend="AND">
+				projectId LIKE
+				'%$projectId$%'
+			</isNotNull>
+			<isNotNull property="projectIdStart" prepend="AND">
+				projectId
+				&gt;= #projectIdStart#
+			</isNotNull>
+			<isNotNull property="projectIdEnd" prepend="AND">
+				projectId &lt;=
+				#projectIdEnd#
+			</isNotNull>
+			<isNotNull property="companyPrincipalName" prepend="AND">
+				companyPrincipalName LIKE '%$companyPrincipalName$%'
+			</isNotNull>
+			<isNotNull property="clientName" prepend="AND">
+				clientName LIKE
+				'%$clientName$%'
+			</isNotNull>
+			<isNotNull property="clientPrincipalName" prepend="AND">
+				clientPrincipalName LIKE '%$clientPrincipalName$%'
+			</isNotNull>
+			<isNotNull property="constructPlace" prepend="AND">
+				constructPlace LIKE '%$constructPlace$%'
+			</isNotNull>
+			<isNotNull property="quoteId" prepend="AND">
+				quoteId LIKE
+				'%$quoteId$%'
+			</isNotNull>
+			<isNotNull property="orderId" prepend="AND">
+				orderId LIKE
+				'%$orderId$%'
+			</isNotNull>
+			<isNotNull property="orderDate" prepend="AND">
+				orderDate LIKE
+				'%$orderDate$%'
+			</isNotNull>
+			<isNotNull property="requiredCompletionDate" prepend="AND">
+				requiredCompletionDate LIKE '%$requiredCompletionDate$%'
+			</isNotNull>
+			<isNotNull property="canDelayDay" prepend="AND">
+				canDelayDay =
+				#canDelayDay#
+			</isNotNull>
+			<isNotNull property="orderContent" prepend="AND">
+				orderContent
+				LIKE '%$orderContent$%'
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="ProjectQuery.pageQuery" parameterClass="ProjectQuery"
+		resultClass="Project">
+		SELECT * FROM Project
+		<include refid="pageQueryWhere" />
+		$orderString$
+		<include refid="pageSql" />
+	</select>
+
+	<select id="ProjectQuery.pageQuery.Count" parameterClass="ProjectQuery"
+		resultClass="int">
+		SELECT COUNT(1) FROM Project
+		<include refid="pageQueryWhere" />
+	</select>
+
+	<select id="Project.pageQueryBasic.pageQuery" parameterClass="ProjectQuery"
+		resultClass="Project">
+		SELECT
+		projectId, projectName, companyPrincipalId, companyPrincipalName,
+		clientId, clientName, clientPrincipalId, clientPrincipalName
+		FROM Project
+		<include refid="pageQueryWhere" />
+		$orderString$
+		<include refid="pageSql" />
+	</select>
+
+	<select id="Project.pageQueryBasic.pageQuery.Count"
+		parameterClass="ProjectQuery" resultClass="int">
+		SELECT COUNT(1) FROM Project
+		<include refid="pageQueryWhere" />
+	</select>
+
+	<update id="Project.update" parameterClass="Project">
+		UPDATE Project SET
+		lastModifierName = #lastModifierName#,
+		lastModifierId =
+		#lastModifierId#,
+		lastModifiedTimestamp = #lastModifiedTimestamp#,
+		companyPrincipalId = #companyPrincipalId#,
+		companyPrincipalName = #companyPrincipalName#,
+		projectName = #projectName#,
+		clientId = #clientId#,
+		clientName = #clientName#,
+		clientPrincipalId = #clientPrincipalId#,
+		clientPrincipalName = #clientPrincipalName#,
+		constructPlace = #constructPlace#,
+		orderDate = #orderDate#,
+		orderId = #orderId#,
+		quoteId = #quoteId#,
+		orderContent = #orderContent#,
+		requiredCompletionDate = #requiredCompletionDate#,
+		canDelayDay = #canDelayDay#
+		WHERE projectId = #projectId#
+	</update>
+
+</sqlMap>

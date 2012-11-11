@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.google.common.collect.Maps;
@@ -23,6 +25,9 @@ import com.jyams.util.search.Query;
  */
 @SuppressWarnings("unchecked")
 public class IBatisGenericDao extends SqlMapClientDaoSupport {
+
+    private static Logger logger = LoggerFactory
+            .getLogger(IBatisGenericDao.class);
 
     public static final String POSTFIX_INSERT = ".insert";
 
@@ -50,7 +55,7 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      */
     public <T> T get(Class<T> entityClass, Serializable id) {
         T o = (T) getSqlMapClientTemplate().queryForObject(
-                entityClass.getName() + POSTFIX_SELECT, id);
+                entityClass.getSimpleName() + POSTFIX_SELECT, id);
         return o;
     }
 
@@ -61,7 +66,7 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      */
     public <T> List<T> getAll(Class<T> entityClass) {
         return getSqlMapClientTemplate().queryForList(
-                entityClass.getName() + POSTFIX_SELECT, null);
+                entityClass.getSimpleName() + POSTFIX_SELECT, null);
     }
 
     /**
@@ -71,7 +76,7 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      */
     public void insert(Object o) {
         getSqlMapClientTemplate().insert(
-                o.getClass().getName() + POSTFIX_INSERT, o);
+                o.getClass().getSimpleName() + POSTFIX_INSERT, o);
     }
 
     /**
@@ -81,7 +86,7 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      */
     public int update(Object o) {
         return getSqlMapClientTemplate().update(
-                o.getClass().getName() + POSTFIX_UPDATE, o);
+                o.getClass().getSimpleName() + POSTFIX_UPDATE, o);
     }
 
     /**
@@ -91,7 +96,7 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      */
     public int remove(Object o) {
         return getSqlMapClientTemplate().delete(
-                o.getClass().getName() + POSTFIX_DELETE, o);
+                o.getClass().getSimpleName() + POSTFIX_DELETE, o);
     }
 
     /**
@@ -101,7 +106,7 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      */
     public <T> int removeById(Class<T> entityClass, Serializable id) {
         return getSqlMapClientTemplate().delete(
-                entityClass.getName() + POSTFIX_DELETE_PRIAMARYKEY, id);
+                entityClass.getSimpleName() + POSTFIX_DELETE_PRIAMARYKEY, id);
     }
 
     /**
@@ -112,10 +117,11 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      * @throws
      */
     public <T> List<T> find(Class<T> entityClass, Map<String, Object> map) {
-        if (map == null)
+        if (map == null) {
             map = Maps.newHashMap();
+        }
         return this.getSqlMapClientTemplate().queryForList(
-                entityClass.getName() + POSTFIX_SELECTMAP, map);
+                entityClass.getSimpleName() + POSTFIX_SELECTMAP, map);
     }
 
     /**
@@ -127,12 +133,13 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      */
     public <T> List<T> find(Class<T> entityClass, String sql) {
         Assert.hasText(sql);
-        if (StringUtils.isEmpty(sql))
+        if (StringUtils.isEmpty(sql)) {
             return this.getSqlMapClientTemplate().queryForList(
-                    entityClass.getName() + POSTFIX_SELECT, null);
-        else
+                    entityClass.getSimpleName() + POSTFIX_SELECT, null);
+        } else {
             return this.getSqlMapClientTemplate().queryForList(
-                    entityClass.getName() + POSTFIX_SELECTSQL, sql);
+                    entityClass.getSimpleName() + POSTFIX_SELECTSQL, sql);
+        }
     }
 
     /**
@@ -236,7 +243,7 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
      * @return
      */
     public <T> DataPage<T> pageQuery(Query<T> query) {
-        return pageQuery(query.getClass().getName(), query);
+        return pageQuery(query.getClass().getSimpleName(), query);
     }
 
     public <T> DataPage<T> pageQuery(String statementId, Query<T> query) {

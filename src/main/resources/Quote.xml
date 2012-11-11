@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Quote">
+	<typeAlias alias="Quote" type="com.jyams.project.model.Quote"/>
+	<typeAlias alias="QuoteItem" type="com.jyams.project.model.QuoteItem"/>
+
+	<sql id="whereSql">
+		<dynamic prepend="WHERE">
+			<isNotNull property="quoteId" prepend="AND">
+				q.quoteId = #quoteId#
+			</isNotNull>
+			<isNotNull property="version" prepend="AND">
+				q.version = #version#
+			</isNotNull>
+			<isNotNull property="clientName" prepend="AND">
+				q.clientName = #clientName#
+			</isNotNull>
+			<isNotNull property="quoterName" prepend="AND">
+				q.quoterName = #quoterName#
+			</isNotNull>
+			<isNotNull property="attnName" prepend="AND">
+				q.attnName = #attnName#
+			</isNotNull>
+			<isNotNull property="startTimestamp" prepend="AND">
+				q.createdTimestamp &gt;= #startTimestamp#
+			</isNotNull>
+			<isNotNull property="endTimestamp" prepend="AND">
+				q.createdTimestamp &lt;= #endTimestamp#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<resultMap class="QuoteItem" id="QuoteItemMap">
+		<result property="itemId" column="itemId"/>
+		<result property="quoteId" column="qi.quoteId"/>
+		<result property="version" column="qi.version"/>
+		<result property="description" column="description"/>
+		<result property="count" column="count"/>
+		<result property="unit" column="unit"/>
+		<result property="unitPrice" column="unitPrice"/>
+	</resultMap>
+	
+	<resultMap class="Quote" id="QuoteMap" groupBy="quoteId, version">
+		<result property="quoteId" column="q.quoteId"/>
+		<result property="version" column="q.version"/>
+		<result property="clientId" column="clientId"/>
+		<result property="clientName" column="clientName"/>
+		<result property="subject" column="subject"/>
+		<result property="quoterId" column="quoterId"/>
+		<result property="quoterName" column="quoterName"/>
+		<result property="attnName" column="attnName"/>
+		<result property="ccName" column="ccName"/>
+		<result property="creatorId" column="creatorId"/>
+		<result property="creatorName" column="creatorName"/>
+		<result property="createdTimestamp" column="createdTimestamp"/>
+		<result property="totalPrice" column="totalPrice"/>
+		<result property="quoteItems" resultMap="Quote.QuoteItemMap"/>
+	</resultMap>
+	
+	<insert id="com.jyams.project.model.Quote.insert" parameterClass="Quote">
+		INSERT INTO Quote
+		(
+			quoteId, version, subject, quoterId, quoterName,
+			clientId, clientName, attnName, 
+			ccName, totalPrice,
+			createdTimestamp, creatorId, creatorName
+		) VALUES (
+			#quoteId#, #version#, #subject#, #quoterId#, #quoterName#,
+			#clientId#, #clientName#, #attnName#, 
+			#ccName#, #totalPrice#, 
+			#createdTimestamp#, #creatorId#, #creatorName#
+		)
+	</insert>
+	
+	<select id="com.jyams.project.model.Quote.select" 
+		parameterClass="long" resultClass="Quote">
+		SELECT * FROM Quote 
+		<isNotNull property="value" prepend="WHERE">
+			projectId = #value#
+		</isNotNull>
+	</select>
+	
+	<select id="com.jyams.project.model.Quote.selectByMap" 
+		parameterClass="hashMap" resultMap="QuoteMap">
+		SELECT * FROM Quote q 
+		LEFT JOIN QuoteItem qi
+		ON q.quoteId = qi.quoteId AND q.version = qi.version
+		<include refid="whereSql"/>
+	</select>
+
+	<select id="com.jyams.project.dao.QuoteDao.listQuotes" 
+		parameterClass="hashMap" resultClass="Quote">
+		SELECT * FROM Quote q
+		<include refid="whereSql"/>
+		<include refid="pageSql"/>
+	</select>
+		
+	<select id="com.jyams.project.dao.QuoteDao.listQuotes.Count" 
+		parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1) FROM Quote q
+		<include refid="whereSql"/>
+		<include refid="pageSql"/>
+	</select>	
+	
+	<select id="com.jyams.project.dao.QuoteDao.getMaxVersion" 
+		parameterClass="long" resultClass="int">
+		SELECT MAX(version) FROM Quote
+		WHERE quoteId = #value#
+	</select>
+	
+	<select id="com.jyams.project.dao.QuoteDao.listIds" resultClass="Quote">
+		SELECT quoteId, version FROM Quote
+	</select>
+
+
+</sqlMap>

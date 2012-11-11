@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
+import com.jyams.secure.manager.impl.UserInfo;
+
 /**
  * SpringSecurity的工具类.
  * 
@@ -46,6 +48,14 @@ public final class SpringSecurityUtils {
             return authentication.getName();
         }
         return "";
+    }
+
+    /**
+     * 去的当前用户的userId
+     */
+    public static long getCurrentUserId() {
+        UserInfo userInfo = getCurrentUser();
+        return userInfo.getUserId();
     }
 
     /**

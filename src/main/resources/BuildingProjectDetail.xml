@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BuildingProjectDetail">
+	<typeAlias alias="BuildingProjectDetail"
+		type="com.jyams.project.model.BuildingProjectDetail" />
+
+	<sql id="selectByMapSql">
+		<dynamic prepend="WHERE">
+			<isNotNull property="projectId" prepend="AND">
+				projectId = #projectId#
+			</isNotNull>
+			<isNotNull property="referId" prepend="AND">
+				referId = #referId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<insert id="com.jyams.project.model.BuildingProjectDetail.insert"
+		parameterClass="BuildingProjectDetail">
+		INSERT INTO BuildingProjectDetail
+		(
+			detailId, projectId, personId, personName,
+			creatorId, creatorName, createdTimestamp, 
+			costType, cost, referId, description
+		) VALUES (
+			#detailId#, #projectId#, #personId#, #personName#,
+			#creatorId#, #creatorName#, #createdTimestamp#, 
+			#costType#, #cost#, #referId#, #description#
+		)
+	</insert>
+
+	<select id="com.jyams.project.model.BuildingProjectDetail.select" 
+		parameterClass="long" resultClass="BuildingProjectDetail">
+		SELECT * FROM BuildingProjectDetail
+		<isNotNull property="detailId" prepend="WHERE">
+			detailId = #detailId#
+		</isNotNull>
+	</select>
+	
+	<select id="com.jyams.project.model.BuildingProjectDetail.selectByMap" 
+		parameterClass="hashMap" resultClass="BuildingProjectDetail">
+		SELECT * FROM BuildingProjectDetail
+		<include refid="selectByMapSql"/>	
+	</select>
+	
+	<delete id="com.jyams.project.dao.BuildingProjectDetailDao.removeByReferIdAndTypes"
+		parameterClass="hashMap">
+		DELETE FROM BuildingProjectDetail 
+		WHERE referId = #referId#
+		<isNotEmpty property="costTypes" prepend=" AND ">
+			costType IN 
+			<iterate property="costTypes" open="(" conjunction="," close=")">
+				#costTypes[]#
+			</iterate>
+		</isNotEmpty>
+	</delete>
+</sqlMap>

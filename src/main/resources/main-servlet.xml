@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
             http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
@@ -15,8 +17,21 @@
 	<context:annotation-config />
 	<context:component-scan base-package="com.jyams" />
 
-	<context:property-placeholder location="classpath:jdbc.properties"
-		system-properties-mode="OVERRIDE" />
+	<!-- 定义易受环境影响的变量 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		p:ignoreResourceNotFound="true">
+		<property name="locations">
+			<list>
+				<!-- 标准配置 -->
+				<value>classpath:jdbc.properties</value>
+				<!-- 本机测试环境 -->
+				<value>file:/home/zhanglong/workspace/jdbc.properties</value>
+				<!-- 服务器生产环境配置 -->
+				<value>file:/jyams/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
 
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
 		destroy-method="close">
@@ -24,20 +39,36 @@
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
-		<property name="minConnectionsPerPartition" value="${jdbc.minConnectionsPerPartition}" />
-		<property name="maxConnectionsPerPartition" value="${jdbc.maxConnectionsPerPartition}" />
-		<property name="partitionCount" value="${jdbc.partitionCount}" />
-		<property name="maxConnectionAgeInSeconds" value="${jdbc.maxConnectionAgeInSeconds}" />
-		<property name="idleMaxAgeInSeconds" value="${jdbc.idleMaxAgeInSeconds}" />
-		<property name="connectionTimeoutInMs" value="${jdbc.connectionTimeoutInMs}" />
-		<property name="poolName" value="jyams" />
+	</bean>
+
+	<!-- iBATIS sqlMapClient config -->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:sql-map-Config.xml</value>
+		</property>
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
+	<!-- 事务管理器配置，单数据源事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 </beans>

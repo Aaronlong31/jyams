@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/936/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr/client
+END
+listClients.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/954/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr/client/listClients.jsp
+END
+viewClient.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/954/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr/client/viewClient.jsp
+END
+inputClient.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/954/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr/client/inputClient.jsp
+END

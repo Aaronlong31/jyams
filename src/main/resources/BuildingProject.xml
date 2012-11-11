@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BuildingProject">
+	<typeAlias alias="BuildingProject" type="com.jyams.project.model.BuildingProject"/>
+	<typeAlias alias="Project" type="com.jyams.project.model.Project"/>
+	<typeAlias alias="BuildingProjectQuery" type="com.jyams.project.query.BuildingProjectQuery"/>
+	
+	<resultMap class="Project" id="projectResultMap">
+		<result property="projectId" column="p.projectId"/>
+		<result property="projectName" column="p.projectName"/>
+		<result property="companyPrincipalId" column="p.companyPrincipalId"/>
+		<result property="companyPrincipalName" column="p.companyPrincipalName"/>
+		<result property="clientId" column="p.clientId"/>
+		<result property="clientName" column="p.clientName"/>
+		<result property="clientPrincipalId" column="p.clientPrincipalId"/>
+		<result property="clientPrincipalName" column="p.clientPrincipalName"/>
+		<result property="constructPlace" column="p.constructPlace"/>
+		<result property="orderId" column="p.orderId"/>
+		<result property="quoteId" column="p.quoteId"/>
+		<result property="requiredCompletionDate" column="p.requiredCompletionDate"/>
+		<result property="canDelayDay" column="p.canDelayDay"/>
+		<result property="orderContent" column="p.orderContent"/>
+		<result property="createdTimestamp" column="p.createdTimestamp"/>
+		<result property="creatorId" column="p.creatorId"/>
+		<result property="creatorName" column="p.creatorName"/>
+		<result property="lastModifiedTimestamp" column="p.lastModifiedTimestamp"/>
+		<result property="lastModifierId" column="p.lastModifierId"/>
+		<result property="lastModifierName" column="p.lastModifierName"/>
+	</resultMap>
+	
+	<resultMap class="BuildingProject" id="BuildingProjectResultMap">
+		<result property="projectId" column="bp.projectId"/>
+		<result property="estimateCost" column="bp.estimateCost"/>
+		<result property="actualCost" column="bp.actualCost"/>
+		<result property="contractPrice" column="bp.contractPrice"/>
+		<result property="actualCost" column="bp.actualCost"/>
+		<result property="paidMoney" column="bp.paidMoney"/>
+		<result property="unpaidMoney" column="bp.unpaidMoney"/>
+		<result property="marginControl" column="bp.marginControl"/>
+		<result property="invoiceTimestamp" column="bp.invoiceTimestamp"/>
+		<result property="invoicerId" column="bp.invoicerId"/>
+		<result property="invoicerName" column="bp.invoicerName"/>
+		<result property="completionPersonId" column="bp.completionPersonId"/>
+		<result property="completionPersonName" column="bp.completionPersonName"/>
+		<result property="completionTimestamp" column="bp.completionTimestamp"/>
+		<result property="payeeId" column="bp.payeeId"/>
+		<result property="payeeName" column="bp.payeeName"/>
+		<result property="collectionTimestamp" column="bp.collectionTimestamp"/>
+		<result property="lastModifierId" column="bp.lastModifierId"/>
+		<result property="lastModifierName" column="bp.lastModifierName"/>
+		<result property="lastModifiedTimestamp" column="bp.lastModifiedTimestamp"/>
+		<result property="status" column="bp.status"/>
+		<result property="project" resultMap="BuildingProject.projectResultMap"/>
+	</resultMap>
+	
+	<sql id="whereSql">
+		<dynamic prepend="WHERE">
+			<isEqual property="hidden" prepend="AND" compareValue="false">
+				(bp.status &amp; 128) != 128
+			</isEqual>
+			<isNotEmpty property="projectId" prepend="AND">
+				p.projectId = #projectId#
+			</isNotEmpty>
+			<isNotEmpty property="companyPrincipalName" prepend="AND">
+				companyPrincipalName = #companyPrincipalName#
+			</isNotEmpty>
+			<isNotEmpty property="clientName" prepend="AND">
+				clientName = #clientName#
+			</isNotEmpty>
+			<isNotEmpty property="clientPrincipalName" prepend="AND">
+				clientPrincipalName = #clientPrincipalName#
+			</isNotEmpty>
+			<isNotNull property="status" prepend="AND">
+				(bp.status &amp; #status#) = #status#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<!-- 插入在建项目 -->
+	<insert id="com.jyams.project.model.BuildingProject.insert" 
+		parameterClass="BuildingProject">
+		INSERT INTO BuildingProject
+		(
+			projectId, estimateCost, actualCost, contractPrice, paidMoney,
+			unpaidMoney, marginControl, completionTimestamp, invoiceTimestamp,
+			invoicerId, invoicerName, completionPersonId, completionPersonName,
+			lastModifierId, lastModifierName, lastModifiedTimestamp, status
+		) VALUES (
+			#projectId#, #estimateCost#, #actualCost#, #contractPrice#, #paidMoney#,
+			#unpaidMoney#, #marginControl#, #completionTimestamp#, #invoiceTimestamp#,
+			#invoicerId#, #invoicerName#, #completionPersonId#, #completionPersonName#,
+			#lastModifierId#, #lastModifierName#, #lastModifiedTimestamp#, #status#
+		)
+	</insert>
+	
+	<!-- 查找在建项目，包含项目 -->
+	<select id="com.jyams.project.model.BuildingProject.select" 
+		parameterClass="long"
+		resultMap="BuildingProjectResultMap">
+		SELECT * FROM BuildingProject bp
+		LEFT JOIN Project p ON bp.projectId = p.projectId
+		<isNotNull property="value" prepend="WHERE">
+			bp.projectId = #value#
+		</isNotNull>	
+	</select>
+	
+	<!-- 查询符合条件的在建项目，包含项目 -->
+	<select id="com.jyams.project.dao.BuildingProjectDao.listBuildingProject" 
+		parameterClass="hashMap" resultMap="BuildingProjectResultMap">
+		SELECT * FROM BuildingProject bp
+		LEFT JOIN Project p ON bp.projectId = p.projectId
+		<include refid="whereSql"/>
+		ORDER BY p.projectId
+		<include refid="pageSql"/>
+	</select>
+	
+	<!-- 查询符合条件的在建项目个数 -->
+	<select id="com.jyams.project.dao.BuildingProjectDao.listBuildingProject.Count" 
+		parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1) FROM BuildingProject bp
+		LEFT JOIN Project p ON bp.projectId = p.projectId
+		<include refid="whereSql"/>
+	</select>
+	
+	<!-- 根据状态获取项目标识 -->
+	<select id="com.jyams.project.dao.BuildingProjectDao.listProjectIds" 
+		parameterClass="Integer" resultClass="string">
+		SELECT projectId FROM BuildingProject
+		<isNotNull property="value" prepend="WHERE">
+			status &amp; #status# = #status#
+		</isNotNull>	
+	</select>
+	
+	<sql id="pageQueryWhere">
+		<dynamic prepend=" WHERE ">
+			<isNotNull property="projectId" prepend="AND">
+				bp.projectId = #projectId#				
+			</isNotNull>
+			<isNotNull property="projectIdStart" prepend="AND">
+				bp.projectId &gt;= #projectIdStart#				
+			</isNotNull>
+			<isNotNull property="projectIdEnd" prepend="AND">
+				bp.projectId &lt;= #projectIdEnd#				
+			</isNotNull>
+			<isNotNull property="projectName" prepend="AND">
+				p.projectName LIKE '%$projectName$%'				
+			</isNotNull>
+			<isNotNull property="companyPrincipalName" prepend="AND">
+				p.companyPrincipalName LIKE '%$companyPrincipalName$%'				
+			</isNotNull>
+			<isNotNull property="clientName" prepend="AND">
+				p.clientName LIKE '%$clientName$%'			
+			</isNotNull>
+			<isNotNull property="clientPrincipalName" prepend="AND">
+				p.clientPrincipalName LIKE '%$clientPrincipalName$%'					
+			</isNotNull>
+			<isNotNull property="constructPlace" prepend="AND">
+				p.constructPlace LIKE '%$constructPlace$%'
+			</isNotNull>
+			<isNotNull property="orderId" prepend="AND">
+				p.orderId LIKE '%$orderId$%'
+			</isNotNull>
+			<isNotEmpty property="includeStatus" prepend=" AND ">
+				bp.status IN 
+				<iterate open="(" conjunction="," close=")" property="includeStatus">
+					#includeStatus[]#
+				</iterate>
+			</isNotEmpty>
+			<isNotEmpty property="excludeStatus" prepend=" AND ">
+				bp.status NOT IN 
+				<iterate open="(" conjunction="," close=")" property="excludeStatus">
+					#excludeStatus[]#
+				</iterate>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<select id="com.jyams.project.manager.BuildingProjectQuery.pageQuery" 
+		parameterClass="BuildingProjectQuery" resultMap="BuildingProjectResultMap">
+		SELECT * FROM BuildingProject bp 
+		LEFT JOIN Project p ON bp.projectId = p.projectId
+		<include refid="pageQueryWhere"/>
+		$orderString$
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.project.manager.BuildingProjectQuery.pageQuery.Count" 
+		parameterClass="BuildingProjectQuery" resultClass="int">
+		SELECT COUNT(1) FROM BuildingProject bp 
+		LEFT JOIN Project p ON bp.projectId = p.projectId
+		<include refid="pageQueryWhere"/>
+	</select>
+	
+	<!-- 修改在建项目 -->
+	<update id="com.jyams.project.model.BuildingProject.update" parameterClass="BuildingProject">
+		UPDATE BuildingProject SET 
+			estimateCost = #estimateCost#,
+			contractPrice = #contractPrice#,
+			paidMoney = #paidMoney#,
+			unpaidMoney = #unpaidMoney#,
+			lastModifiedTimestamp = #lastModifiedTimestamp#, 
+			lastModifierId = #lastModifierId#, 
+			lastModifierName = #lastModifierName#
+		WHERE projectId = #projectId#
+	</update>
+	
+	<!-- 开票 -->
+	<update id="com.jyams.project.dao.BuildingProjectDao.invoice" parameterClass="hashMap">
+		UPDATE BuildingProject SET 
+			invoiceTimestamp = #invoiceTimestamp#,
+			invoicerId = #personId#,
+			invoicerName = #personName#,
+			status = status | 32,
+			lastModifiedTimestamp = #invoiceTimestamp#, 
+			lastModifierId = #personId#, 
+			lastModifierName = #personName#
+		WHERE projectId = #projectId#
+	</update>
+	
+	<!-- 取消开票 -->
+	<update id="com.jyams.project.dao.BuildingProjectDao.clearInvoice" parameterClass="hashMap">
+		UPDATE BuildingProject SET 
+			invoiceTimestamp = null,
+			invoicerId = null,
+			invoicerName = null,
+			status = status &amp; ~32,
+			lastModifiedTimestamp = #invoiceTimestamp#, 
+			lastModifierId = #personId#, 
+			lastModifierName = #personName#
+		WHERE projectId = #projectId#
+	</update>
+	
+	<!-- 收款 -->
+	<update id="com.jyams.project.dao.BuildingProjectDao.collection" parameterClass="hashMap">
+		UPDATE BuildingProject SET
+			status = status | 64,
+			payeeId = #personId#,
+			payeeName = #personName#,
+			collectionTimestamp = #timestamp#,
+			lastModifiedTimestamp = #timestamp#,
+			lastModifierId = #personId#, 
+			lastModifierName = #personName#
+		WHERE projectId = #projectId#
+	</update>
+	
+	<!-- 取消收款 -->
+	<update id="com.jyams.project.dao.BuildingProjectDao.clearCollection" parameterClass="hashMap">
+		UPDATE BuildingProject SET
+			status = status &amp; ~64,
+			payeeId = null,
+			payeeName = null,
+			collectionTimestamp = null,
+			lastModifiedTimestamp = #timestamp#,
+			lastModifierId = #personId#, 
+			lastModifierName = #personName#
+		WHERE projectId = #projectId#
+	</update>
+	
+	<!-- 完工 -->
+	<update id="com.jyams.project.dao.BuildingProjectDao.completeProject" parameterClass="hashMap">
+		UPDATE BuildingProject SET 
+			completionTimestamp = #completionTimestamp#,
+			completionPersonId = #personId#,
+			completionPersonName = #personName#,
+			status = (status &amp; 0xfffe) | 0x10,
+			lastModifiedTimestamp = #completionTimestamp#, 
+			lastModifierId = #personId#, 
+			lastModifierName = #personName#
+		WHERE projectId = #projectId#
+	</update>
+	
+	<!-- 增加实际成本和修改状态 -->
+	<update id="com.jyams.project.dao.BuildingProjectDao.updateAcualCostAndStatus" 
+		parameterClass="hashMap">
+		UPDATE BuildingProject
+		SET actualCost = #actualCost#,
+			status = #status#
+		WHERE projectId = #projectId#
+	</update>
+
+	<!-- 修改状态 -->		
+	<update id="com.jyams.project.dao.BuildingProjectDao.updateStatus" parameterClass="hashMap">
+		UPDATE BuildingProject
+		SET 
+		<isEqual property="changeType" compareValue="ADD">
+			status = status | #status#,
+		</isEqual>
+		<isEqual property="changeType" compareValue="REMOVE">
+			status = status &amp; ~#status#,
+		</isEqual>
+		<isEqual property="changeType" compareValue="REPLACE">
+			status = #status#,
+		</isEqual>
+		lastModifiedTimestamp = #timestamp#, 
+		lastModifierId = #personId#, 
+		lastModifierName = #personName#
+		WHERE projectId = #projectId#
+	</update>
+	
+	<!-- 检查延迟项目 -->
+	<update id="com.jyams.project.dao.BuildingProjectDao.checkDelayProject">
+		UPDATE BuildingProject bp SET status = status | 2 
+		WHERE (status &amp; 1 = 1) 
+		AND CURRENT_DATE > (
+			SELECT requiredCompletionDate - canDelayDay 
+			FROM Project p WHERE  p.projectId = bp.projectId);
+	</update>
+</sqlMap>

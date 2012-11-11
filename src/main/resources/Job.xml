@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Job">
+	<typeAlias alias="Job" type="com.jyams.hr.model.Job"/>
+	
+	<select id="com.jyams.hr.model.Job.select" parameterClass="long" resultClass="Job">
+		SELECT * FROM Job
+		<isNotNull property="value" prepend="WHERE">
+			jobId = #value#
+		</isNotNull>
+	</select>
+	
+	<select id="com.jyams.hr.model.Job.selectByMap" 
+		parameterClass="hashMap" resultClass="Job">
+		SELECT j.* FROM Job j
+		LEFT JOIN Person_Job pj ON j.jobId = pj.jobId
+		<dynamic prepend="WHERE">
+			<isNotNull property="personId" prepend="AND">
+				pj.personId = #personId#
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<!-- 
+	<insert id="com.jyams.hr.model.Job.insert" parameterClass="Job">
+		INSERT INTO Job 
+		(jobId, jobName) 
+		VALUES 
+		(#jobId#, #jobName#)
+	</insert>
+	
+	<update id="com.jyams.hr.model.Job.update" parameterClass="Job">
+		UPDATE Job SET jobName = #jobName# WHERE jobId = #jobId#
+	</update>
+	
+	<delete id="com.jyams.hr.model.Job.deleteByPrimaryKey" parameterClass="long">
+		DELETE FROM Job WHERE jobId = #jobId#
+	</delete>
+	 -->
+</sqlMap>

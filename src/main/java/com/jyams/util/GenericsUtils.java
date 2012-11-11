@@ -3,8 +3,8 @@ package com.jyams.util;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Generics的util类.
@@ -12,7 +12,8 @@ import org.apache.commons.logging.LogFactory;
  * @author zhanglong
  */
 public class GenericsUtils {
-    private static final Log log = LogFactory.getLog(GenericsUtils.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(GenericsUtils.class);
 
     private GenericsUtils() {
     }
@@ -46,7 +47,7 @@ public class GenericsUtils {
         Type genType = clazz.getGenericSuperclass();
         /* 判断是否继承自此类 */
         if (!(genType instanceof ParameterizedType)) {
-            log.warn(clazz.getSimpleName()
+            logger.warn(clazz.getSimpleName()
                     + "'s superclass not ParameterizedType");
             return Object.class;
         }
@@ -54,13 +55,14 @@ public class GenericsUtils {
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
         /* 判断传的参数：index 是否合法 */
         if (index >= params.length || index < 0) {
-            log.warn("Index: " + index + ", Size of " + clazz.getSimpleName()
-                    + "'s Parameterized Type: " + params.length);
+            logger.warn("Index: " + index + ", Size of "
+                    + clazz.getSimpleName() + "'s Parameterized Type: "
+                    + params.length);
             return Object.class;
         }
         /* 判断是否是真正的类型，因为可能是 泛化类型 T */
         if (!(params[index] instanceof Class<?>)) {
-            log.warn(clazz.getSimpleName()
+            logger.warn(clazz.getSimpleName()
                     + " not set the actual class on superclass generic parameter");
             return Object.class;
         }

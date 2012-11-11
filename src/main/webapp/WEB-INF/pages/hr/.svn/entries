@@ -1,0 +1,77 @@
+10
+
+dir
+943
+https://jyams.googlecode.com/svn/trunk/code/jyams-web/WebContent/WEB-INF/pages/hr
+https://jyams.googlecode.com/svn
+
+
+
+2011-05-22T14:04:06.999968Z
+936
+zhanglong
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+4e5effbd-1d45-7f98-36f0-952f126f26dc
+
+client
+dir
+
+clientPrincipal
+dir
+
+department
+dir
+
+inputTripleDay.jsp
+file
+954
+
+
+
+2011-10-15T15:36:52.250000Z
+22c22c4113fce25a148734967cff6b5b
+2011-10-16T17:39:44.223475Z
+954
+Aaron198809@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3715
+
+person
+dir
+
+salary
+dir
+

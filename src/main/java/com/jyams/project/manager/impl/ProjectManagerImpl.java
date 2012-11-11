@@ -129,6 +129,16 @@ public class ProjectManagerImpl implements ProjectManager {
         return project;
     }
 
+    @Override
+    public DataPage<Project> listProject(ProjectQuery projectQuery) {
+        return projectDao.pageQuery(projectQuery);
+    }
+
+    @Override
+    public DataPage<Project> listBasicProject(ProjectQuery projectQuery) {
+        return projectDao.pageQueryBasic(projectQuery);
+    }
+
     static String getOrderBySql(Integer order) {
         StringBuilder orderBySql = new StringBuilder(" ORDER BY ");
         String orderColumn = "";

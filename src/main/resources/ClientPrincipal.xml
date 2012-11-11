@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ClientPrincipal">
+
+	<typeAlias alias="ClientPrincipal" type="com.jyams.hr.model.ClientPrincipal" />
+
+	<sql id="whereSql">
+		<dynamic prepend="WHERE">
+			<isNotNull property="clientPrincipalId" prepend="AND">
+				clientPrincipalId = #clientPrincipalId#
+			</isNotNull>
+			<isNotEmpty property="name" prepend="AND">
+				name = #name#
+			</isNotEmpty>
+			<isNotEmpty property="nameLike" prepend="AND">
+				name LIKE '%$nameLike$%'
+			</isNotEmpty>
+			<isNotNull property="clientId" prepend="AND">
+				clientId = #clientId#
+			</isNotNull>
+			<isNotEmpty property="phone" prepend="AND">
+				phone = #phone#
+			</isNotEmpty>
+			<isNotNull property="priority" prepend="AND">
+				priority = #priority#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<insert id="com.jyams.hr.model.ClientPrincipal.insert" 
+		parameterClass="ClientPrincipal">
+		INSERT INTO ClientPrincipal
+		(
+			clientPrincipalId, name, clientId,
+			phone, priority
+		) VALUES (
+			#clientPrincipalId#, #name#, #clientId#,
+			#phone#, #priority#
+		)
+	</insert>
+	
+	<select id="com.jyams.hr.model.ClientPrincipal.select" 
+		parameterClass="long" resultClass="ClientPrincipal">
+		SELECT * FROM 	ClientPrincipal
+		<isNotNull property="value" prepend="WHERE">
+			clientId = #value#
+		</isNotNull>
+	</select>
+	
+	<select id="com.jyams.hr.model.ClientPrincipal.selectByMap" 
+		parameterClass="hashMap" resultClass="ClientPrincipal">
+		SELECT * FROM ClientPrincipal
+		<include refid="whereSql"/>
+		ORDER BY priority DESC 
+	</select>
+	
+	<select id="com.jyams.hr.dao.ClientPrincipalDao.listClientPrincipals"
+		parameterClass="hashMap" resultClass="ClientPrincipal">
+		SELECT * FROM ClientPrincipal
+		<include refid="whereSql"/>
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.hr.dao.ClientPrincipalDao.listClientPrincipals.Count"
+		parameterClass="hashMap" resultClass="int">
+		SELECT COUNT(1) FROM ClientPrincipal
+		<include refid="whereSql"/>
+	</select>
+	
+	<update id="com.jyams.hr.model.ClientPrincipal.update" 
+		parameterClass="ClientPrincipal">
+		UPDATE ClientPrincipal SET
+				name = #name#,
+				phone = #phone#,
+				priority = #priority#
+		WHERE clientPrincipalId = #clientPrincipalId#
+	</update>
+	
+	<update id="com.jyams.hr.dao.ClientPrincipalDao.addPriority" 
+		parameterClass="long">
+		UPDATE ClientPrincipal SET priority = priority + 1 
+		WHERE clientPrincipalId = #value#
+	</update>
+
+</sqlMap>

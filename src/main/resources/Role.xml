@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Role">
+	<typeAlias alias="Role" type="com.jyams.secure.model.Role"/>
+	
+	<select id="com.jyams.secure.model.Role.select" 
+		parameterClass="long" resultClass="Role">
+		SELECT * FROM Role
+		<isNotNull property="value" prepend="WHERE">
+			roleId = #value#
+		</isNotNull>	
+	</select>
+	
+	<select id="com.jyams.secure.model.Role.selectByMap" 
+		parameterClass="hashMap" resultClass="Role">
+		SELECT r.* FROM Role r
+		LEFT JOIN User_Role ur ON r.roleId = ur.roleId
+		<dynamic prepend="WHERE">
+			<isNotNull property="userId" prepend="AND">
+				ur.userId = #userId#
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+</sqlMap>

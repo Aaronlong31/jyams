@@ -104,6 +104,9 @@ public interface ProjectManager {
      * @return
      */
     List<Project> listProjectsSimple(int status, Long clientId);
-    /*-------------------------------派工信息管理--------------------------------*/
+
+    DataPage<Project> listProject(ProjectQuery projectQuery);
+
+    DataPage<Project> listBasicProject(ProjectQuery projectQuery);
 
 }

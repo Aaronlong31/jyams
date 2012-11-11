@@ -17,6 +17,7 @@ public class ProjectQuery extends Query<Project> {
     private Long projectIdStart;
     private Long projectIdEnd;
     private String projectName;
+    private Long companyPrincipalId;
     private String companyPrincipalName;
     private String clientName;
     private String clientPrincipalName;
@@ -162,6 +163,14 @@ public class ProjectQuery extends Query<Project> {
 
     public void setOrderContent(String orderContent) {
         this.orderContent = orderContent;
+    }
+
+    public Long getCompanyPrincipalId() {
+        return companyPrincipalId;
+    }
+
+    public void setCompanyPrincipalId(Long companyPrincipalId) {
+        this.companyPrincipalId = companyPrincipalId;
     }
 
 }

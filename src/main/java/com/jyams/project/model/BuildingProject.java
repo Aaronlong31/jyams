@@ -39,18 +39,23 @@ public class BuildingProject {
     private float paidMoney; // 已付货款
     private float unpaidMoney; // 未付货款
     private int marginControl; // 利润率控制
+
     private Long invoiceTimestamp; // 开票时间
     private Long invoicerId; // 开票人标识
     private String invoicerName; // 开票人姓名
+
     private Long completionTimestamp; // 完工时间
     private Long completionPersonId; // 完工人标识
     private String completionPersonName; // 完工人姓名
+
     private Long payeeId; // 收款人标识
     private String payeeName; // 收款人姓名
     private Long collectionTimestamp; // 收款时间戳
+
     private Long lastModifierId; // 最后修改人标识
     private String lastModifierName; // 最后修改人姓名
     private Long lastModifiedTimestamp; // 最后修改时戳
+
     private short status; // 状态
 
     private Project project; // 项目
@@ -431,7 +436,7 @@ public class BuildingProject {
 
     public float getCostFromDetail() {
         float totalCost = 0.0F;
-        for (BuildingProjectDetail detail : this.BuildingProjectDetails) {
+        for (BuildingProjectDetail detail : BuildingProjectDetails) {
             totalCost += detail.getCost();
         }
         return totalCost;

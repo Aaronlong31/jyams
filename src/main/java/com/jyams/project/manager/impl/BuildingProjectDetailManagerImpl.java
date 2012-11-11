@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
 import com.jyams.exception.BusinessException;
@@ -23,6 +24,7 @@ import com.jyams.util.IdUtil;
  * 
  *         Nov 8, 2012 10:18:26 PM
  */
+@Service
 public class BuildingProjectDetailManagerImpl implements
         BuildingProjectDetailManager {
 

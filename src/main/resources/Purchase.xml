@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Purchase">
+	<typeAlias alias="Purchase" type="com.jyams.purchase.model.Purchase"/>
+	<typeAlias alias="PurchaseItem" type="com.jyams.purchase.model.PurchaseItem"/>
+	<typeAlias alias="PurchaseQuery" type="com.jyams.purchase.query.PurchaseQuery"/>
+	
+	<resultMap class="Purchase" id="PurchaseMap" groupBy="purchaseId">
+		<result property="purchaseId" column="p.purchaseId"/>
+		<result property="purchaseNo" column="p.purchaseNo"/>
+		<result property="version" column="p.version"/>
+		<result property="status" column="p.status"/>
+		<result property="type" column="p.type"/>
+		<result property="applyTimestamp" column="p.applyTimestamp"/>
+		<result property="applierId" column="p.applierId"/>
+		<result property="applierName" column="p.applierName"/>
+		<result property="arrivalDate" column="p.arrivalDate"/>
+		<result property="deliveryAddress" column="p.deliveryAddress"/>
+		<result property="consigneeId" column="p.consigneeId"/>
+		<result property="consigneeName" column="p.consigneeName"/>
+		<result property="purchaseTimestamp" column="p.purchaseTimestamp"/>
+		<result property="purchaserId" column="p.purchaserId"/>
+		<result property="purchaserName" column="p.purchaserName"/>
+		<result property="approvalOpinion" column="p.approvalOpinion"/>
+		<result property="approvedTimestamp" column="p.approvedTimestamp"/>
+		<result property="approverId" column="p.approverId"/>
+		<result property="approverName" column="p.approverName"/>
+		<result property="createdTimestamp" column="p.createdTimestamp"/>
+		<result property="creatorId" column="p.creatorId"/>
+		<result property="creatorName" column="p.creatorName"/>
+		<result property="purchaseItems" resultMap="Purchase.PurchaseItemMap"/>
+	</resultMap>
+	
+	<resultMap class="PurchaseItem" id="PurchaseItemMap">
+		<result property="purchaseItemId" column="pi.purchaseItemId"/>
+		<result property="projectId" column="pi.projectId"/>
+		<result property="projectName" column="pi.projectName"/>
+		<result property="purchaseId" column="pi.purchaseId"/>
+		<result property="materialName" column="pi.materialName"/>
+		<result property="specifications" column="pi.specifications"/>
+		<result property="count" column="pi.count"/>
+		<result property="unit" column="pi.unit"/>
+		<result property="paymentType" column="pi.paymentType"/>
+		<result property="unitPrice" column="pi.unitPrice"/>
+		<result property="status" column="pi.status"/>
+		<result property="stock" column="pi.stock"/>
+		<result property="remark" column="pi.remark"/>
+		<result property="supplier" column="pi.supplier"/>
+		<result property="telephone" column="pi.telephone"/>
+		<result property="fax" column="pi.fax"/>
+		<result property="reviewTimestamp" column="pi.reviewTimestamp"/>
+		<result property="reviewerId" column="pi.reviewerId"/>
+		<result property="reviewerName" column="pi.reviewerName"/>
+		<result property="sequence" column="pi.sequence"/>
+		<result property="purchaseTimestamp" column="pi.purchaseTimestamp"/>
+	</resultMap>
+	
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<insert id="com.jyams.purchase.model.Purchase.insert" parameterClass="Purchase">
+		INSERT INTO Purchase
+		(
+			purchaseId, purchaseNo, version, status, 
+			type, applyTimestamp, applierId, applierName,
+			arrivalDate, deliveryAddress, consigneeId,consigneeName,
+			purchaseTimestamp, purchaserId, purchaserName, 
+			approvalOpinion, approvedTimestamp,
+			approverId, approverName, createdTimestamp, creatorId, creatorName
+		)
+		VALUES
+		(
+			#purchaseId#, #purchaseNo#, #version#, #status#, 
+			#type#, #applyTimestamp#, #applierId#, #applierName#, 
+			#arrivalDate#, #deliveryAddress#, #consigneeId#, 
+			#consigneeName#,
+			#purchaseTimestamp#, #purchaserId#, #purchaserName#, 
+			#approvalOpinion#, #approvedTimestamp#, #approverId#, 
+			#approverName#, #createdTimestamp#, #creatorId#, #creatorName#
+		)
+	</insert>
+	
+	<select id="com.jyams.purchase.model.Purchase.select" 
+		parameterClass="long" resultMap="PurchaseMap">
+		SELECT * FROM Purchase p LEFT JOIN PurchaseItem pi
+		ON p.purchaseId = pi.purchaseId
+		WHERE p.purchaseId = #value#
+		ORDER BY pi.sequence
+	</select>
+	
+	<sql id="pageQueryWhere">
+		<dynamic prepend=" WHERE ">
+			<isNotNull property="purchaseId" prepend=" AND ">
+				purchaseId = #purchaseId#
+			</isNotNull>
+			<isNotNull property="purchaseNo" prepend=" AND ">
+				purchaseNo = #purchaseNo#
+			</isNotNull>
+			<isNotNull property="version" prepend=" AND ">
+				version = #version#
+			</isNotNull>
+			<isNotNull property="applyTimestampStart" prepend=" AND ">
+				applyTimestamp &gt;= #applyTimestampStart#
+			</isNotNull>
+			<isNotNull property="applyTimestampEnd" prepend=" AND ">
+				applyTimestamp &lt;= #applyTimestampEnd#
+			</isNotNull>
+			<isNotNull property="arrivalDateStart" prepend=" AND ">
+				arrivalDate &gt;= #arrivalDateStart#
+			</isNotNull>
+			<isNotNull property="arrivalDateEnd" prepend=" AND ">
+				arrivalDate &lt;= #arrivalDateEnd#
+			</isNotNull>
+			<isNotNull property="applierId" prepend=" AND ">
+				applierId = #applierId#
+			</isNotNull>
+			<isNotNull property="applierName" prepend=" AND ">
+				applierName = #applierName#
+			</isNotNull>
+			<isNotNull property="consigneeName" prepend=" AND ">
+				consigneeName = #consigneeName#
+			</isNotNull>
+			<isNotNull property="deliveryAddress" prepend=" AND ">
+				deliveryAddress LIKE "%$deliveryAddress$%"
+			</isNotNull>
+			<isNotNull property="type" prepend=" AND ">
+				type = #type#
+			</isNotNull>
+			<isNotEmpty property="includeStatus" prepend=" AND ">
+				status IN 
+				<iterate open="(" conjunction="," close=")" property="includeStatus">
+					#includeStatus[]#
+				</iterate>
+			</isNotEmpty>
+			<isNotEmpty property="excludeStatus" prepend=" AND ">
+				status NOT IN 
+				<iterate open="(" conjunction="," close=")" property="excludeStatus">
+					#excludeStatus[]#
+				</iterate>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	 
+	 <!-- 分页查询 -->
+	<select id="com.jyams.purchase.manager.PurchaseQuery.pageQuery" 
+		parameterClass="PurchaseQuery" resultClass="Purchase">
+		SELECT * FROM Purchase
+		<include refid="pageQueryWhere"/>
+		$orderString$
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="com.jyams.purchase.manager.PurchaseQuery.pageQuery.Count" 
+		parameterClass="PurchaseQuery" resultClass="int">
+		SELECT COUNT(1) FROM Purchase
+		<include refid="pageQueryWhere"/>
+	</select>
+	
+	<!-- 修改采购单状态 -->
+	<update id="com.jyams.purchase.dao.PurchaseDaoIbatis.modifyStatus" 
+		parameterClass="hashMap">
+		UPDATE Purchase SET status = #status# WHERE purchaseId = #purchaseId#	
+	</update>
+	
+	<!-- 审批采购单 -->
+	<update id="com.jyams.purchase.dao.PurchaseDaoIbatis.approvePurchase" 
+		parameterClass="hashMap">
+		UPDATE Purchase SET 
+			status = #status#,
+			approverId = #approverId#,
+			approverName = #approverName#,
+			approvalOpinion = #approvalOpinion#,
+			approvedTimestamp = #approvedTimestamp#
+		WHERE purchaseId = #purchaseId#
+	</update>
+	
+	<update id="com.jyams.purchase.model.Purchase.update" parameterClass="Purchase">
+		UPDATE Purchase SET
+			arrivalDate = #arrivalDate#,
+			deliveryAddress = #deliveryAddress#,
+			consigneeId = #consigneeId#,
+			consigneeName = #consigneeName#
+		WHERE purchaseId = #purchaseId#	
+	</update>
+	
+	<!-- 提交采购单草稿 -->
+	<update id="com.jyams.purchase.dao.PurchaseDaoIbatis.submitDraft"
+		parameterClass="Purchase">
+		UPDATE Purchase SET
+			purchaseNo = #purchaseNo#,
+			version = #version#,
+			status = #status#,
+			applyTimestamp = #applyTimestamp#
+		WHERE purchaseId = #purchaseId#	
+	</update>
+	
+</sqlMap>
