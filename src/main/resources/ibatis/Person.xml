@@ -33,7 +33,7 @@
 		</dynamic>
 	</sql>
 	
-	<insert id="com.jyams.hr.model.Person.insert" parameterClass="Person">
+	<insert id="Person.insert" parameterClass="Person">
 		INSERT INTO Person
 		(
 			personId, departmentId, departmentName, 
@@ -54,14 +54,14 @@
 		)
 	</insert>
 	
-	<insert id="com.jyams.hr.dao.PersonDao.insertPersonJobs" parameterClass="hashMap">
+	<insert id="PersonDao.insertPersonJobs" parameterClass="hashMap">
 		INSERT INTO Person_Job VALUES 
 		<iterate property="jobs" conjunction=",">
 			(#personId#, #jobs[].jobId#)
 		</iterate>
 	</insert>
 	
-	<select id="com.jyams.hr.model.Person.select" parameterClass="long"
+	<select id="Person.select" parameterClass="long"
 		resultClass="Person">
 		SELECT * FROM Person
 		<isNotNull property="value" prepend="WHERE">
@@ -70,14 +70,14 @@
 		ORDER BY departmentName , personName DESC	
 	</select>
 	
-	<select id="com.jyams.hr.model.Person.selectByMap" parameterClass="hashMap"
+	<select id="Person.selectByMap" parameterClass="hashMap"
 		resultClass="Person">
 		SELECT *
 		FROM Person p 
 		<include refid="whereSql"/>	
 	</select>
 	
-	<select id="com.jyams.hr.dao.PersonDao.selectPersons" parameterClass="hashMap"
+	<select id="PersonDao.selectPersons" parameterClass="hashMap"
 		resultClass="Person">
 		SELECT personId, personName, salaryType, status, mobilePhone, jobType,
 			departmentId, departmentName
@@ -86,7 +86,7 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.hr.dao.PersonDao.selectPersons.Count" 
+	<select id="PersonDao.selectPersons.Count" 
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1)
 		FROM Person p 
@@ -94,18 +94,18 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.hr.dao.PersonDao.getJobTypes" resultClass="string">
+	<select id="PersonDao.getJobTypes" resultClass="string">
 		SELECT DISTINCT(jobType) FROM Person 
 		WHERE jobType IS NOT NULL AND jobType &lt;&gt; "" 
 		ORDER BY jobType
 	</select>
 	
-	<select id="com.jyams.hr.dao.PersonDao.listNotUserPersons" resultClass="Person">
+	<select id="PersonDao.listNotUserPersons" resultClass="Person">
 		SELECT p.* FROM Person p WHERE p.personId NOT IN 
 		( SELECT u.userId FROM User u)
 	</select>
 	
-	<select id="com.jyams.hr.dao.PersonDao.listPersonByJob" 
+	<select id="PersonDao.listPersonByJob" 
 		parameterClass="string" resultClass="Person">
 		SELECT p.* 
 		FROM Person_Job pj 
@@ -114,12 +114,12 @@
 		WHERE j.jobName = #value#
 	</select>
 	
-	<select id="com.jyams.hr.dao.PersonDao.listSimplePersons" 
+	<select id="PersonDao.listSimplePersons" 
 		parameterClass="short" resultClass="Person">
 		SELECT personId, personName FROM Person WHERE status = #value#	
 	</select>
 	
-	<update id="com.jyams.hr.model.Person.update" parameterClass="Person">
+	<update id="Person.update" parameterClass="Person">
 		UPDATE Person SET
 			mobilePhone = #mobilePhone#,
 			shortNumber = #shortNumber#,
@@ -144,7 +144,7 @@
 	</update>
 	
 	<!-- 更改用户状态 -->
-	<update id="com.jyams.hr.dao.PersonDao.updatePersonStatus" 
+	<update id="PersonDao.updatePersonStatus" 
 		parameterClass="hashMap">
 		UPDATE Person
 		SET status = #status#
@@ -152,13 +152,13 @@
 		personId = #personId#
 	</update>
 	
-	<delete id="com.jyams.hr.model.Person.deleteByPrimaryKey" 
+	<delete id="Person.deleteByPrimaryKey" 
 		parameterClass="long">
 		DELETE FROM Person WHERE personId = #value#
 	</delete>
 
 	<!-- 删除员工的职位 -->
-	<delete id="com.jyams.hr.dao.PersonDao.deletePersonJob" 
+	<delete id="PersonDao.deletePersonJob" 
 		parameterClass="long">
 		DELETE FROM Person_Job WHERE personId = #value#
 	</delete>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+		"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings lazyLoadingEnabled="true" maxRequests="20"
+		maxSessions="10" maxTransactions="50" useStatementNamespaces="true"
+		statementCachingEnabled="false" />
+
+    <sqlMap resource="ibatis/Department.xml" />
+	<sqlMap resource="ibatis/Person.xml" />
+	<sqlMap resource="ibatis/Job.xml" />
+	<sqlMap resource="ibatis/MultiDay.xml" />
+	<sqlMap resource="ibatis/Client.xml" />
+	<sqlMap resource="ibatis/ClientPrincipal.xml" />
+	<sqlMap resource="ibatis/Salary.xml" />
+
+	<sqlMap resource="ibatis/Authority.xml" />
+	<sqlMap resource="ibatis/User.xml" />
+	<sqlMap resource="ibatis/OperateLog.xml" />
+
+	<sqlMap resource="ibatis/Project.xml" />
+	<sqlMap resource="ibatis/BuildingProject.xml" />
+	<sqlMap resource="ibatis/BuildingProjectDetail.xml" />
+	<sqlMap resource="ibatis/Dispatch.xml" />
+	<sqlMap resource="ibatis/DispatchWork.xml" />
+	<sqlMap resource="ibatis/Quote.xml" />
+	<sqlMap resource="ibatis/QuoteItem.xml" />
+
+	<sqlMap resource="ibatis/PurchaseItem.xml" />
+	<sqlMap resource="ibatis/Purchase.xml" />
+</sqlMapConfig>

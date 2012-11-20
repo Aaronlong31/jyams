@@ -1,4 +1,4 @@
-package com.jyams.project.manager.impl;
+package com.jyams.buildingproject.manager.impl;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jyams.buildingproject.manager.BuildingProjectManager;
 import com.jyams.project.dao.BuildingProjectDao;
 import com.jyams.project.dao.BuildingProjectDetailDao;
-import com.jyams.project.manager.BuildingProjectManager;
 import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.BuildingProjectDetail;
 import com.jyams.project.model.ChangeStatusType;
@@ -116,46 +116,29 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
     }
 
     @Override
-    public DataPage<BuildingProject> listBuildingProject(Long projectId,
-            String companyPrincipalName, String clientName,
-            String clientPrincipalName, Integer status, Integer order,
-            Integer pageNo, Integer pageSize, boolean hidden) {
-        return buildingProjectDao.listBuildingProject(projectId,
-                companyPrincipalName, clientName, clientPrincipalName, status,
-                ProjectManagerImpl.getOrderBySql(order), pageNo, pageSize,
-                hidden);
-    }
-
-    @Override
     public List<Long> listProjectIds(Integer status) {
         return buildingProjectDao.listProjectIds(status);
     }
 
     @Override
-    public List<BuildingProject> listAlarmProjects() {
-        DataPage<BuildingProject> dataPage = listBuildingProject(null, null,
-                null, null, BuildingProject.STATUS_ALARM
-                        | BuildingProject.STATUS_BUILDING, null, null, null,
-                false);
-        return dataPage.getData();
+    public DataPage<BuildingProject> listAlarmProjects() {
+        BuildingProjectQuery query = new BuildingProjectQuery();
+        query.setStatus((short) (BuildingProject.STATUS_ALARM | BuildingProject.STATUS_BUILDING));
+        return this.listBuildingProject(query);
     }
 
     @Override
-    public List<BuildingProject> listDelayProjects() {
-        DataPage<BuildingProject> dataPage = listBuildingProject(null, null,
-                null, null, BuildingProject.STATUS_DELAYED
-                        | BuildingProject.STATUS_BUILDING, null, null, null,
-                false);
-        return dataPage.getData();
+    public DataPage<BuildingProject> listDelayProjects() {
+        BuildingProjectQuery query = new BuildingProjectQuery();
+        query.setStatus((short) (BuildingProject.STATUS_DELAYED | BuildingProject.STATUS_BUILDING));
+        return this.listBuildingProject(query);
     }
 
     @Override
-    public List<BuildingProject> listOverrunProjects() {
-        DataPage<BuildingProject> dataPage = listBuildingProject(null, null,
-                null, null, BuildingProject.STATUS_OVERRUN
-                        | BuildingProject.STATUS_BUILDING, null, null, null,
-                false);
-        return dataPage.getData();
+    public DataPage<BuildingProject> listOverrunProjects() {
+        BuildingProjectQuery query = new BuildingProjectQuery();
+        query.setStatus((short) (BuildingProject.STATUS_OVERRUN | BuildingProject.STATUS_BUILDING));
+        return this.listBuildingProject(query);
     }
 
     @Override

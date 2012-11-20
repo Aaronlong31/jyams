@@ -3,14 +3,14 @@
 <sqlMap namespace="Job">
 	<typeAlias alias="Job" type="com.jyams.hr.model.Job"/>
 	
-	<select id="com.jyams.hr.model.Job.select" parameterClass="long" resultClass="Job">
+	<select id="Job.select" parameterClass="long" resultClass="Job">
 		SELECT * FROM Job
 		<isNotNull property="value" prepend="WHERE">
 			jobId = #value#
 		</isNotNull>
 	</select>
 	
-	<select id="com.jyams.hr.model.Job.selectByMap" 
+	<select id="Job.selectByMap" 
 		parameterClass="hashMap" resultClass="Job">
 		SELECT j.* FROM Job j
 		LEFT JOIN Person_Job pj ON j.jobId = pj.jobId
@@ -22,18 +22,18 @@
 	</select>
 	
 	<!-- 
-	<insert id="com.jyams.hr.model.Job.insert" parameterClass="Job">
+	<insert id="Job.insert" parameterClass="Job">
 		INSERT INTO Job 
 		(jobId, jobName) 
 		VALUES 
 		(#jobId#, #jobName#)
 	</insert>
 	
-	<update id="com.jyams.hr.model.Job.update" parameterClass="Job">
+	<update id="Job.update" parameterClass="Job">
 		UPDATE Job SET jobName = #jobName# WHERE jobId = #jobId#
 	</update>
 	
-	<delete id="com.jyams.hr.model.Job.deleteByPrimaryKey" parameterClass="long">
+	<delete id="Job.deleteByPrimaryKey" parameterClass="long">
 		DELETE FROM Job WHERE jobId = #jobId#
 	</delete>
 	 -->

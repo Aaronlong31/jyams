@@ -18,16 +18,6 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
 
     /**
      * 查询在建项目
-     * 
-     * @param projectId
-     * @param companyPrincipalName
-     * @param clientName
-     * @param clientPrincipalName
-     * @param status
-     * @param orderString
-     * @param pageNo
-     * @param pageSize
-     * @return
      */
     public DataPage<BuildingProject> listBuildingProject(Long projectId,
             String companyPrincipalName, String clientName,
@@ -48,9 +38,6 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
 
     /**
      * 开票
-     * 
-     * @param projectId
-     * @return
      */
     public int invoice(long projectId, long personId, String personName) {
         Map<String, Object> map = Maps.newHashMap();
@@ -64,8 +51,6 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
 
     /**
      * 完工
-     * 
-     * @param projectId
      */
     public int completeProject(long projectId, long personId, String personName) {
         Map<String, Object> map = Maps.newHashMap();
@@ -80,18 +65,6 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
 
     /**
      * 修改在建项目状态
-     * 
-     * @param projectId
-     *            项目标识
-     * @param personId
-     *            修改人标识
-     * @param personName
-     *            修改人姓名
-     * @param status
-     *            状态
-     * @param changeType
-     *            修改类型
-     * @return
      */
     public int updateStatus(long projectId, long personId, String personName,
             int status, ChangeStatusType changeType) {
@@ -108,10 +81,6 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
 
     /**
      * 修改实际成本和状态
-     * 
-     * @param projectId
-     * @param actualCost
-     * @param status
      */
     public void updateAcualCostAndStatus(long projectId, float actualCost,
             int status) {
@@ -140,11 +109,6 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
 
     /**
      * 收款
-     * 
-     * @param projectId
-     * @param personId
-     * @param personName
-     * @return
      */
     public int collection(long projectId, long personId, String personName) {
         Map<String, Object> map = Maps.newHashMap();

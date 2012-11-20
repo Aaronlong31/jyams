@@ -1,4 +1,4 @@
-package com.jyams.project.manager.impl;
+package com.jyams.buildingproject.manager.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
+import com.jyams.buildingproject.manager.BuildingProjectDetailManager;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.dao.BuildingProjectDao;
 import com.jyams.project.dao.BuildingProjectDetailDao;
-import com.jyams.project.manager.BuildingProjectDetailManager;
 import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.BuildingProjectDetail;
 import com.jyams.project.model.Dispatch;

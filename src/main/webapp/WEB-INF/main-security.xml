@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:s="http://www.springframework.org/schema/security" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd"
+	default-lazy-init="true">
+
+	<description>SpringSecurity安全配置 </description>
+	<context:component-scan base-package="com.jyams.*.controller" />
+
+	<s:global-method-security jsr250-annotations="enabled"
+		secured-annotations="enabled" />
+
+	<s:http security="none" pattern="/css/**"/>
+	<s:http security="none" pattern="/img/**"/>
+	<s:http security="none" pattern="/images/**"/>
+	<s:http security="none" pattern="/jquery-images/**"/>
+	<s:http security="none" pattern="/js/**"/>
+
+	<!-- http安全配置 -->
+	<s:http auto-config="true" use-expressions="true">
+		<s:intercept-url pattern="/favicon.ico" access="permitAll" />
+		<s:intercept-url pattern="/jsp/timeout.jsp" access="permitAll" />
+		<s:intercept-url pattern="/jsp/**" access="permitAll" />
+		<s:intercept-url pattern="/login*" access="permitAll" />
+
+		<!-- 施工流程 -->
+		<s:intercept-url pattern="/project/list.action*"
+			access="hasAnyRole('ROLE_查看施工流程')" />
+		<s:intercept-url pattern="/project/input.action*"
+			access="hasAnyRole('ROLE_添加施工流程','ROLE_修改施工流程')" />
+		<s:intercept-url pattern="/project/save.action*"
+			access="hasAnyRole('ROLE_添加施工流程','ROLE_修改施工流程')" />
+		<s:intercept-url pattern="/project/view.action*"
+			access="hasAnyRole('ROLE_查看施工流程')" />
+
+		<!-- 在建项目 -->
+		<s:intercept-url pattern="/buildingProject/list.action*"
+			access="hasAnyRole('ROLE_查看在建项目')" />
+		<s:intercept-url pattern="/buildingProject/input.action*"
+			access="hasAnyRole('ROLE_修改在建项目')" />
+		<s:intercept-url pattern="/buildingProject/listStatus.action*"
+			access="hasAnyRole('ROLE_查看在建项目状态')" />
+		<s:intercept-url pattern="/buildingProject/invoice.action*"
+			access="hasAnyRole('ROLE_在建项目开票')" />
+		<s:intercept-url pattern="/buildingProject/save.action*"
+			access="hasAnyRole('ROLE_修改在建项目')" />
+		<s:intercept-url pattern="/buildingProject/view.action*"
+			access="hasAnyRole('ROLE_查看在建项目')" />
+		<s:intercept-url pattern="/buildingProject/addDetail.action*"
+			access="hasAnyRole('ROLE_添加在建项目明细')" />
+		<s:intercept-url pattern="/buildingProject/completion_ajax.action*"
+			access="hasAnyRole('ROLE_在建项目完工')" />
+		<s:intercept-url pattern="/buildingProject/invoice_ajax.action*"
+			access="hasAnyRole('ROLE_在建项目开票')" />
+		<s:intercept-url pattern="/buildingProject/collection_ajax.action*"
+			access="hasAnyRole('ROLE_在建项目收款')" />
+
+		<!-- 派工 -->
+		<s:intercept-url pattern="/dispatch/input.action*"
+			access="hasAnyRole('ROLE_添加派工')" />
+		<s:intercept-url pattern="/dispatch/save.action*"
+			access="hasAnyRole('ROLE_添加派工')" />
+		<s:intercept-url pattern="/dispatch/list.action*"
+			access="hasAnyRole('ROLE_查看派工')" />
+		<s:intercept-url pattern="/dispatch/view.action*"
+			access="hasAnyRole('ROLE_查看派工')" />
+		<!-- <s:intercept-url pattern="/dispatch/listMonthDispatchWorks.action*" 
+			access="hasAnyRole('ROLE_查看我的当月派工')" /> -->
+
+		<!-- 报价单 -->
+		<s:intercept-url pattern="/quote/input.action*"
+			access="hasAnyRole('ROLE_添加报价单','ROLE_修改报价单')" />
+		<s:intercept-url pattern="/quote/save.action*"
+			access="hasAnyRole('ROLE_添加报价单','ROLE_修改报价单')" />
+		<s:intercept-url pattern="/quote/view.action*" access="hasAnyRole('ROLE_查看报价单')" />
+		<s:intercept-url pattern="/quote/list.action*" access="hasAnyRole('ROLE_查看报价单')" />
+		<s:intercept-url pattern="/quote/toImport.action*"
+			access="hasAnyRole('ROLE_添加报价单')" />
+		<s:intercept-url pattern="/quote/import.action*"
+			access="hasAnyRole('ROLE_添加报价单')" />
+
+		<!-- 部门 -->
+		<s:intercept-url pattern="/department/list.action*"
+			access="hasAnyRole('ROLE_查看部门')" />
+		<s:intercept-url pattern="/department/input.action*"
+			access="hasAnyRole('ROLE_添加部门', 'ROLE_修改部门')" />
+		<s:intercept-url pattern="/department/save.action*"
+			access="hasAnyRole('ROLE_添加部门', 'ROLE_修改部门')" />
+		<s:intercept-url pattern="/department/delete.action*"
+			access="hasAnyRole('ROLE_删除部门')" />
+
+		<!-- 员工 -->
+		<s:intercept-url pattern="/person/list.action*"
+			access="hasAnyRole('ROLE_查看员工')" />
+		<s:intercept-url pattern="/person/save.action*"
+			access="hasAnyRole('ROLE_添加员工', 'ROLE_修改员工')" />
+		<s:intercept-url pattern="/person/input.action*"
+			access="hasAnyRole('ROLE_添加员工', 'ROLE_修改员工')" />
+		<s:intercept-url pattern="/person/view.action*"
+			access="hasAnyRole('ROLE_查看员工')" />
+		<s:intercept-url pattern="/person/dimission.action*"
+			access="hasAnyRole('ROLE_离职员工')" />
+		<s:intercept-url pattern="/salary/salary.action*"
+			access="hasAnyRole('ROLE_员工工资列表')" />
+
+		<!-- 客户 -->
+		<s:intercept-url pattern="/client/input.action*"
+			access="hasAnyRole('ROLE_添加客户')" />
+		<s:intercept-url pattern="/client/save.action*"
+			access="hasAnyRole('ROLE_添加客户')" />
+		<s:intercept-url pattern="/client/list.action*"
+			access="hasAnyRole('ROLE_查看客户')" />
+		<s:intercept-url pattern="/client/view.action*"
+			access="hasAnyRole('ROLE_查看客户')" />
+
+		<!-- 操作员 -->
+		<s:intercept-url pattern="/user/add.action*" access="hasAnyRole('ROLE_添加操作员')" />
+		<s:intercept-url pattern="/user/input.action*"
+			access="hasAnyRole('ROLE_添加操作员', 'ROLE_修改操作员')" />
+		<s:intercept-url pattern="/user/save.action*"
+			access="hasAnyRole('ROLE_添加操作员', 'ROLE_修改操作员')" />
+		<s:intercept-url pattern="/user/list.action*" access="hasAnyRole('ROLE_查看操作员')" />
+		<s:intercept-url pattern="/user/view.action*" access="hasAnyRole('ROLE_查看操作员')" />
+		<s:intercept-url pattern="/user/delete.action*"
+			access="hasAnyRole('ROLE_删除操作员')" />
+		<s:intercept-url pattern="/user/toModifyPassword.action*"
+			access="hasAnyRole('ROLE_修改密码')" />
+		<s:intercept-url pattern="/user/modifyPassword.action*"
+			access="hasAnyRole('ROLE_修改密码')" />
+
+		<!-- 操作日志 -->
+		<s:intercept-url pattern="/operateLog/list.action*"
+			access="hasAnyRole('ROLE_查看操作日志')" />
+		<s:intercept-url pattern="/operateLog/listForModel.action*"
+			access="hasAnyRole('ROLE_查看操作日志')" />
+
+		<!-- 采购单 -->
+		<!-- NEW 2011/06/06 -->
+		<s:intercept-url pattern="/purchase/inputMaterial.action*"
+			access="hasAnyRole('ROLE_物料采购申请')" />
+
+
+		<!-- OLD BEFORE 2011/06/06 -->
+		<s:intercept-url pattern="/purchase/toAddPurchase.action*"
+			access="hasAnyRole('ROLE_物料采购申请')" />
+		<s:intercept-url pattern="/purchase/listApplyingPurchases.action*"
+			access="hasAnyRole('ROLE_物料采购复核')" />
+		<s:intercept-url pattern="/purchase/listCheckedPurchases.action*"
+			access="hasAnyRole('ROLE_物料采购一审')" />
+		<s:intercept-url pattern="/purchase/listFirstApprovedPurchases.action*"
+			access="hasAnyRole('ROLE_物料采购二审')" />
+		<s:intercept-url pattern="/purchase/listApprovedPurchases.action*"
+			access="hasAnyRole('ROLE_物料实际采购')" />
+
+		<s:intercept-url pattern="/purchase/toAddCompanyPurchase.action*"
+			access="hasAnyRole('ROLE_公司采购申请')" />
+		<s:intercept-url pattern="/purchase/listApplyingCompanyPurchases.action*"
+			access="hasAnyRole('ROLE_公司采购一审')" />
+		<s:intercept-url pattern="/purchase/listFirstApprovedCompanyPurchases.action*"
+			access="hasAnyRole('ROLE_公司采购二审')" />
+
+		<s:intercept-url pattern="/purchase/toAddOrder.action*"
+			access="hasAnyRole('ROLE_外包订单申请')" />
+		<s:intercept-url pattern="/purchase/listApplyingOrders.action*"
+			access="hasAnyRole('ROLE_外包订单一审')" />
+		<s:intercept-url pattern="/purchase/listFirstApprovedOrders.action*"
+			access="hasAnyRole('ROLE_外包订单二审')" />
+
+		<!-- <s:intercept-url pattern="/purchase/listMyPurchases.action*" access="hasAnyRole('ROLE_采购周报表')" 
+			/> <s:intercept-url pattern="/purchase/listMyPurchases.action*" access="hasAnyRole('ROLE_采购月报表')" 
+			/> -->
+
+		<s:intercept-url pattern="/purchase/listMyPurchases.action*"
+			access="hasAnyRole('ROLE_查看我的采购单')" />
+		<s:intercept-url pattern="/purchase/viewPurchasesStatus.action*"
+			access="hasAnyRole('ROLE_采购单状态查看')" />
+		<s:intercept-url pattern="/purchase/listSuppliers.action*"
+			access="hasAnyRole('ROLE_采购供应商信息查看')" />
+
+		<!-- 报表 <s:intercept-url pattern="/reportExcel.action?model=1" access="hasAnyRole('ROLE_删除采购单')" 
+			/> <s:intercept-url pattern="/reportExcel.action?model=2" access="hasAnyRole('ROLE_删除采购单')" 
+			/> <s:intercept-url pattern="/reportExcel.action?model=3" access="hasAnyRole('ROLE_删除采购单')" 
+			/> <s:intercept-url pattern="/reportExcel.action?model=4" access="hasAnyRole('ROLE_删除采购单')" 
+			/> <s:intercept-url pattern="/reportExcel.action?model=5" access="hasAnyRole('ROLE_删除采购单')" 
+			/> <s:intercept-url pattern="/reportExcel.action?model=6" access="hasAnyRole('ROLE_删除采购单')" 
+			/> -->
+		<s:intercept-url pattern="/**" access="isAuthenticated()" />
+		<s:session-management>
+			<s:concurrency-control expired-url="/jsp/expired-session.jsp"
+				max-sessions="1" />
+		</s:session-management>
+		<s:form-login login-page="/login"
+			default-target-url="/project" authentication-failure-url="/login" />
+		<s:logout logout-success-url="/toLogin" />
+
+	</s:http>
+
+	<!-- 认证配置, 使用userDetailsService提供的用户信息 -->
+	<s:authentication-manager alias="authenticationManager">
+		<s:authentication-provider user-service-ref="userDetailsService">
+			<s:password-encoder hash="md5" />
+		</s:authentication-provider>
+	</s:authentication-manager>
+
+	<!-- 项目实现的用户查询服务 -->
+	<bean id="userDetailsService" class="com.jyams.secure.manager.impl.UserDetailsServiceImpl" />
+</beans>

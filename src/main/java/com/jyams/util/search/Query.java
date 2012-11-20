@@ -36,7 +36,7 @@ public abstract class Query<T> {
     public Query() {
     }
 
-    public Query(int pageNo, int pageSize) {
+    public Query(Integer pageNo, Integer pageSize) {
         this.pageNo = pageNo;
         this.pageSize = pageSize;
     }
@@ -187,6 +187,15 @@ public abstract class Query<T> {
         String[] statusArray = statuses.split(",");
         for (String status : statusArray) {
             this.addStatus(Short.parseShort(status));
+        }
+        return this;
+    }
+
+    public Query<T> setStatuses(short... statuses) {
+        this.includeStatus.clear();
+        this.excludeStatus.clear();
+        for (short s : statuses) {
+            this.includeStatus.add(s);
         }
         return this;
     }

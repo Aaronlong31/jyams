@@ -44,7 +44,7 @@
 	<!-- iBATIS sqlMapClient config -->
 	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
 		<property name="configLocation">
-			<value>classpath:sql-map-Config.xml</value>
+			<value>classpath:ibatis/sql-map-Config.xml</value>
 		</property>
 		<property name="dataSource" ref="dataSource" />
 	</bean>
@@ -71,4 +71,5 @@
 		<property name="prefix" value="/WEB-INF/pages/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+	
 </beans>

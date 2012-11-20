@@ -1,4 +1,4 @@
-package com.jyams.project.manager;
+package com.jyams.buildingproject.manager;
 
 import java.util.List;
 

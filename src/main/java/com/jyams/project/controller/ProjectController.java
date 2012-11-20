@@ -42,8 +42,6 @@ public class ProjectController {
 
     @RequestMapping(value = "/project", method = RequestMethod.POST)
     public void add(Project project, boolean isNewYear) {
-        project.setCreatedTimestamp(SpringSecurityUtils.getCurrentUserId());
-        project.setCreatorName(SpringSecurityUtils.getCurrentUserName());
         projectManager.addProject(project, isNewYear);
     }
 
@@ -63,8 +61,8 @@ public class ProjectController {
         return mav;
     }
 
-    @RequestMapping(
-            value = "/project/toEdit/{projectId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/project/toEdit/{projectId}",
+            method = RequestMethod.GET)
     public ModelAndView toEdit(@PathVariable("projectId") long projectId) {
         Project project = projectManager.getProject(projectId);
         List<Person> persons = personManager.listActivitySimplePersons();
@@ -74,8 +72,8 @@ public class ProjectController {
         return mav;
     }
 
-    @RequestMapping(
-            value = "/project", method = RequestMethod.GET,
+    @RequestMapping(value = "/project",
+            method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("project/list");
@@ -83,8 +81,8 @@ public class ProjectController {
         return mav;
     }
 
-    @RequestMapping(
-            value = "/project", method = RequestMethod.GET,
+    @RequestMapping(value = "/project",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public DataPage<Project> list(ProjectQuery projectQuery) {
@@ -94,15 +92,15 @@ public class ProjectController {
         return projectManager.listProjects(projectQuery);
     }
 
-    @RequestMapping(
-            value = "/project/mine", method = RequestMethod.GET,
+    @RequestMapping(value = "/project/mine",
+            method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView listMine() {
         return new ModelAndView("project/listMine");
     }
 
-    @RequestMapping(
-            value = "/project/mine", method = RequestMethod.GET,
+    @RequestMapping(value = "/project/mine",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public DataPage<Project> listMine(ProjectQuery projectQuery) {
@@ -119,8 +117,8 @@ public class ProjectController {
         return mav;
     }
 
-    @RequestMapping(
-            value = "/project/simple", method = RequestMethod.GET,
+    @RequestMapping(value = "/project/simple",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<Project> listSimpleProject() {
@@ -128,9 +126,11 @@ public class ProjectController {
                 BuildingProject.STATUS_BUILDING, null);
     }
 
-    @RequestMapping(
-            value = "/project/updateSearchYear", method = RequestMethod.POST,
+    @RequestMapping(value = "/project/updateSearchYear",
+            method = RequestMethod.PUT,
+            params = "increYear",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public void updateSearchYear(Integer increYear) {
         int searchYear = getSearchYear();
         if (increYear == null) {
@@ -140,9 +140,10 @@ public class ProjectController {
         WebUtils.getHttpSession().setAttribute(SEARCH_PROJECT_YEAR, searchYear);
     }
 
-    @RequestMapping(
-            value = "/project/basic", method = RequestMethod.GET,
+    @RequestMapping(value = "/project/basic",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public DataPage<Project> listBasic(ProjectQuery projectQuery) {
         return projectManager.listBasicProject(projectQuery);
     }

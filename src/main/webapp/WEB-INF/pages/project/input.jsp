@@ -8,119 +8,106 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>新增项目</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/style.css"/>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/jquery-ui-1.8.6.custom.css" />
-<script type="text/javascript" src="${ctx}/js/jquery/jquery-1.4.2.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/plugins/formValidator/jquery.validate.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/ui/jquery-ui-1.8.6.custom.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/convertCurrency.js"></script>
-<script type="text/javascript" src="${ctx}/js/common.js"></script>
-
+<link rel="stylesheet" type="text/css" href="${ctx}/css/bootstrap.css"/>
+<script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 </head>
 <body>
-<div class="content">
-	<div class="main_panel">
-	    <h3 class="crumbs">
-			<img src="../images/sidebar_h3_bg1.gif" alt="" />
-			当前位置：<a href="#">首页</a><a href="#">项目</a>添加项目
-		</h3>
-		<div class="main_content two_rows">
-				<div class="main_content">
-					<form action="save.action" method="post" id="addProjectForm">
-						<input type="hidden" id="projectId" name="project.projectId" value='<s:property value="project.projectId"/>'>
-				        <table class="table_normal">
-				        	<tr>
-								<td colspan="4" class="errorMessage" id="message"><s:actionerror/></td>
-							</tr>
-				        	<tr id="newYearTr" style="display: none">
-				        		<td></td>
-				        		<%
-				        		int year = Calendar.getInstance().get(Calendar.YEAR) % 100;
-				        		%>
-				        		<td colspan="3">当前项目编号年份为:<%=year %>，如果要从<%=year + 1 %>年开始重新编号，请打钩：
-				        			<input type="checkbox" class="text" id="isNewYear" name="isNewYear" value="true"/>
-				        		</td>
-				        	</tr>
-							<tr>
-								<td class="td_first">项目名称:<span class="red_star">*</span></td>
-								<td> 
-									<input name="project.projectName" id="projectName" class="text" value='<s:property value="project.projectName"/>'/>
-								</td>
-								<td class="td_first">
-									<label for="quoteId">报价单编号</label>
-								</td>
-								<td>
-									<input name="project.quoteId" id="quoteId" value='<s:property value="project.quoteId"/>' class="text"/>
-								</td>
-							</tr>
-							<tr>
-							<!-- 
-								<td class="td_first">预估成本（元）:<span class="red_star">*</span></td>
-								<td> 
-									<input name="project.estimateCost" id="estimateCost" class="text" value='<s:property value="project.estimateCost"/>'/>
-								</td>
-							 -->
-								<td class="td_first">施工负责人:<span class="red_star">*</span></td>
-								<td>
-									<select  name="project.companyPrincipalId" id="companyPrincipalId">
-										<option value="">请选择</option>
-										<s:iterator value="persons">
-											<option value="${personId}"><s:property value="personName"/></option>
-										</s:iterator>
-									</select>
-									<input type="hidden" name="project.companyPrincipalName" id="companyPrincipalName"  value='<s:property value="project.companyPrincipalName"/>'/>
-								</td>
-								<td class="td_first">施工地点:</td>
-								<td> 
-									<input name="project.constructPlace" id="constructPlace" class="text"  value='<s:property value="project.constructPlace"/>'/>
-								</td>
-							</tr>
-							<tr>
-								<td class="td_first">客户商:</td>
-								<td> 
-									<input name="project.clientName" id="clientName" class="text"  value='<s:property value="project.clientName"/>'/>
-								</td>
-								<td class="td_first">客户负责人:</td>
-								<td> 
-									<input name="project.clientPrincipalName" id="clientPrincipalName" class="text"  value='<s:property value="project.clientPrincipalName"/>'/>
-								</td>
-							</tr>
-							<tr>
-								
-								<td class="td_first">订单编号:</td>
-								<td> 
-									<input name="project.orderId" id="orderId" class="text"  value='<s:property value="project.orderId"/>'/>
-								</td>
-								<td class="td_first">出订单日:</td>
-								<td> 
-									<input name="project.orderDateString" id="orderDate"  class="text"  value='<s:property value="project.orderDateString"/>'/>
-								</td>
-							</tr>
-							<tr>
-								<td class="td_first">要求完工日:<span class="red_star">*</span></td>
-								<td> 
-									<input name="project.requiredCompletionDateString" id="requiredCompletionDate" class="text"  value='<s:property value="project.requiredCompletionDateString"/>'/>
-								</td>
-								<td class="td_first">可延后时间（天）:<span class="red_star">*</span></td>
-								<td> 
-									<input name="project.canDelayDay" id="canDelayDay" class="text"  value='<s:property value="project.canDelayDay"/>'/>
-								</td>
-							</tr>
-							<tr>
-								<td class="td_first">订单内容:</td>
-								<td colspan="3"> 
-									<textarea name="project.orderContent" style="width: 700px;" id="orderContent" cols="50" rows="4"><s:property value="project.orderContent"/></textarea>
-								</td>
-							</tr>
-				        </table>
-						<div style=" text-align:center; margin-top:10px;margin-bottom: 10px;">
-							<button type="submit" class="btn" id="addProjectBut">确定</button>
-							<button type="button" class="btn" id="cancel">取消</button>
-						</div>
-					</form>
-		        </div>
+<div class="container-fluid">
+	<div class="main_content">
+		<form action="save.action" method="post" id="addProjectForm">
+			<input type="hidden" id="projectId" name="project.projectId" value='<s:property value="project.projectId"/>'>
+	        <table class="table_normal">
+	        	<tr>
+					<td colspan="4" class="errorMessage" id="message"><s:actionerror/></td>
+				</tr>
+	        	<tr id="newYearTr" style="display: none">
+	        		<td></td>
+	        		<%
+	        		int year = Calendar.getInstance().get(Calendar.YEAR) % 100;
+	        		%>
+	        		<td colspan="3">当前项目编号年份为:<%=year %>，如果要从<%=year + 1 %>年开始重新编号，请打钩：
+	        			<input type="checkbox" class="text" id="isNewYear" name="isNewYear" value="true"/>
+	        		</td>
+	        	</tr>
+				<tr>
+					<td class="td_first">项目名称:<span class="red_star">*</span></td>
+					<td> 
+						<input name="project.projectName" id="projectName" class="text" value='<s:property value="project.projectName"/>'/>
+					</td>
+					<td class="td_first">
+						<label for="quoteId">报价单编号</label>
+					</td>
+					<td>
+						<input name="project.quoteId" id="quoteId" value='<s:property value="project.quoteId"/>' class="text"/>
+					</td>
+				</tr>
+				<tr>
+				<!-- 
+					<td class="td_first">预估成本（元）:<span class="red_star">*</span></td>
+					<td> 
+						<input name="project.estimateCost" id="estimateCost" class="text" value='<s:property value="project.estimateCost"/>'/>
+					</td>
+				 -->
+					<td class="td_first">施工负责人:<span class="red_star">*</span></td>
+					<td>
+						<select  name="project.companyPrincipalId" id="companyPrincipalId">
+							<option value="">请选择</option>
+							<s:iterator value="persons">
+								<option value="${personId}"><s:property value="personName"/></option>
+							</s:iterator>
+						</select>
+						<input type="hidden" name="project.companyPrincipalName" id="companyPrincipalName"  value='<s:property value="project.companyPrincipalName"/>'/>
+					</td>
+					<td class="td_first">施工地点:</td>
+					<td> 
+						<input name="project.constructPlace" id="constructPlace" class="text"  value='<s:property value="project.constructPlace"/>'/>
+					</td>
+				</tr>
+				<tr>
+					<td class="td_first">客户商:</td>
+					<td> 
+						<input name="project.clientName" id="clientName" class="text"  value='<s:property value="project.clientName"/>'/>
+					</td>
+					<td class="td_first">客户负责人:</td>
+					<td> 
+						<input name="project.clientPrincipalName" id="clientPrincipalName" class="text"  value='<s:property value="project.clientPrincipalName"/>'/>
+					</td>
+				</tr>
+				<tr>
+					
+					<td class="td_first">订单编号:</td>
+					<td> 
+						<input name="project.orderId" id="orderId" class="text"  value='<s:property value="project.orderId"/>'/>
+					</td>
+					<td class="td_first">出订单日:</td>
+					<td> 
+						<input name="project.orderDateString" id="orderDate"  class="text"  value='<s:property value="project.orderDateString"/>'/>
+					</td>
+				</tr>
+				<tr>
+					<td class="td_first">要求完工日:<span class="red_star">*</span></td>
+					<td> 
+						<input name="project.requiredCompletionDateString" id="requiredCompletionDate" class="text"  value='<s:property value="project.requiredCompletionDateString"/>'/>
+					</td>
+					<td class="td_first">可延后时间（天）:<span class="red_star">*</span></td>
+					<td> 
+						<input name="project.canDelayDay" id="canDelayDay" class="text"  value='<s:property value="project.canDelayDay"/>'/>
+					</td>
+				</tr>
+				<tr>
+					<td class="td_first">订单内容:</td>
+					<td colspan="3"> 
+						<textarea name="project.orderContent" style="width: 700px;" id="orderContent" cols="50" rows="4"><s:property value="project.orderContent"/></textarea>
+					</td>
+				</tr>
+	        </table>
+			<div style=" text-align:center; margin-top:10px;margin-bottom: 10px;">
+				<button type="submit" class="btn" id="addProjectBut">确定</button>
+				<button type="button" class="btn" id="cancel">取消</button>
 			</div>
-		</div>
+		</form>
+	</div>
 </div>
 </body>
 <script language="javascript">

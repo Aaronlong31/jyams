@@ -25,13 +25,11 @@ public class PersonDao extends IBatisEntityDao<Person> {
         map.put("personNameLike", personNameLike);
         map.put("status", status);
         map.put("salaryType", salaryType);
-        return pagedQuery("com.jyams.hr.dao.PersonDao.selectPersons", map,
-                pageNo, pageSize);
+        return pagedQuery("PersonDao.selectPersons", map, pageNo, pageSize);
     }
 
     public List<String> getJobTypes() {
-        return getSqlMapClientTemplate().queryForList(
-                "com.jyams.hr.dao.PersonDao.getJobTypes");
+        return getSqlMapClientTemplate().queryForList("PersonDao.getJobTypes");
     }
 
     public int updatePersonStates(long personId, short newSatus)
@@ -39,49 +37,47 @@ public class PersonDao extends IBatisEntityDao<Person> {
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("personId", personId);
         hashMap.put("status", newSatus);
-        return getSqlMapClient().update(
-                "com.jyams.hr.dao.PersonDao.updatePersonStates", hashMap);
+        return getSqlMapClient()
+                .update("PersonDao.updatePersonStates", hashMap);
     }
 
     public int updatePersonStatus(long personId, short status) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("personId", personId);
         map.put("status", status);
-        return getSqlMapClientTemplate().update(
-                "com.jyams.hr.dao.PersonDao.updatePersonStatus", map);
+        return getSqlMapClientTemplate().update("PersonDao.updatePersonStatus",
+                map);
     }
 
     public void insertPersonJobs(Long personId, List<Job> jobs) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("personId", personId);
         map.put("jobs", jobs);
-        getSqlMapClientTemplate().insert(
-                "com.jyams.hr.dao.PersonDao.insertPersonJobs", map);
+        getSqlMapClientTemplate().insert("PersonDao.insertPersonJobs", map);
     }
 
     public void deletePersonJob(Long personId) {
-        getSqlMapClientTemplate().delete(
-                "com.jyams.hr.dao.PersonDao.deletePersonJob", personId);
+        getSqlMapClientTemplate().delete("PersonDao.deletePersonJob", personId);
     }
 
     public List<Person> listPersonsHasRole(String roleName) {
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.hr.dao.PersonDao.listPersonsHasRole", roleName);
+                "PersonDao.listPersonsHasRole", roleName);
     }
 
     public List<Person> listNotUserPersons() {
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.hr.dao.PersonDao.listNotUserPersons");
+                "PersonDao.listNotUserPersons");
     }
 
     public List<Person> listPersonByJob(String jobName) {
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.hr.dao.PersonDao.listPersonByJob", jobName);
+                "PersonDao.listPersonByJob", jobName);
     }
 
     public List<Person> listSimplePersons(short status) {
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.hr.dao.PersonDao.listSimplePersons", status);
+                "PersonDao.listSimplePersons", status);
     }
 
 }

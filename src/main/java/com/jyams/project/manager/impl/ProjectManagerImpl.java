@@ -10,16 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jyams.buildingproject.manager.BuildingProjectManager;
+import com.jyams.cache.PersonCache;
 import com.jyams.hr.manager.ClientManager;
 import com.jyams.hr.model.Client;
 import com.jyams.hr.model.ClientPrincipal;
+import com.jyams.hr.model.Person;
 import com.jyams.project.dao.ProjectDao;
-import com.jyams.project.manager.BuildingProjectManager;
 import com.jyams.project.manager.ProjectManager;
 import com.jyams.project.model.Project;
 import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;
 import com.jyams.util.KeyGenerator;
+import com.jyams.util.SpringSecurityUtils;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -31,9 +34,18 @@ public class ProjectManagerImpl implements ProjectManager {
     private ClientManager clientManager;
     @Autowired
     private BuildingProjectManager buildingProjectManager;
+    @Autowired
+    private PersonCache personCache;
 
     @Override
     public long addProject(Project project, boolean isNewYear) {
+
+        Person companyPrincipalPerson = personCache.get(project
+                .getCompanyPrincipalId());
+        project.setCompanyPrincipalName(companyPrincipalPerson.getPersonName());
+        project.setCreatedTimestamp(SpringSecurityUtils.getCurrentUserId());
+        project.setCreatorName(SpringSecurityUtils.getCurrentUserName());
+
         setClient(project);
 
         /* 插入项目 */
@@ -68,36 +80,15 @@ public class ProjectManagerImpl implements ProjectManager {
      */
     @Override
     public boolean modifyProject(Project project) {
-
         project.setCanDelayDay(Math.max(project.getCanDelayDay(), 0));
-
         setClient(project);
-
         project.setLastModifiedTimestamp(System.currentTimeMillis());
-
         return projectDao.update(project) > 0;
     }
 
     @Override
     public Project getProject(long projectId) {
         return projectDao.get(projectId);
-    }
-
-    @Override
-    public List<Project> listAllProjects() {
-        DataPage<Project> dataPage = listProjects(null, null, null, null, null,
-                null, null);
-        return dataPage.getData();
-    }
-
-    @Override
-    public DataPage<Project> listProjects(Long projectId,
-            String companyPrincipalName, String clientName,
-            String clientPrincipalName, Integer order, Integer pageNo,
-            Integer pageSize) {
-        return projectDao.selectProjects(projectId, companyPrincipalName,
-                clientName, clientPrincipalName, getOrderBySql(order), pageNo,
-                pageSize);
     }
 
     @Override
@@ -130,16 +121,11 @@ public class ProjectManagerImpl implements ProjectManager {
     }
 
     @Override
-    public DataPage<Project> listProject(ProjectQuery projectQuery) {
-        return projectDao.pageQuery(projectQuery);
-    }
-
-    @Override
     public DataPage<Project> listBasicProject(ProjectQuery projectQuery) {
         return projectDao.pageQueryBasic(projectQuery);
     }
 
-    static String getOrderBySql(Integer order) {
+    public static String getOrderBySql(Integer order) {
         StringBuilder orderBySql = new StringBuilder(" ORDER BY ");
         String orderColumn = "";
         order = (order == null) ? 0 : order;

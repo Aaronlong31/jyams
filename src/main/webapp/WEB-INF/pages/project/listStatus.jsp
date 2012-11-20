@@ -7,25 +7,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>施工流程状态</title>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/style.css"/>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/jquery-ui-1.8.6.custom.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/jquery-ui-1.9.1.custom.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/ui.jqgrid.css"/>
-<script type="text/javascript" src="${ctx}/js/jquery/jquery-1.4.2.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/plugins/formValidator/jquery.validate.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/ui/jquery-ui-1.8.6.custom.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/validator/jquery.validate.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jquery-ui-1.9.1.custom.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jqgrid/grid.locale-cn.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/jqgrid/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jqgrid/jquery.jqGrid.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.simpletip.js"></script>
-<STYLE type="text/css">
-#searchDiv{position: fixed;display: none;top:67px;left:10px;}
-</STYLE>
 </head>
 <body>
 <div class="content">
 	<div class="main_panel">
-		<h3 class="crumbs">
-			<img src="../images/sidebar_h3_bg1.gif" alt="" />
-			当前位置：<a href="#">首页</a><a href="#">项目</a>施工流程状态
-		</h3>
 		<div class="main_content">
 			<div class="help">操作提示</div>
 			<div class="helpContent">
@@ -71,7 +64,7 @@ $(function(){
 		return selectHtml;
 	};
 	$("#projectList").jqGrid({
-		url : "${ctx}/project/listStatus_json.action",
+		url : "${ctx}/project/listStatus",
 		datatype : "json",
 		colNames : ["操作", "项目编号", "项目名称", "公司负责人","开工时间", "完工时间", "开票时间" , "收款时间", "状态"],
 		caption : "施工流程列表",
@@ -101,7 +94,7 @@ $(function(){
 		gridComplete : function(){
 			var ids = $("#projectList").jqGrid('getDataIDs');
 			$.each(ids, function(i, id){
-				var approval = "<a href=\"view.action?projectId="+id+"\">查看</a>";
+				var approval = "<a href=\"${ctx}/project/"+id+"\">查看</a>";
 				$("#projectList").jqGrid('setRowData', id, {act:approval});
 			});
 		}

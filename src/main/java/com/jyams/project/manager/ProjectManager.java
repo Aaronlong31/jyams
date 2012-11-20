@@ -87,15 +87,7 @@ public interface ProjectManager {
     Project getProject(long projectId);
 
     @Transactional(readOnly = true)
-    DataPage<Project> listProjects(Long projectId, String companyPrincipalName,
-            String clientName, String clientPrincipalName, Integer order,
-            Integer pageNo, Integer pageSize);
-
-    @Transactional(readOnly = true)
     DataPage<Project> listProjects(ProjectQuery query);
-
-    @Transactional(readOnly = true)
-    List<Project> listAllProjects();
 
     /**
      * 简单查询项目，只包含项目标识和名称
@@ -103,10 +95,10 @@ public interface ProjectManager {
      * @param status
      * @return
      */
+    @Transactional(readOnly = true)
     List<Project> listProjectsSimple(int status, Long clientId);
 
-    DataPage<Project> listProject(ProjectQuery projectQuery);
-
+    @Transactional(readOnly = true)
     DataPage<Project> listBasicProject(ProjectQuery projectQuery);
 
 }

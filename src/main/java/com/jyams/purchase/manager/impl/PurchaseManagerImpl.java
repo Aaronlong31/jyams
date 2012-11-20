@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jyams.project.manager.BuildingProjectManager;
+import com.jyams.buildingproject.manager.BuildingProjectManager;
 import com.jyams.purchase.dao.PurchaseDaoIbatis;
 import com.jyams.purchase.dao.PurchaseItemDaoIbatis;
 import com.jyams.purchase.model.Purchase;
