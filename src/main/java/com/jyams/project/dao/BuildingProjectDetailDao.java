@@ -16,9 +16,8 @@ public class BuildingProjectDetailDao extends
         Map<String, Object> map = Maps.newHashMap();
         map.put("referId", referId);
         map.put("costTypes", costTypes);
-        getSqlMapClientTemplate()
-                .delete("com.jyams.project.dao.BuildingProjectDetailDao.removeByReferIdAndTypes",
-                        map);
+        getSqlMapClientTemplate().delete(
+                "BuildingProjectDetailDao.removeByReferIdAndTypes", map);
     }
 
 }

@@ -3,21 +3,21 @@
 <sqlMap namespace="MultiDay">
 	<typeAlias alias="MultiDay" type="com.jyams.hr.model.MultiDay"/>
 	
-	<select id="com.jyams.hr.model.MultiDay.select" parameterClass="string" resultClass="MultiDay">
+	<select id="MultiDay.select" parameterClass="string" resultClass="MultiDay">
 		SELECT * FROM MultiDay
 		<isNotNull property="value" prepend="WHERE">
 			day = #value#
 		</isNotNull>
 	</select>
 	
-	<insert id="com.jyams.hr.dao.MultiDayDao.insertAll" parameterClass="hashMap">
+	<insert id="MultiDayDao.insertAll" parameterClass="hashMap">
 		INSERT INTO MultiDay VALUES
 		<iterate property="days" conjunction=",">
 			(#days[]#, #times#)
 		</iterate>
 	</insert>
 	
-	<delete id="com.jyams.hr.dao.MultiDayDao.deleteAll">
+	<delete id="MultiDayDao.deleteAll">
 		DELETE FROM MultiDay
 	</delete>
 </sqlMap>

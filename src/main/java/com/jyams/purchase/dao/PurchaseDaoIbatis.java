@@ -23,7 +23,7 @@ public class PurchaseDaoIbatis extends IBatisEntityDao<Purchase> {
         map.put("purchaseId", purchaseId);
         map.put("status", status);
         return getSqlMapClientTemplate().update(
-                "com.jyams.purchase.dao.PurchaseDaoIbatis.modifyStatus", map);
+                "PurchaseDaoIbatis.modifyStatus", map);
     }
 
     /**
@@ -46,9 +46,8 @@ public class PurchaseDaoIbatis extends IBatisEntityDao<Purchase> {
         map.put("approverName", approverName);
         map.put("approvalOpinion", approvalOpinion);
         map.put("approvedTimestamp", approvedTimestamp);
-        return getSqlMapClientTemplate()
-                .update("com.jyams.purchase.dao.PurchaseDaoIbatis.approvePurchase",
-                        map);
+        return getSqlMapClientTemplate().update(
+                "PurchaseDaoIbatis.approvePurchase", map);
     }
 
     /**
@@ -59,8 +58,7 @@ public class PurchaseDaoIbatis extends IBatisEntityDao<Purchase> {
      */
     public int submitDraft(Purchase purchase) {
         return getSqlMapClientTemplate().update(
-                "com.jyams.purchase.dao.PurchaseDaoIbatis.submitDraft",
-                purchase);
+                "PurchaseDaoIbatis.submitDraft", purchase);
     }
 
 }

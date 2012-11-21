@@ -22,24 +22,20 @@
 </head>
 
 <body>
-<div class="content">
-	<div class="main_panel">
-		<div class="main_content">
-			<div class="help">操作提示</div>
-			<div class="helpContent">
-				<ul>
-					<li>列表有类似Excel的修改列宽的功能；</li>
-					<li>单击列表的标题，可以对列表进行排序；</li>
-					<li>在列表标题下方的输入框中输入条件后按<span>回车键</span>可对结果进行过滤，类似Excel；</li>
-					<li>在列表标题下方有<span>向左</span>和<span>向右</span>的按钮，可进行翻页；</li>
-				</ul>
-			</div>
-			<div id="projectDiv">
-				<table id="projectList" title="施工流程列表"></table>
-				<div id="projectPager"></div>
-			</div>     	
-		</div>
+<div class="container">
+	<div class="help">操作提示</div>
+	<div class="helpContent">
+		<ul>
+			<li>列表有类似Excel的修改列宽的功能；</li>
+			<li>单击列表的标题，可以对列表进行排序；</li>
+			<li>在列表标题下方的输入框中输入条件后按<span>回车键</span>可对结果进行过滤，类似Excel；</li>
+			<li>在列表标题下方有<span>向左</span>和<span>向右</span>的按钮，可进行翻页；</li>
+		</ul>
 	</div>
+	<div id="projectDiv">
+		<table id="projectList" title="施工流程列表" class="table"></table>
+		<div id="projectPager"></div>
+	</div>     	
 </div>
 <SCRIPT type="text/javascript">
 $(function(){

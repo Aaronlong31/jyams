@@ -24,8 +24,7 @@ public class DispatchDao extends IBatisEntityDao<Dispatch> {
             map.put("dispatchDayEnd", month * 100 + 31);
         }
         map.put("dispatchDay", day);
-        return pagedQuery("com.jyams.project.dao.DispatchDao.selectDispatchs",
-                map, pageNo, pageSize);
+        return pagedQuery("DispatchDao.selectDispatchs", map, pageNo, pageSize);
     }
 
 }

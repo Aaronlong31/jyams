@@ -27,8 +27,7 @@ public class OperateLogDao extends IBatisEntityDao<OperateLog> {
         map.put("operatorName", operatorName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-        return pagedQuery("com.jyams.secure.dao.OperateLogDao.listOperateLog",
-                map, pageNo, pageSize);
+        return pagedQuery("OperateLogDao.listOperateLog", map, pageNo, pageSize);
     }
 
     public List<OperateLog> listOperateLogForModel(int operateModel,
@@ -38,8 +37,7 @@ public class OperateLogDao extends IBatisEntityDao<OperateLog> {
         map.put("modelId", modelId);
         map.put("limit", limit);
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.secure.dao.OperateLogDao.listOperateLogForModel",
-                map);
+                "OperateLogDao.listOperateLogForModel", map);
     }
 
 }

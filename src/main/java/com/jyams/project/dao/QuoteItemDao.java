@@ -15,8 +15,7 @@ public class QuoteItemDao extends IBatisEntityDao<QuoteItem> {
         try {
             getSqlMapClient().startBatch();
             for (QuoteItem quoteItem : quoteItems) {
-                getSqlMapClient().insert(
-                        "com.jyams.project.model.QuoteItem.insert", quoteItem);
+                getSqlMapClient().insert("QuoteItem.insert", quoteItem);
             }
             getSqlMapClient().executeBatch();
         } catch (SQLException e) {

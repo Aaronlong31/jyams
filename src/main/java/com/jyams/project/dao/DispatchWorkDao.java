@@ -21,8 +21,7 @@ public class DispatchWorkDao extends IBatisEntityDao<DispatchWork> {
     public void batchInsert(List<DispatchWork> dispatchWorks) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("dispatchWorks", dispatchWorks);
-        getSqlMapClientTemplate().insert(
-                "com.jyams.project.model.DispatchWork.batchInsert", map);
+        getSqlMapClientTemplate().insert("DispatchWork.batchInsert", map);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,9 +37,8 @@ public class DispatchWorkDao extends IBatisEntityDao<DispatchWork> {
             map.put("dispatchDayEnd", month * 100 + 31);
         }
         map.put("dispatchDay", day);
-        return pagedQuery(
-                "com.jyams.project.dao.DispatchWorkDao.listDispatchWorks", map,
-                pageNo, pageSize);
+        return pagedQuery("DispatchWorkDao.listDispatchWorks", map, pageNo,
+                pageSize);
     }
 
     public int checkDuplicateTime(int dispatchDay, int startTime, int endTime,
@@ -50,9 +48,7 @@ public class DispatchWorkDao extends IBatisEntityDao<DispatchWork> {
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         map.put("personId", personId);
-        return (Integer) getSqlMapClientTemplate()
-                .queryForObject(
-                        "com.jyams.project.dao.DispatchWorkDao.checkDuplicateTime",
-                        map);
+        return (Integer) getSqlMapClientTemplate().queryForObject(
+                "DispatchWorkDao.checkDuplicateTime", map);
     }
 }

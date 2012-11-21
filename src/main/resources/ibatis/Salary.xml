@@ -5,7 +5,7 @@
 	<typeAlias alias="MonthlySalary" type="com.jyams.hr.model.MonthlySalary"/>
 	<typeAlias alias="DailySalary" type="com.jyams.hr.model.DailySalary"/>
 	
-	<select id="com.jyams.project.dao.SalaryDao.listMonthlySalary" 
+	<select id="SalaryDao.listMonthlySalary" 
 		resultClass="MonthlySalary">
 		SELECT SUM(dw.cost) AS cost,
 			dw.personId AS personId,
@@ -18,7 +18,7 @@
 		GROUP BY dw.personId
 	</select>
 	
-	<select id="com.jyams.project.dao.SalaryDao.listDailySalary" 
+	<select id="SalaryDao.listDailySalary" 
 		parameterClass="hashMap" resultClass="DailySalary">
 		SELECT dw.personId AS personId,
 			dw.personName AS personName,

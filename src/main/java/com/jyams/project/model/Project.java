@@ -221,6 +221,14 @@ public class Project {
         return DateTimeUtils.convertIntegerDayToString(requiredCompletionDate);
     }
 
+    public String getCreatedTimeString() {
+        return DateTimeUtils.convertLongToString(createdTimestamp);
+    }
+
+    public String getLastModifiedTimeString() {
+        return DateTimeUtils.convertLongToString(lastModifiedTimestamp);
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this,

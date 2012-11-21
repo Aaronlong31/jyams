@@ -67,7 +67,7 @@
 		<result property="quoteItems" resultMap="Quote.QuoteItemMap"/>
 	</resultMap>
 	
-	<insert id="com.jyams.project.model.Quote.insert" parameterClass="Quote">
+	<insert id="Quote.insert" parameterClass="Quote">
 		INSERT INTO Quote
 		(
 			quoteId, version, subject, quoterId, quoterName,
@@ -82,7 +82,7 @@
 		)
 	</insert>
 	
-	<select id="com.jyams.project.model.Quote.select" 
+	<select id="Quote.select" 
 		parameterClass="long" resultClass="Quote">
 		SELECT * FROM Quote 
 		<isNotNull property="value" prepend="WHERE">
@@ -90,7 +90,7 @@
 		</isNotNull>
 	</select>
 	
-	<select id="com.jyams.project.model.Quote.selectByMap" 
+	<select id="Quote.selectByMap" 
 		parameterClass="hashMap" resultMap="QuoteMap">
 		SELECT * FROM Quote q 
 		LEFT JOIN QuoteItem qi
@@ -98,27 +98,27 @@
 		<include refid="whereSql"/>
 	</select>
 
-	<select id="com.jyams.project.dao.QuoteDao.listQuotes" 
+	<select id="QuoteDao.listQuotes" 
 		parameterClass="hashMap" resultClass="Quote">
 		SELECT * FROM Quote q
 		<include refid="whereSql"/>
 		<include refid="pageSql"/>
 	</select>
 		
-	<select id="com.jyams.project.dao.QuoteDao.listQuotes.Count" 
+	<select id="QuoteDao.listQuotes.Count" 
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1) FROM Quote q
 		<include refid="whereSql"/>
 		<include refid="pageSql"/>
 	</select>	
 	
-	<select id="com.jyams.project.dao.QuoteDao.getMaxVersion" 
+	<select id="QuoteDao.getMaxVersion" 
 		parameterClass="long" resultClass="int">
 		SELECT MAX(version) FROM Quote
 		WHERE quoteId = #value#
 	</select>
 	
-	<select id="com.jyams.project.dao.QuoteDao.listIds" resultClass="Quote">
+	<select id="QuoteDao.listIds" resultClass="Quote">
 		SELECT quoteId, version FROM Quote
 	</select>
 

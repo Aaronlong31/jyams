@@ -17,7 +17,7 @@ public class DepartmentDao extends IBatisEntityDao<Department> {
         Map<String, Object> map = Maps.newHashMap();
         map.put("salaryType", salaryType);
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.project.dao.DepartmentDao.getWithPersons", map);
+                "DepartmentDao.getWithPersons", map);
     }
 
 }

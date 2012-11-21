@@ -37,7 +37,7 @@
 		</dynamic>
 	</sql>
 
-	<insert id="com.jyams.hr.model.ClientPrincipal.insert" 
+	<insert id="ClientPrincipal.insert" 
 		parameterClass="ClientPrincipal">
 		INSERT INTO ClientPrincipal
 		(
@@ -49,7 +49,7 @@
 		)
 	</insert>
 	
-	<select id="com.jyams.hr.model.ClientPrincipal.select" 
+	<select id="ClientPrincipal.select" 
 		parameterClass="long" resultClass="ClientPrincipal">
 		SELECT * FROM 	ClientPrincipal
 		<isNotNull property="value" prepend="WHERE">
@@ -57,27 +57,27 @@
 		</isNotNull>
 	</select>
 	
-	<select id="com.jyams.hr.model.ClientPrincipal.selectByMap" 
+	<select id="ClientPrincipal.selectByMap" 
 		parameterClass="hashMap" resultClass="ClientPrincipal">
 		SELECT * FROM ClientPrincipal
 		<include refid="whereSql"/>
 		ORDER BY priority DESC 
 	</select>
 	
-	<select id="com.jyams.hr.dao.ClientPrincipalDao.listClientPrincipals"
+	<select id="ClientPrincipalDao.listClientPrincipals"
 		parameterClass="hashMap" resultClass="ClientPrincipal">
 		SELECT * FROM ClientPrincipal
 		<include refid="whereSql"/>
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.hr.dao.ClientPrincipalDao.listClientPrincipals.Count"
+	<select id="ClientPrincipalDao.listClientPrincipals.Count"
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1) FROM ClientPrincipal
 		<include refid="whereSql"/>
 	</select>
 	
-	<update id="com.jyams.hr.model.ClientPrincipal.update" 
+	<update id="ClientPrincipal.update" 
 		parameterClass="ClientPrincipal">
 		UPDATE ClientPrincipal SET
 				name = #name#,
@@ -86,7 +86,7 @@
 		WHERE clientPrincipalId = #clientPrincipalId#
 	</update>
 	
-	<update id="com.jyams.hr.dao.ClientPrincipalDao.addPriority" 
+	<update id="ClientPrincipalDao.addPriority" 
 		parameterClass="long">
 		UPDATE ClientPrincipal SET priority = priority + 1 
 		WHERE clientPrincipalId = #value#

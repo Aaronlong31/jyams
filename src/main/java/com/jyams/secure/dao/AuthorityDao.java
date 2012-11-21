@@ -13,12 +13,11 @@ import com.jyams.util.dao.IBatisEntityDao;
 public class AuthorityDao extends IBatisEntityDao<Authority> {
 
     public List<Module> getModules() {
-        return getSqlMapClientTemplate().queryForList(
-                "com.jyams.secure.dao.AuthorityDao.getModule");
+        return getSqlMapClientTemplate().queryForList("AuthorityDao.getModule");
     }
 
     public List<Module> getModuleWithAuthority() {
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.secure.dao.AuthorityDao.getModuleWithAuthority");
+                "AuthorityDao.getModuleWithAuthority");
     }
 }

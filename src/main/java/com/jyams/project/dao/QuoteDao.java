@@ -26,13 +26,12 @@ public class QuoteDao extends IBatisEntityDao<Quote> {
         map.put("attnName", attnName);
         map.put("startTimestamp", startTimestamp);
         map.put("endTimestamp", endTimestamp);
-        return pagedQuery("com.jyams.project.dao.QuoteDao.listQuotes", map,
-                pageNo, pageSize);
+        return pagedQuery("QuoteDao.listQuotes", map, pageNo, pageSize);
     }
 
     public int getNextVersion(long quoteId) {
         Integer version = (Integer) getSqlMapClientTemplate().queryForObject(
-                "com.jyams.project.dao.QuoteDao.getMaxVersion", quoteId);
+                "QuoteDao.getMaxVersion", quoteId);
         if (version == null) {
             return 'A';
         }
@@ -40,7 +39,6 @@ public class QuoteDao extends IBatisEntityDao<Quote> {
     }
 
     public List<Quote> listIds() {
-        return getSqlMapClientTemplate().queryForList(
-                "com.jyams.project.dao.QuoteDao.listIds");
+        return getSqlMapClientTemplate().queryForList("QuoteDao.listIds");
     }
 }

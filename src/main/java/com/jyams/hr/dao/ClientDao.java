@@ -15,20 +15,18 @@ import com.jyams.util.dao.IBatisEntityDao;
 public class ClientDao extends IBatisEntityDao<Client> {
 
     public int addClientPriority(long clientId) {
-        return getSqlMapClientTemplate().update(
-                "com.jyams.hr.dao.ClientDao.addClientPriority", clientId);
+        return getSqlMapClientTemplate().update("ClientDao.addClientPriority",
+                clientId);
     }
 
     public List<Client> getClients() {
-        return getSqlMapClientTemplate().queryForList(
-                "com.jyams.hr.dao.ClientDao.getClients");
+        return getSqlMapClientTemplate().queryForList("ClientDao.getClients");
     }
 
     public DataPage<Client> listClients(String clientNameLike, Integer pageNo,
             Integer pageSize) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("clientNameLike", clientNameLike);
-        return pagedQuery("com.jyams.hr.dao.ClientDao.listClients", map,
-                pageNo, pageSize);
+        return pagedQuery("ClientDao.listClients", map, pageNo, pageSize);
     }
 }

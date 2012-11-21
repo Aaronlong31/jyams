@@ -39,43 +39,43 @@
 		</dynamic>
 	</sql>
 	
-	<insert id="com.jyams.secure.model.User.insert" parameterClass="User">
+	<insert id="User.insert" parameterClass="User">
 		INSERT INTO User VALUES (
 			#userId#, #username#, #password#, #status#
 		)
 	</insert>
 
-	<insert id="com.jyams.secure.dao.UserDao.insertUserAuthorities" parameterClass="hashMap">
+	<insert id="UserDao.insertUserAuthorities" parameterClass="hashMap">
 		INSERT INTO User_Authority VALUES 
 		<iterate property="authorities" conjunction=",">
 			(#userId#, #authorities[].authorityId#)
 		</iterate>
 	</insert>
 
-	<select id="com.jyams.secure.model.User.select" parameterClass="long" resultClass="User">
+	<select id="User.select" parameterClass="long" resultClass="User">
 		SELECT * FROM User 
 		<isNotNull property="value" prepend="WHERE">
 			userId = #value#
 		</isNotNull>
 	</select>
 	
-	<select id="com.jyams.secure.model.User.selectByMap" parameterClass="hashMap" resultClass="User">
+	<select id="User.selectByMap" parameterClass="hashMap" resultClass="User">
 		SELECT * FROM User 
 		<include refid="whereSql"/>
 	</select>
 	
-	<select id="com.jyams.secure.dao.UserDao.listUsers" parameterClass="hashMap" resultClass="User">
+	<select id="UserDao.listUsers" parameterClass="hashMap" resultClass="User">
 		SELECT * FROM User
 		<include refid="whereSql"/>
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.secure.dao.UserDao.listUsers.Count" parameterClass="hashMap" resultClass="int">
+	<select id="UserDao.listUsers.Count" parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1) FROM User
 		<include refid="whereSql"/>
 	</select>
 	
-	<select id="com.jyams.secure.dao.UserDao.findUserByUsername" 
+	<select id="UserDao.findUserByUsername" 
 		parameterClass="string" resultMap="UserMap">
 		SELECT u.username, u.password, u.userId, u.status, a.* 
 		FROM User u
@@ -86,7 +86,7 @@
 		WHERE u.username = #value#
 	</select>
 	
-	<update id="com.jyams.secure.model.User.update" parameterClass="User">
+	<update id="User.update" parameterClass="User">
 		UPDATE User SET 
 			status=#status#
 			<isNotEmpty property="password" prepend=",">
@@ -95,16 +95,16 @@
 		WHERE userId = #userId#
 	</update>
 		
-	<update id="com.jyams.secure.dao.UserDao.resetPassword" parameterClass="hashMap">
+	<update id="UserDao.resetPassword" parameterClass="hashMap">
 		UPDATE User SET password = #password# WHERE userId = #userId#
 	</update>	
 	
-	<delete id="com.jyams.secure.dao.UserDao.deleteUserAuthority" 
+	<delete id="UserDao.deleteUserAuthority" 
 		parameterClass="long">
 		DELETE FROM User_Authority WHERE userId = #value#
 	</delete>
 	
-	<delete id="com.jyams.secure.model.User.deleteByPrimaryKey" parameterClass="long">
+	<delete id="User.deleteByPrimaryKey" parameterClass="long">
 		DELETE FROM User WHERE userId = #value#
 	</delete>
 </sqlMap>

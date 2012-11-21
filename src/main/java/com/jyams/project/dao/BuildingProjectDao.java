@@ -31,9 +31,8 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("orderString", orderString);
         map.put("status", status);
         map.put("hidden", hidden);
-        return pagedQuery(
-                "com.jyams.project.dao.BuildingProjectDao.listBuildingProject",
-                map, pageNo, pageSize);
+        return pagedQuery("BuildingProjectDao.listBuildingProject", map,
+                pageNo, pageSize);
     }
 
     /**
@@ -45,8 +44,8 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("personId", personId);
         map.put("personName", personName);
         map.put("invoiceTimestamp", System.currentTimeMillis());
-        return getSqlMapClientTemplate().update(
-                "com.jyams.project.dao.BuildingProjectDao.invoice", map);
+        return getSqlMapClientTemplate().update("BuildingProjectDao.invoice",
+                map);
     }
 
     /**
@@ -58,9 +57,8 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("completionTimestamp", System.currentTimeMillis());
         map.put("personId", personId);
         map.put("personName", personName);
-        return getSqlMapClientTemplate()
-                .update("com.jyams.project.dao.BuildingProjectDao.completeProject",
-                        map);
+        return getSqlMapClientTemplate().update(
+                "BuildingProjectDao.completeProject", map);
     }
 
     /**
@@ -76,7 +74,7 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("status", status);
         map.put("changeType", changeType);
         return getSqlMapClientTemplate().update(
-                "com.jyams.project.dao.BuildingProjectDao.updateStatus", map);
+                "BuildingProjectDao.updateStatus", map);
     }
 
     /**
@@ -88,23 +86,21 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("projectId", projectId);
         map.put("actualCost", actualCost);
         map.put("status", status);
-        getSqlMapClientTemplate()
-                .update("com.jyams.project.dao.BuildingProjectDao.updateAcualCostAndStatus",
-                        map);
+        getSqlMapClientTemplate().update(
+                "BuildingProjectDao.updateAcualCostAndStatus", map);
     }
 
     public List<Long> listProjectIds(Integer status) {
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.project.dao.BuildingProjectDao.listProjectIds",
-                status);
+                "BuildingProjectDao.listProjectIds", status);
     }
 
     /**
      * 检查延迟项目
      */
     public void checkDelayProject() {
-        getSqlMapClientTemplate().update(
-                "com.jyams.project.dao.BuildingProjectDao.checkDelayProject");
+        getSqlMapClientTemplate()
+                .update("BuildingProjectDao.checkDelayProject");
     }
 
     /**
@@ -118,7 +114,7 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("timestamp", System.currentTimeMillis());
         try {
             return getSqlMapClientTemplate().update(
-                    "com.jyams.project.dao.BuildingProjectDao.collection", map);
+                    "BuildingProjectDao.collection", map);
         } catch (DataAccessException e) {
             throw e;
         }
@@ -131,7 +127,7 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("personName", personName);
         map.put("invoiceTimestamp", System.currentTimeMillis());
         return getSqlMapClientTemplate().update(
-                "com.jyams.project.dao.BuildingProjectDao.clearInvoice", map);
+                "BuildingProjectDao.clearInvoice", map);
     }
 
     public int clearCollection(long projectId, long personId, String personName) {
@@ -140,8 +136,7 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("personId", personId);
         map.put("personName", personName);
         map.put("invoiceTimestamp", System.currentTimeMillis());
-        return getSqlMapClientTemplate()
-                .update("com.jyams.project.dao.BuildingProjectDao.clearCollection",
-                        map);
+        return getSqlMapClientTemplate().update(
+                "BuildingProjectDao.clearCollection", map);
     }
 }

@@ -16,12 +16,10 @@ public class MultiDayDao extends IBatisEntityDao<MultiDay> {
         Map<String, Object> map = Maps.newHashMap();
         map.put("days", days);
         map.put("times", times);
-        getSqlMapClientTemplate().insert(
-                "com.jyams.hr.dao.MultiDayDao.insertAll", map);
+        getSqlMapClientTemplate().insert("MultiDayDao.insertAll", map);
     }
 
     public void deleteAll() {
-        getSqlMapClientTemplate().delete(
-                "com.jyams.hr.dao.MultiDayDao.deleteAll");
+        getSqlMapClientTemplate().delete("MultiDayDao.deleteAll");
     }
 }

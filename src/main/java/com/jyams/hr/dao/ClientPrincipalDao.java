@@ -15,8 +15,7 @@ public class ClientPrincipalDao extends IBatisEntityDao<ClientPrincipal> {
 
     public int addPriority(long clientPrincipalId) {
         return getSqlMapClientTemplate().update(
-                "com.jyams.hr.dao.ClientPrincipalDao.addPriority",
-                clientPrincipalId);
+                "ClientPrincipalDao.addPriority", clientPrincipalId);
     }
 
     public DataPage<ClientPrincipal> listClientPrincipals(Long clientId,
@@ -26,9 +25,8 @@ public class ClientPrincipalDao extends IBatisEntityDao<ClientPrincipal> {
         map.put("clientId", clientId);
         map.put("clientNameLike", clientNameLike);
         map.put("clientPrincipalNameLike", clientPrincipalNameLike);
-        return pagedQuery(
-                "com.jyams.hr.dao.ClientPrincipalDao.listClientPrincipals",
-                map, pageNo, pageSize);
+        return pagedQuery("ClientPrincipalDao.listClientPrincipals", map,
+                pageNo, pageSize);
     }
 
 }

@@ -65,7 +65,7 @@
 		</dynamic>
 	</sql>
 	
-	<insert id="com.jyams.purchase.model.Purchase.insert" parameterClass="Purchase">
+	<insert id="Purchase.insert" parameterClass="Purchase">
 		INSERT INTO Purchase
 		(
 			purchaseId, purchaseNo, version, status, 
@@ -87,7 +87,7 @@
 		)
 	</insert>
 	
-	<select id="com.jyams.purchase.model.Purchase.select" 
+	<select id="Purchase.select" 
 		parameterClass="long" resultMap="PurchaseMap">
 		SELECT * FROM Purchase p LEFT JOIN PurchaseItem pi
 		ON p.purchaseId = pi.purchaseId
@@ -149,7 +149,7 @@
 	</sql>
 	 
 	 <!-- 分页查询 -->
-	<select id="com.jyams.purchase.manager.PurchaseQuery.pageQuery" 
+	<select id="PurchaseQuery.pageQuery" 
 		parameterClass="PurchaseQuery" resultClass="Purchase">
 		SELECT * FROM Purchase
 		<include refid="pageQueryWhere"/>
@@ -157,20 +157,20 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.purchase.manager.PurchaseQuery.pageQuery.Count" 
+	<select id="PurchaseQuery.pageQuery.Count" 
 		parameterClass="PurchaseQuery" resultClass="int">
 		SELECT COUNT(1) FROM Purchase
 		<include refid="pageQueryWhere"/>
 	</select>
 	
 	<!-- 修改采购单状态 -->
-	<update id="com.jyams.purchase.dao.PurchaseDaoIbatis.modifyStatus" 
+	<update id="PurchaseDaoIbatis.modifyStatus" 
 		parameterClass="hashMap">
 		UPDATE Purchase SET status = #status# WHERE purchaseId = #purchaseId#	
 	</update>
 	
 	<!-- 审批采购单 -->
-	<update id="com.jyams.purchase.dao.PurchaseDaoIbatis.approvePurchase" 
+	<update id="PurchaseDaoIbatis.approvePurchase" 
 		parameterClass="hashMap">
 		UPDATE Purchase SET 
 			status = #status#,
@@ -181,7 +181,7 @@
 		WHERE purchaseId = #purchaseId#
 	</update>
 	
-	<update id="com.jyams.purchase.model.Purchase.update" parameterClass="Purchase">
+	<update id="Purchase.update" parameterClass="Purchase">
 		UPDATE Purchase SET
 			arrivalDate = #arrivalDate#,
 			deliveryAddress = #deliveryAddress#,
@@ -191,7 +191,7 @@
 	</update>
 	
 	<!-- 提交采购单草稿 -->
-	<update id="com.jyams.purchase.dao.PurchaseDaoIbatis.submitDraft"
+	<update id="PurchaseDaoIbatis.submitDraft"
 		parameterClass="Purchase">
 		UPDATE Purchase SET
 			purchaseNo = #purchaseNo#,

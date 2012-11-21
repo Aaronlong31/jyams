@@ -27,6 +27,7 @@ td.td_first{
 		</div>
 	</div>
 	<hr/>
+	<div id="message" class="alert alert-success">${message}</div>
 	<table class="table table-striped table-condensed">
 		<tr>
 			<td class="td_first">项目编号:</td>
@@ -50,7 +51,7 @@ td.td_first{
 			<td class="td_first">施工地点:</td>
 			<td>${project.constructPlace}</td>
 			<td class="td_first">出订单日:</td>
-			<td>${project.orderDate }</td>
+			<td>${project.orderDateString }</td>
 		</tr>
 		<tr>
 			<td class="td_first">订单编号:</td>
@@ -60,27 +61,30 @@ td.td_first{
 		</tr>
 		<tr>
 			<td class="td_first">要求完工日:</td>
-			<td>${project.requiredCompletionDate}</td>
+			<td>${project.requiredCompletionDateString}</td>
 			<td class="td_first">可延后时间:</td>
 			<td>${project.canDelayDay}天</td>
 		</tr>
 		<tr>
 			<td class="td_first">创建者:</td>
 			<td>${project.creatorName}</td>
-			<td class="td_first">创建时戳:</td>
-			<td class="timestamp">${project.createdTimestamp}</td>
+			<td class="td_first">创建时间:</td>
+			<td class="timestamp">${project.createdTimeString}</td>
 		</tr>
 		<tr>
 			<td class="td_first">最后修改人姓名:</td>
 			<td>${project.lastModifierName}</td>
 			<td class="td_first">最后修改时间:</td>
-			<td class="timestamp">${project.lastModifiedTimestamp}</td>
+			<td class="timestamp">${project.lastModifiedTimeString}</td>
 		</tr>
 	</table>
 </div>
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){
+		if($("#message").text() == ""){
+			$("#message").hide();
+		}
 		$("#modifyProjectBtn").click(function(){
 			location="input.action?projectId=${project.projectId}";
 		});

@@ -28,7 +28,7 @@ public class SalaryDao extends IBatisEntityDao<Salary> {
      */
     public List<MonthlySalary> listMonthlySalary(int month) {
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.project.dao.SalaryDao.listMonthlySalary", month);
+                "SalaryDao.listMonthlySalary", month);
     }
 
     /**
@@ -41,7 +41,7 @@ public class SalaryDao extends IBatisEntityDao<Salary> {
         hashMap.put("personId", personId);
         hashMap.put("month", month);
         return getSqlMapClientTemplate().queryForList(
-                "com.jyams.project.dao.SalaryDao.listDailySalary", hashMap);
+                "SalaryDao.listDailySalary", hashMap);
     }
 
 }

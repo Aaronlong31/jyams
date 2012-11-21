@@ -39,7 +39,7 @@
 				<div class="control-group">
 					<label class="control-label" for="projectName">项目名称<span class="red_star">*</span></label>
 					<div class="controls">
-						<input type="text" class="input-big" id="projectName" name="projectName">
+						<input type="text" class="input-big" id="projectName" name="projectName" value="${projectName }">
 					</div>
 				</div>
 			</td>
@@ -135,7 +135,7 @@
 				<div class="control-group">
 					<label class="control-label" for="orderContent">订单内容<span class="red_star">*</span></label>
 					<div class="controls">
-						<textarea name="project.orderContent" id="orderContent" style="width: 500px;" ></textarea>
+						<textarea name="orderContent" id="orderContent" style="width: 500px;" ></textarea>
 					</div>
 				</div>
 				

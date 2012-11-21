@@ -30,10 +30,13 @@ public class ProjectManagerImpl implements ProjectManager {
 
     @Autowired
     private ProjectDao projectDao;
+
     @Autowired
     private ClientManager clientManager;
+
     @Autowired
     private BuildingProjectManager buildingProjectManager;
+
     @Autowired
     private PersonCache personCache;
 
@@ -125,36 +128,4 @@ public class ProjectManagerImpl implements ProjectManager {
         return projectDao.pageQueryBasic(projectQuery);
     }
 
-    public static String getOrderBySql(Integer order) {
-        StringBuilder orderBySql = new StringBuilder(" ORDER BY ");
-        String orderColumn = "";
-        order = (order == null) ? 0 : order;
-        switch (order & 0X000F) {
-        case ORDER_ACTUAL_COST:
-            orderColumn = "actualCost";
-            break;
-        case ORDER_CAN_DELAY_DAY:
-            orderColumn = "canDelayDay";
-            break;
-        case ORDER_CONTRACT_PRICE:
-            orderColumn = "contractPrice";
-            break;
-        case ORDER_CREATEDTIMESTAMP:
-            orderColumn = "createdTimestamp";
-            break;
-        case ORDER_ESTIMATE_COST:
-            orderColumn = "estimateCost";
-            break;
-        case ORDER_REQUIRED_COMPLETION_DATE:
-            orderColumn = "requiredCompletionDate";
-            break;
-        default:
-            return " ";
-        }
-        orderBySql.append(orderColumn);
-        if ((order & ORDER_DESC) == ORDER_DESC) {
-            orderBySql.append(" DESC ");
-        }
-        return orderBySql.toString();
-    }
 }

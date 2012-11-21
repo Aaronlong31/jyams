@@ -17,7 +17,7 @@
 		<result property="persons" resultMap="Department.PersonMap"/>
 	</resultMap>
 	
-	<insert id="com.jyams.hr.model.Department.insert" parameterClass="Department">
+	<insert id="Department.insert" parameterClass="Department">
 		INSERT INTO Department
 		(
 			departmentId, departmentName, superId, 
@@ -30,7 +30,7 @@
 		)
 	</insert>
 	
-	<select id="com.jyams.hr.model.Department.select" parameterClass="long"
+	<select id="Department.select" parameterClass="long"
 		resultClass="Department">
 		SELECT * FROM Department
 		<isNotNull property="value" prepend="WHERE">
@@ -38,7 +38,7 @@
 		</isNotNull>	
 	</select>
 	
-	<select id="com.jyams.project.dao.DepartmentDao.getWithPersons" 
+	<select id="DepartmentDao.getWithPersons" 
 		parameterClass="hashMap"
 		resultMap="DepartmentWithPersonMap">
 		SELECT d.departmentId, d.departmentName,
@@ -51,7 +51,7 @@
 		</isNotNull>
 	</select>
 	
-	<update id="com.jyams.hr.model.Department.update" parameterClass="Department">
+	<update id="Department.update" parameterClass="Department">
 		UPDATE Department SET
 				departmentName = #departmentName#,
 				superId = #superId#,
@@ -60,7 +60,7 @@
 		WHERE departmentId = #departmentId#
 	</update>
 	
-	<delete id="com.jyams.hr.model.Department.deleteByPrimaryKey" parameterClass="long">
+	<delete id="Department.deleteByPrimaryKey" parameterClass="long">
 		DELETE FROM Department WHERE departmentId = #departmentId#
 	</delete>
 </sqlMap>

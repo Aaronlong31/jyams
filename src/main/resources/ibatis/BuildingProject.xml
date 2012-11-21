@@ -87,7 +87,7 @@
 	</sql>
 	
 	<!-- 插入在建项目 -->
-	<insert id="com.jyams.project.model.BuildingProject.insert" 
+	<insert id="BuildingProject.insert" 
 		parameterClass="BuildingProject">
 		INSERT INTO BuildingProject
 		(
@@ -104,7 +104,7 @@
 	</insert>
 	
 	<!-- 查找在建项目，包含项目 -->
-	<select id="com.jyams.project.model.BuildingProject.select" 
+	<select id="BuildingProject.select" 
 		parameterClass="long"
 		resultMap="BuildingProjectResultMap">
 		SELECT * FROM BuildingProject bp
@@ -115,7 +115,7 @@
 	</select>
 	
 	<!-- 查询符合条件的在建项目，包含项目 -->
-	<select id="com.jyams.project.dao.BuildingProjectDao.listBuildingProject" 
+	<select id="BuildingProjectDao.listBuildingProject" 
 		parameterClass="hashMap" resultMap="BuildingProjectResultMap">
 		SELECT * FROM BuildingProject bp
 		LEFT JOIN Project p ON bp.projectId = p.projectId
@@ -125,7 +125,7 @@
 	</select>
 	
 	<!-- 查询符合条件的在建项目个数 -->
-	<select id="com.jyams.project.dao.BuildingProjectDao.listBuildingProject.Count" 
+	<select id="BuildingProjectDao.listBuildingProject.Count" 
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1) FROM BuildingProject bp
 		LEFT JOIN Project p ON bp.projectId = p.projectId
@@ -133,7 +133,7 @@
 	</select>
 	
 	<!-- 根据状态获取项目标识 -->
-	<select id="com.jyams.project.dao.BuildingProjectDao.listProjectIds" 
+	<select id="BuildingProjectDao.listProjectIds" 
 		parameterClass="Integer" resultClass="string">
 		SELECT projectId FROM BuildingProject
 		<isNotNull property="value" prepend="WHERE">
@@ -202,7 +202,7 @@
 	</select>
 	
 	<!-- 修改在建项目 -->
-	<update id="com.jyams.project.model.BuildingProject.update" parameterClass="BuildingProject">
+	<update id="BuildingProject.update" parameterClass="BuildingProject">
 		UPDATE BuildingProject SET 
 			estimateCost = #estimateCost#,
 			contractPrice = #contractPrice#,
@@ -215,7 +215,7 @@
 	</update>
 	
 	<!-- 开票 -->
-	<update id="com.jyams.project.dao.BuildingProjectDao.invoice" parameterClass="hashMap">
+	<update id="BuildingProjectDao.invoice" parameterClass="hashMap">
 		UPDATE BuildingProject SET 
 			invoiceTimestamp = #invoiceTimestamp#,
 			invoicerId = #personId#,
@@ -228,7 +228,7 @@
 	</update>
 	
 	<!-- 取消开票 -->
-	<update id="com.jyams.project.dao.BuildingProjectDao.clearInvoice" parameterClass="hashMap">
+	<update id="BuildingProjectDao.clearInvoice" parameterClass="hashMap">
 		UPDATE BuildingProject SET 
 			invoiceTimestamp = null,
 			invoicerId = null,
@@ -241,7 +241,7 @@
 	</update>
 	
 	<!-- 收款 -->
-	<update id="com.jyams.project.dao.BuildingProjectDao.collection" parameterClass="hashMap">
+	<update id="BuildingProjectDao.collection" parameterClass="hashMap">
 		UPDATE BuildingProject SET
 			status = status | 64,
 			payeeId = #personId#,
@@ -254,7 +254,7 @@
 	</update>
 	
 	<!-- 取消收款 -->
-	<update id="com.jyams.project.dao.BuildingProjectDao.clearCollection" parameterClass="hashMap">
+	<update id="BuildingProjectDao.clearCollection" parameterClass="hashMap">
 		UPDATE BuildingProject SET
 			status = status &amp; ~64,
 			payeeId = null,
@@ -267,7 +267,7 @@
 	</update>
 	
 	<!-- 完工 -->
-	<update id="com.jyams.project.dao.BuildingProjectDao.completeProject" parameterClass="hashMap">
+	<update id="BuildingProjectDao.completeProject" parameterClass="hashMap">
 		UPDATE BuildingProject SET 
 			completionTimestamp = #completionTimestamp#,
 			completionPersonId = #personId#,
@@ -280,7 +280,7 @@
 	</update>
 	
 	<!-- 增加实际成本和修改状态 -->
-	<update id="com.jyams.project.dao.BuildingProjectDao.updateAcualCostAndStatus" 
+	<update id="BuildingProjectDao.updateAcualCostAndStatus" 
 		parameterClass="hashMap">
 		UPDATE BuildingProject
 		SET actualCost = #actualCost#,
@@ -289,7 +289,7 @@
 	</update>
 
 	<!-- 修改状态 -->		
-	<update id="com.jyams.project.dao.BuildingProjectDao.updateStatus" parameterClass="hashMap">
+	<update id="BuildingProjectDao.updateStatus" parameterClass="hashMap">
 		UPDATE BuildingProject
 		SET 
 		<isEqual property="changeType" compareValue="ADD">
@@ -308,7 +308,7 @@
 	</update>
 	
 	<!-- 检查延迟项目 -->
-	<update id="com.jyams.project.dao.BuildingProjectDao.checkDelayProject">
+	<update id="BuildingProjectDao.checkDelayProject">
 		UPDATE BuildingProject bp SET status = status | 2 
 		WHERE (status &amp; 1 = 1) 
 		AND CURRENT_DATE > (

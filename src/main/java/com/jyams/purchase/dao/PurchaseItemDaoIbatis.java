@@ -26,8 +26,7 @@ public class PurchaseItemDaoIbatis extends IBatisEntityDao<PurchaseItem> {
         map.put("purchaseId", purchaseId);
         map.put("status", status);
         return getSqlMapClientTemplate().update(
-                "com.jyams.purchase.dao.PurchaseItemDaoIbatis.modifyStatus",
-                map);
+                "PurchaseItemDaoIbatis.modifyStatus", map);
     }
 
     /**
@@ -41,9 +40,8 @@ public class PurchaseItemDaoIbatis extends IBatisEntityDao<PurchaseItem> {
         Map<String, Object> map = Maps.newHashMap();
         map.put("purchaseItemId", purchaseItemId);
         map.put("status", status);
-        return getSqlMapClientTemplate()
-                .update("com.jyams.purchase.dao.PurchaseItemDaoIbatis.modifySingleStatus",
-                        map);
+        return getSqlMapClientTemplate().update(
+                "PurchaseItemDaoIbatis.modifySingleStatus", map);
     }
 
     /**
@@ -56,9 +54,8 @@ public class PurchaseItemDaoIbatis extends IBatisEntityDao<PurchaseItem> {
         Map<String, Object> map = Maps.newHashMap();
         map.put("purchaseItemIds", purchaseItemIds);
         map.put("status", status);
-        getSqlMapClientTemplate()
-                .update("com.jyams.purchase.dao.PurchaseItemDaoIbatis.batchModifyStatus",
-                        map);
+        getSqlMapClientTemplate().update(
+                "PurchaseItemDaoIbatis.batchModifyStatus", map);
     }
 
     /**
@@ -67,8 +64,7 @@ public class PurchaseItemDaoIbatis extends IBatisEntityDao<PurchaseItem> {
      * @param purchaseItem
      */
     public int review(PurchaseItem purchaseItem) {
-        return getSqlMapClientTemplate().update(
-                "com.jyams.purchase.dao.PurchaseItemDaoIbatis.review",
+        return getSqlMapClientTemplate().update("PurchaseItemDaoIbatis.review",
                 purchaseItem);
     }
 
@@ -87,7 +83,6 @@ public class PurchaseItemDaoIbatis extends IBatisEntityDao<PurchaseItem> {
         map.put("purchaseTimestamp", System.currentTimeMillis());
         map.put("userId", userId);
         map.put("userName", userName);
-        getSqlMapClientTemplate().update(
-                "com.jyams.purchase.dao.PurchaseItemDaoIbatis.arrive", map);
+        getSqlMapClientTemplate().update("PurchaseItemDaoIbatis.arrive", map);
     }
 }

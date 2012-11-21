@@ -31,7 +31,7 @@
 			</isNotNull>
 		</dynamic>
 	</sql>
-	<insert id="com.jyams.project.model.DispatchWork.insert" 
+	<insert id="DispatchWork.insert" 
 		parameterClass="DispatchWork">
 		INSERT INTO DispatchWork
 		(
@@ -43,7 +43,7 @@
 		)
 	</insert>
 	
-	<insert id="com.jyams.project.model.DispatchWork.batchInsert" 
+	<insert id="DispatchWork.batchInsert" 
 		parameterClass="hashMap">
 		INSERT INTO DispatchWork
 		(
@@ -61,7 +61,7 @@
 		</iterate>
 	</insert>
 	
-	<select id="com.jyams.project.model.DispatchWork.select" 
+	<select id="DispatchWork.select" 
 		parameterClass="long" resultClass="DispatchWork">
 		SELECT * FROM DispatchWork
 		<isNotNull property="value" prepend="WHERE">
@@ -69,7 +69,7 @@
 		</isNotNull>	
 	</select>
 	
-	<select id="com.jyams.project.model.DispatchWork.selectByMap" 
+	<select id="DispatchWork.selectByMap" 
 		parameterClass="hashMap" resultMap="DispatchWorkMap">
 		SELECT dw.*, d.projectId, d.projectName, d.dispatchDay 
 		FROM DispatchWork	dw LEFT JOIN Dispatch d ON dw.dispatchId = d.dispatchId
@@ -77,7 +77,7 @@
 		ORDER BY dispatchDay
 	</select>
 	
-	<select id="com.jyams.project.dao.DispatchWorkDao.listDispatchWorks" 
+	<select id="DispatchWorkDao.listDispatchWorks" 
 		parameterClass="hashMap" resultMap="DispatchWorkMap">
 		SELECT dw.*, d.projectId, d.projectName, d.dispatchDay, d.dispatchType
 		FROM DispatchWork	dw LEFT JOIN Dispatch d ON dw.dispatchId = d.dispatchId
@@ -86,14 +86,14 @@
 		<include refid="Dispatch.pageSql"/>
 	</select>
 	
-	<select id="com.jyams.project.dao.DispatchWorkDao.listDispatchWorks.Count" 
+	<select id="DispatchWorkDao.listDispatchWorks.Count" 
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1)
 		FROM DispatchWork	dw LEFT JOIN Dispatch d ON dw.dispatchId = d.dispatchId
 		<include refid="Dispatch.whereSql"/>
 	</select>
 	
-	<select id="com.jyams.project.dao.DispatchWorkDao.checkDuplicateTime" 
+	<select id="DispatchWorkDao.checkDuplicateTime" 
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1) 
 		FROM Dispatch d LEFT JOIN DispatchWork dw ON d.dispatchId = dw.dispatchId
@@ -128,7 +128,7 @@
 		</dynamic>
 	</sql>
 	
-	<select id="com.jyams.project.manager.DispatchWorkQuery.pageQuery" 
+	<select id="DispatchWorkQuery.pageQuery" 
 		parameterClass="DispatchWorkQuery" resultMap="DispatchWorkMap">
 		SELECT dw.*, d.projectId, d.projectName, d.dispatchDay, d.dispatchType 
 		FROM Dispatch d LEFT JOIN DispatchWork dw
@@ -138,7 +138,7 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.project.manager.DispatchWorkQuery.pageQuery.Count" 
+	<select id="DispatchWorkQuery.pageQuery.Count" 
 		parameterClass="DispatchWorkQuery" resultClass="int">
 		SELECT COUNT(1) FROM Dispatch d LEFT JOIN DispatchWork dw
 		ON d.dispatchId = dw.dispatchId	

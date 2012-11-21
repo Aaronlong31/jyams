@@ -4,7 +4,7 @@
 <sqlMap namespace="QuoteItem">
 	<typeAlias alias="QuoteItem" type="com.jyams.project.model.QuoteItem" />
 
-	<insert id="com.jyams.project.model.QuoteItem.insert"
+	<insert id="QuoteItem.insert"
 		parameterClass="QuoteItem">
 		INSERT INTO QuoteItem
 		(
@@ -16,7 +16,7 @@
 		)
 	</insert>
 	
-	<delete id="com.jyams.project.model.QuoteItem.delete" 
+	<delete id="QuoteItem.delete" 
 		parameterClass="long">
 		DELETE FROM QuoteItem WHERE quoteItemId = #value#	
 	</delete>

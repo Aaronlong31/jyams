@@ -52,7 +52,7 @@
 		</dynamic>
 	</sql>
 	
-	<select id="com.jyams.hr.model.Client.select" parameterClass="long"
+	<select id="Client.select" parameterClass="long"
 		resultClass="Client">
 		SELECT * FROM Client
 		<isNotNull property="value" prepend="WHERE">
@@ -61,7 +61,7 @@
 		ORDER BY priority DESC
 	</select>
 	
-	<select id="com.jyams.hr.dao.ClientDao.getClients" resultMap="ClientMap">
+	<select id="ClientDao.getClients" resultMap="ClientMap">
 		SELECT c.clientId, c.clientName, cp.clientPrincipalId, cp.name
 		FROM Client c
 		LEFT JOIN ClientPrincipal cp
@@ -69,14 +69,14 @@
 		ORDER BY c.priority DESC , cp.priority DESC
 	</select>
 	
-	<select id="com.jyams.hr.model.Client.selectByMap" 
+	<select id="Client.selectByMap" 
 		parameterClass="hashMap" resultClass="Client">
 		SELECT * FROM Client 
 		<include refid="whereSql"/>
 		ORDER BY priority DESC
 	</select>
 	
-	<select id="com.jyams.hr.dao.ClientDao.listClients" 
+	<select id="ClientDao.listClients" 
 		parameterClass="hashMap" resultClass="Client">
 		SELECT * FROM Client 
 		<include refid="whereSql"/>
@@ -84,7 +84,7 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.hr.dao.ClientDao.listClients.Count" 
+	<select id="ClientDao.listClients.Count" 
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1) FROM Client 
 		<include refid="whereSql"/>
@@ -92,7 +92,7 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<insert id="com.jyams.hr.model.Client.insert" parameterClass="Client">
+	<insert id="Client.insert" parameterClass="Client">
 		INSERT INTO Client 
 		(
 			clientId, clientName, address, 
@@ -103,7 +103,7 @@
 		)
 	</insert>
 	
-	<update id="com.jyams.hr.model.Client.update" parameterClass="Client">
+	<update id="Client.update" parameterClass="Client">
 		UPDATE Client SET
 				clientName = #clientName#,
 				address = #address#,
@@ -113,11 +113,11 @@
 		WHERE clientId = #clientId#
 	</update>
 	
-	<update id="com.jyams.hr.dao.ClientDao.addClientPriority" parameterClass="long">
+	<update id="ClientDao.addClientPriority" parameterClass="long">
 		UPDATE Client SET priority = priority + 1 WHERE clientId = #value#
 	</update>
 	
-	<delete id="com.jyams.hr.model.Client.deleteByPrimaryKey" parameterClass="long">
+	<delete id="Client.deleteByPrimaryKey" parameterClass="long">
 		DELETE FROM Client WHERE clientId = #value#
 	</delete>
 	

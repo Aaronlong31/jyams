@@ -27,7 +27,7 @@
 		<result property="authorities" resultMap="Authority.AuthorityMap"/>
 	</resultMap>
 	
-	<select id="com.jyams.secure.model.Authority.select" 
+	<select id="Authority.select" 
 		parameterClass="long" resultClass="Authority">
 		SELECT * FROM Authority
 		<isNotNull property="value" prepend="WHERE">
@@ -35,7 +35,7 @@
 		</isNotNull>	
 	</select>
 	
-	<select id="com.jyams.secure.model.Authority.selectByMap" 
+	<select id="Authority.selectByMap" 
 		parameterClass="hashMap" resultClass="Authority">
 		SELECT a.* FROM Authority a
 		LEFT JOIN User_Authority ua ON a.authorityId = ua.authorityId
@@ -46,12 +46,12 @@
 		</dynamic>
 	</select>
 	
-	<select id="com.jyams.secure.dao.AuthorityDao.getModule" resultMap="SuperModuleMap">
+	<select id="AuthorityDao.getModule" resultMap="SuperModuleMap">
 		SELECT s.moduleId, s.moduleName, m.moduleId, m.moduleName 
 		FROM Module m right JOIN Module s ON m.superModuleId = s.moduleId
 	</select>
 	
-	<select id="com.jyams.secure.dao.AuthorityDao.getModuleWithAuthority" resultMap="ModuleAuthorityMap">
+	<select id="AuthorityDao.getModuleWithAuthority" resultMap="ModuleAuthorityMap">
 		SELECT a.authorityId, a.name,a.description, m.moduleId, m.moduleName 
 		FROM Module m RIGHT JOIN Authority a ON m.moduleId = a.moduleId;
 	</select>

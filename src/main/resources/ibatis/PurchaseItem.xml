@@ -23,7 +23,7 @@
 		</dynamic>
 	</sql>
 	
-	<insert id="com.jyams.purchase.model.PurchaseItem.insert" parameterClass="PurchaseItem">
+	<insert id="PurchaseItem.insert" parameterClass="PurchaseItem">
 		INSERT INTO PurchaseItem
 		(
 			purchaseItemId, projectId, projectName, purchaseId,  
@@ -40,28 +40,28 @@
 		)
 	</insert>
 	
-	<select id="com.jyams.purchase.model.PurchaseItem.select" 
+	<select id="PurchaseItem.select" 
 		parameterClass="long" resultClass="PurchaseItem">
 		SELECT * FROM PurchaseItem 
 		WHERE purchaseItemId = #value#
 	</select>
 	
 	<!-- 修改采购单的所有项的状态 -->
-	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.modifyStatus"
+	<update id="PurchaseItemDaoIbatis.modifyStatus"
 		parameterClass="hashMap">
 		UPDATE PurchaseItem SET status = #status# 
 		WHERE purchaseId = #purchaseId#	
 	</update>
 	
 	<!-- 修改采购单项的状态 -->
-	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.modifySingleStatus" 
+	<update id="PurchaseItemDaoIbatis.modifySingleStatus" 
 		parameterClass="hashMap">
 		UPDATE PurchaseItem SET status = #status# 
 		WHERE purchaseItemId = #purchaseItemId#	
 	</update>
 	
 	<!-- 修改多个采购单项的状态 -->
-	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.batchModifyStatus"
+	<update id="PurchaseItemDaoIbatis.batchModifyStatus"
 		parameterClass="hashMap">
 		UPDATE PurchaseItem SET status = #status#
 		WHERE purchaseItem IN
@@ -71,7 +71,7 @@
 	</update>
 	
 	<!-- 复核采购单项 -->
-	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.review"
+	<update id="PurchaseItemDaoIbatis.review"
 		parameterClass="PurchaseItem">
 		UPDATE PurchaseItem SET 
 			status = #status#,
@@ -87,7 +87,7 @@
 	</update>
 	
 	<!-- 确认到货 -->
-	<update id="com.jyams.purchase.dao.PurchaseItemDaoIbatis.arrive"
+	<update id="PurchaseItemDaoIbatis.arrive"
 		parameterClass="hashMap">
 		UPDATE PurchaseItem pi, Purchase p SET
 			pi.status = #status#,
@@ -98,7 +98,7 @@
 			AND purchaseItemId = #purchaseItemId#
 	</update>
 	
-	<update id="com.jyams.purchase.model.PurchaseItem.update" 
+	<update id="PurchaseItem.update" 
 		parameterClass="PurchaseItem">
 		UPDATE PurchaseItem SET
 			projectId = #projectId#,
@@ -111,7 +111,7 @@
 		WHERE purchaseItemId = #purchaseItemId#
 	</update>
 	
-	<delete id="com.jyams.purchase.model.PurchaseItem.deleteByPrimaryKey" 
+	<delete id="PurchaseItem.deleteByPrimaryKey" 
 		parameterClass="long">
 		DELETE FROM PurchaseItem WHERE purchaseItemId = #value#
 	</delete>

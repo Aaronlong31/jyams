@@ -15,7 +15,7 @@
 		</dynamic>
 	</sql>
 
-	<insert id="com.jyams.project.model.BuildingProjectDetail.insert"
+	<insert id="BuildingProjectDetail.insert"
 		parameterClass="BuildingProjectDetail">
 		INSERT INTO BuildingProjectDetail
 		(
@@ -29,7 +29,7 @@
 		)
 	</insert>
 
-	<select id="com.jyams.project.model.BuildingProjectDetail.select" 
+	<select id="BuildingProjectDetail.select" 
 		parameterClass="long" resultClass="BuildingProjectDetail">
 		SELECT * FROM BuildingProjectDetail
 		<isNotNull property="detailId" prepend="WHERE">
@@ -37,13 +37,13 @@
 		</isNotNull>
 	</select>
 	
-	<select id="com.jyams.project.model.BuildingProjectDetail.selectByMap" 
+	<select id="BuildingProjectDetail.selectByMap" 
 		parameterClass="hashMap" resultClass="BuildingProjectDetail">
 		SELECT * FROM BuildingProjectDetail
 		<include refid="selectByMapSql"/>	
 	</select>
 	
-	<delete id="com.jyams.project.dao.BuildingProjectDetailDao.removeByReferIdAndTypes"
+	<delete id="BuildingProjectDetailDao.removeByReferIdAndTypes"
 		parameterClass="hashMap">
 		DELETE FROM BuildingProjectDetail 
 		WHERE referId = #referId#

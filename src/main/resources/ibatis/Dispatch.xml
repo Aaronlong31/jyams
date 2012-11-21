@@ -76,7 +76,7 @@
 		</dynamic>
 	</sql>
 	
-	<insert id="com.jyams.project.model.Dispatch.insert" 
+	<insert id="Dispatch.insert" 
 		parameterClass="Dispatch">
 		INSERT INTO Dispatch
 		(
@@ -90,7 +90,7 @@
 		)
 	</insert>
 	
-	<select id="com.jyams.project.model.Dispatch.select" 
+	<select id="Dispatch.select" 
 		parameterClass="long" resultMap="DispatchMap">
 		SELECT * FROM Dispatch d LEFT JOIN DispatchWork dw
 		ON d.dispatchId = dw.dispatchId
@@ -99,14 +99,14 @@
 		</isNotNull>	
 	</select>
 	
-	<select id="com.jyams.project.model.Dispatch.selectByMap" 
+	<select id="Dispatch.selectByMap" 
 		parameterClass="hashMap" resultMap="DispatchMap">
 		SELECT * FROM Dispatch d LEFT JOIN DispatchWork dw
 		ON d.dispatchId = dw.dispatchId	
 		<include refid="whereSql"/>
 	</select>
 	
-	<select id="com.jyams.project.dao.DispatchDao.selectDispatchs" 
+	<select id="DispatchDao.selectDispatchs" 
 		parameterClass="hashMap" resultMap="DispatchMap">
 		SELECT * FROM Dispatch d LEFT JOIN DispatchWork dw
 		ON d.dispatchId = dw.dispatchId	
@@ -114,7 +114,7 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.project.dao.DispatchDao.selectDispatchs.Count" 
+	<select id="DispatchDao.selectDispatchs.Count" 
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1) FROM Dispatch d LEFT JOIN DispatchWork dw
 		ON d.dispatchId = dw.dispatchId		

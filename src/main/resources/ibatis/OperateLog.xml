@@ -43,7 +43,7 @@
 		</dynamic>
 	</sql>
 	
-	<select id="com.jyams.secure.model.OperateLog.select" 
+	<select id="OperateLog.select" 
 		parameterClass="long" resultClass="OperateLog">
 		SELECT * FROM OperateLog 
 		<isNotNull property="operateLogId" prepend="WHERE">
@@ -51,7 +51,7 @@
 		</isNotNull>
 	</select>
 	
-	<select id="com.jyams.secure.dao.OperateLogDao.listOperateLog" 
+	<select id="OperateLogDao.listOperateLog" 
 		parameterClass="hashMap" resultClass="OperateLog">
 		SELECT * FROM OperateLog
 		<include refid="whereSql"/>
@@ -59,13 +59,13 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.secure.dao.OperateLogDao.listOperateLog.Count" 
+	<select id="OperateLogDao.listOperateLog.Count" 
 		parameterClass="hashMap" resultClass="int">
 		SELECT COUNT(1) FROM OperateLog
 		<include refid="whereSql"/>
 	</select>
 	
-	<select id="com.jyams.secure.dao.OperateLogDao.listOperateLogForModel" 
+	<select id="OperateLogDao.listOperateLogForModel" 
 		parameterClass="hashMap" resultClass="OperateLog">
 		SELECT * FROM OperateLog
 		WHERE modelId = #modelId#
@@ -107,7 +107,7 @@
 	</sql>
 	 
 	 <!-- 分页查询 -->
-	<select id="com.jyams.secure.manager.OperateLogQuery.pageQuery" 
+	<select id="OperateLogQuery.pageQuery" 
 		parameterClass="OperateLogQuery" resultClass="OperateLog">
 		SELECT * FROM OperateLog
 		<include refid="pageQueryWhere"/>
@@ -115,7 +115,7 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.secure.manager.OperateLogQuery.pageQuery.Count" 
+	<select id="OperateLogQuery.pageQuery.Count" 
 		parameterClass="OperateLogQuery" resultClass="int">
 		SELECT COUNT(1) FROM OperateLog
 		<include refid="pageQueryWhere"/>
