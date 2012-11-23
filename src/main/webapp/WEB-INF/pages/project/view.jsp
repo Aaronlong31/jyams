@@ -22,17 +22,18 @@ td.td_first{
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container">
-				<h4>项目详情</h4>
+				<h4>施工流程详情</h4>
 			</div>
 		</div>
 	</div>
 	<hr/>
+	<a class="btn btn-warning" href="${ctx}/project/toEdit/${project.projectId}">修改施工流程</a>
 	<div id="message" class="alert alert-success">${message}</div>
 	<table class="table table-striped table-condensed">
 		<tr>
-			<td class="td_first">项目编号:</td>
+			<td class="td_first">施工流程编号:</td>
 			<td>${project.projectId }</td>
-			<td class="td_first">项目名称:</td>
+			<td class="td_first">施工流程名称:</td>
 			<td>${project.projectName}</td>
 		</tr>
 		<tr>
