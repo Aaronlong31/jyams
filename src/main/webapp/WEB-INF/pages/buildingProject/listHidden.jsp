@@ -21,7 +21,7 @@
 <body>
 <div class="container">
 	<div id="projectDiv">
-		<table id="projectList" title="在建项目列表"></table>
+		<table id="projectList" title="施工流程列表"></table>
 		<div id="projectPager"></div>
 	</div>
 </div>
@@ -56,7 +56,7 @@ $(function(){
 		url : "${ctx}/buildingProject",
 		datatype : "json",
 		colNames : ["操作", "项目编号", "项目名称", "客户商", "客户负责人", "公司负责人", "施工地点", "订单编号", "要求完工日", "可延后时间", "预估成本（RMB）" , "实际成本（RMB）", "合同总价（RMB）", "利润率"],
-		caption : "在建项目列表",
+		caption : "施工流程列表",
 		colModel : [
 		    {name : 'act',index:'act', width:75,sortable:false, align: "center", search : false},
 			{name : "projectId", key : true, index : "projectId", width : 100, align : "center"},

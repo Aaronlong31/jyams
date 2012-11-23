@@ -7,12 +7,12 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jyams.hr.manager.PersonManager;
@@ -35,23 +35,24 @@ public class ProjectController {
     @Autowired
     private PersonManager personManager;
 
-    @RequestMapping(value = "/project/add", method = RequestMethod.GET)
-    public ModelAndView add() {
+    @ModelAttribute("persons")
+    public void getPersons(Model model) {
         List<Person> persons = personManager.listActivitySimplePersons();
-        ModelAndView mav = new ModelAndView("project/add");
-        mav.addObject("persons", persons);
-        return mav;
+        model.addAttribute("persons", persons);
+    }
+
+    @RequestMapping(value = "/project/add", method = RequestMethod.GET)
+    public String add(Model model) {
+        model.addAttribute("addProjectForm", new AddProjectForm());
+        return "project/add";
     }
 
     @RequestMapping(value = "/project", method = RequestMethod.POST)
-    public ModelAndView add(
-            @Valid @ModelAttribute AddProjectForm addProjectForm,
-            BindingResult result, RedirectAttributes redirectAttrs) {
+    public String add(@Valid AddProjectForm addProjectForm,
+            BindingResult result, RedirectAttributes redirectAttrs, Model model) {
 
         if (result.hasErrors()) {
-            ModelAndView mav = new ModelAndView("project/add");
-            mav.addObject("project", addProjectForm);
-            return mav;
+            return "project/add";
         }
 
         Project project = new Project();
@@ -60,26 +61,34 @@ public class ProjectController {
                 addProjectForm.isNewYear());
 
         redirectAttrs.addFlashAttribute("message", "新建施工流程成功！");
-        return new ModelAndView("redirect:/project/" + projectId);
+        return "redirect:/project/" + projectId;
     }
 
     @RequestMapping(value = "/project/toEdit/{projectId}",
             method = RequestMethod.GET)
-    public ModelAndView toEdit(@PathVariable("projectId") long projectId) {
+    public String toEdit(@PathVariable("projectId") long projectId, Model model) {
         Project project = projectManager.getProject(projectId);
-        List<Person> persons = personManager.listActivitySimplePersons();
-        ModelAndView mav = new ModelAndView("project/edit");
-        mav.addObject("persons", persons);
-        mav.addObject("project", project);
-        return mav;
+        model.addAttribute("editProjectForm", project);
+        return "project/edit";
     }
 
-    @RequestMapping(value = "/project", method = RequestMethod.PUT)
-    public void update(Project project) {
+    @RequestMapping(value = "/project/{projectId}", method = RequestMethod.PUT)
+    public String edit(@PathVariable("projectId") long projectId,
+            @Valid EditProjectForm editProjectForm, BindingResult result,
+            RedirectAttributes redirectAttrs, Model model) {
+
+        if (result.hasErrors()) {
+            return "project/toEdit";
+        }
+
+        Project project = new Project();
+        BeanUtils.copyProperties(editProjectForm, project);
+        project.setProjectId(projectId);
         project.setLastModifierId(SpringSecurityUtils.getCurrentUserId());
         project.setLastModifierName(SpringSecurityUtils.getCurrentUserName());
         project.setLastModifiedTimestamp(System.currentTimeMillis());
         projectManager.modifyProject(project);
+        return "redirect:/project/" + project.getProjectId();
     }
 
 }

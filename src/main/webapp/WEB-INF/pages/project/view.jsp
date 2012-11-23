@@ -27,7 +27,7 @@ td.td_first{
 		</div>
 	</div>
 	<hr/>
-	<a class="btn btn-warning" href="${ctx}/project/toEdit/${project.projectId}">修改施工流程</a>
+	<a class="btn btn-warning" href="${ctx}/project/toEdit/${project.projectId}">编辑施工流程</a>
 	<div id="message" class="alert alert-success">${message}</div>
 	<table class="table table-striped table-condensed">
 		<tr>

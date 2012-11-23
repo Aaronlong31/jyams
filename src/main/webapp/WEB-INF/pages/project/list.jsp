@@ -69,7 +69,7 @@ $(function(){
 		height: 400,
 		rowList : [10, 20, 30],
 		pager : "#projectPager",
-		//emptyrecords: "没有记录！",
+		emptyrecords: "没有记录！",
 		viewrecords : true,
 		sortorder: "desc",
 		jsonReader: {
@@ -114,10 +114,6 @@ $(function(){
 			}
 		});
 	}
-	$("div.help").simpletip({
-		content : $("div.helpContent").html(),
-		fixed : true
-	});
 });
 </SCRIPT>
 </body>

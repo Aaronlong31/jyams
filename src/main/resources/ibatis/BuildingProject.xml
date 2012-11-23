@@ -144,7 +144,7 @@
 	<sql id="pageQueryWhere">
 		<dynamic prepend=" WHERE ">
 			<isNotNull property="projectId" prepend="AND">
-				bp.projectId = #projectId#				
+				bp.projectId LIKE '%$projectId$%'				
 			</isNotNull>
 			<isNotNull property="projectIdStart" prepend="AND">
 				bp.projectId &gt;= #projectIdStart#				
@@ -185,7 +185,7 @@
 		</dynamic>
 	</sql>
 	
-	<select id="com.jyams.project.manager.BuildingProjectQuery.pageQuery" 
+	<select id="BuildingProjectQuery.pageQuery" 
 		parameterClass="BuildingProjectQuery" resultMap="BuildingProjectResultMap">
 		SELECT * FROM BuildingProject bp 
 		LEFT JOIN Project p ON bp.projectId = p.projectId
@@ -194,7 +194,7 @@
 		<include refid="pageSql"/>
 	</select>
 	
-	<select id="com.jyams.project.manager.BuildingProjectQuery.pageQuery.Count" 
+	<select id="BuildingProjectQuery.pageQuery.Count" 
 		parameterClass="BuildingProjectQuery" resultClass="int">
 		SELECT COUNT(1) FROM BuildingProject bp 
 		LEFT JOIN Project p ON bp.projectId = p.projectId

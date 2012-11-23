@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/taglibs.jsp" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.Calendar"%><html>
 <head>
@@ -28,9 +29,11 @@
 				<h4>新建施工流程</h4>
 			</div>
 		</div>
-	</div>s
+	</div>
 	<hr/>
-	<form class="form-horizontal" action="${ctx}/project" method="POST" id="addProjectForm">
+	<div id="message" class="alert alert-error"><form:errors path="*"/></div>
+	<form:form cssClass="form-horizontal" modelAttribute="addProjectForm" method="POST" 
+		action="${ctx}/project" id="addProjectForm">
 	  <fieldset>
 	    <table class="table table-striped table-condensed">
 	    	<tr>
@@ -38,7 +41,7 @@
 					<div class="control-group">
 						<label class="control-label" for="projectName">项目名称<span class="red_star">*</span></label>
 						<div class="controls">
-							<input type="text" class="input-big" id="projectName" name="projectName" value="${projectName }">
+							<form:input path="projectName" cssClass="input-big" cssErrorClass="error"/>
 						</div>
 					</div>
 				</td>
@@ -46,7 +49,7 @@
 					<div class="control-group">
 						<label class="control-label" for="quoteId">报价单编号</label>
 						<div class="controls">
-							<input type="text" class="input-big" id="quoteId" name="quoteId">
+							<form:input path="quoteId" cssClass="input-big" cssErrorClass="error"/>
 						</div>
 					</div>
 				</td>
@@ -56,21 +59,15 @@
 					<div class="control-group">
 						<label class="control-label" for="companyPrincipalId">施工负责人<span class="red_star">*</span></label>
 						<div class="controls">
-							<select  name="companyPrincipalId" id="companyPrincipalId" class="input-big">
-								<option value="">请选择</option>
-								<c:forEach items="${persons }" var="person">
-								<option value="${person.personId}">${person.personName}</option>
-								</c:forEach>
-							</select>
+							<form:select path="companyPrincipalId" items="${persons}" itemLabel="personName" itemValue="personId"/>
 						</div>
 					</div>
-					<input type="hidden" name="companyPrincipalName" id="companyPrincipalName"/>
 				</td>
 				<td class="td_first">
 					<div class="control-group">
 						<label class="control-label" for="constructPlace">施工地点</label>
 						<div class="controls">
-							<input type="text" class="input-big" id="constructPlace" name="constructPlace">
+							<form:input path="constructPlace" cssClass="input-big" cssErrorClass="error"/>
 						</div>
 					</div>
 				</td>
@@ -80,7 +77,7 @@
 					<div class="control-group">
 						<label class="control-label" for="clientName">客户商</label>
 						<div class="controls">
-							<input type="text" class="input-big" id="clientName" name="clientName">
+							<form:input path="clientName" cssClass="input-big" cssErrorClass="error"/>
 						</div>
 					</div>
 				</td>
@@ -88,7 +85,7 @@
 					<div class="control-group">
 						<label class="control-label" for="clientPrincipalName">客户负责人</label>
 						<div class="controls">
-							<input type="text" class="input-big" id="clientPrincipalName" name="clientPrincipalName">
+							<form:input path="clientPrincipalName" cssClass="input-big" cssErrorClass="error"/>
 						</div>
 					</div>
 				</td>
@@ -98,7 +95,7 @@
 					<div class="control-group">
 						<label class="control-label" for="orderId">订单编号</label>
 						<div class="controls">
-							<input type="text" class="input-big" id="orderId" name="orderId">
+							<form:input path="orderId" cssClass="input-big" cssErrorClass="error"/>
 						</div>
 					</div>
 				</td>
@@ -106,7 +103,7 @@
 					<div class="control-group">
 						<label class="control-label" for="orderDate">出订单日</label>
 						<div class="controls">
-							<input type="text" class="input-big" readonly="readonly" id="orderDate" name="orderDateString">
+							<form:input path="orderDateString" cssClass="input-big" cssErrorClass="error" readonly="true"/>
 						</div>
 					</div>
 				</td>
@@ -116,7 +113,7 @@
 					<div class="control-group">
 						<label class="control-label" for="requiredCompletionDate">要求完工日<span class="red_star">*</span></label>
 						<div class="controls">
-							<input type="text" class="input-big" readonly="readonly" id="requiredCompletionDate" name="requiredCompletionDateString">
+							<form:input path="requiredCompletionDateString" cssClass="input-big" cssErrorClass="error" readonly="true"/>
 						</div>
 					</div>
 				</td>
@@ -124,7 +121,7 @@
 					<div class="control-group">
 						<label class="control-label" for="canDelayDay">可延后时间（天）<span class="red_star">*</span></label>
 						<div class="controls">
-							<input type="text" class="input-big uneditable-input" id="canDelayDay" name="canDelayDay">
+							<form:input path="canDelayDay" cssClass="input-big" cssErrorClass="error"/>
 						</div>
 					</div>
 				</td>
@@ -134,7 +131,7 @@
 					<div class="control-group">
 						<label class="control-label" for="orderContent">订单内容<span class="red_star">*</span></label>
 						<div class="controls">
-							<textarea name="orderContent" id="orderContent" style="width: 500px;" ></textarea>
+							<form:textarea path="orderContent" cssStyle="width: 500px;"/>
 						</div>
 					</div>
 					
@@ -142,25 +139,20 @@
 			</tr>
 	      </table>
 	    <div class="form-actions">
-			<button type="submit" class="btn btn-primary" id="addProjectBut">确定</button>
+			<button type="submit" class="btn btn-primary" id="addProjectBut">新建</button>
 			<button type="button" class="btn" id="cancel">取消</button>
 	    </div>
 	  </fieldset>
-	</form>
+	</form:form>
 </div>
 </body>
 <script language="javascript">
 $(function() {
-
-	if($("#projectId").val() > 0){
-		$("#newYearTr").hide();
-	}
 	
-	$("#companyPrincipalId option[value=${project.companyPrincipalId}]").attr("selected", "selected");
-	$("#companyPrincipalId").change(function(){
-		$("#companyPrincipalName").val($("#companyPrincipalId option:selected").text());
-	});
-	$("#requiredCompletionDate, #orderDate").datepicker({ 
+	if($("#message").text() == ""){
+		$("#message").hide();
+	}
+	$("#requiredCompletionDateString, #orderDateString").datepicker({ 
 		showButtonPanel:true,
 		showClearButton:true,
 		clearText: '清除', 
@@ -213,7 +205,7 @@ $(function() {
 			"companyPrincipalId":{
 				required:true
 			},
-			"requiredCompletionDate":{
+			"requiredCompletionDateString":{
 				required:true
 			},
 			"canDelayDay":{

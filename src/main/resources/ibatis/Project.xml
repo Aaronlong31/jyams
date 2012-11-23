@@ -103,23 +103,19 @@
 	<sql id="pageQueryWhere">
 		<dynamic prepend=" WHERE ">
 			<isNotNull property="projectId" prepend="AND">
-				projectId LIKE
-				'%$projectId$%'
+				projectId LIKE '%$projectId$%'
 			</isNotNull>
 			<isNotNull property="projectIdStart" prepend="AND">
-				projectId
-				&gt;= #projectIdStart#
+				projectId &gt;= #projectIdStart#
 			</isNotNull>
 			<isNotNull property="projectIdEnd" prepend="AND">
-				projectId &lt;=
-				#projectIdEnd#
+				projectId &lt;= #projectIdEnd#
 			</isNotNull>
 			<isNotNull property="companyPrincipalName" prepend="AND">
 				companyPrincipalName LIKE '%$companyPrincipalName$%'
 			</isNotNull>
 			<isNotNull property="clientName" prepend="AND">
-				clientName LIKE
-				'%$clientName$%'
+				clientName LIKE '%$clientName$%'
 			</isNotNull>
 			<isNotNull property="clientPrincipalName" prepend="AND">
 				clientPrincipalName LIKE '%$clientPrincipalName$%'
@@ -128,27 +124,22 @@
 				constructPlace LIKE '%$constructPlace$%'
 			</isNotNull>
 			<isNotNull property="quoteId" prepend="AND">
-				quoteId LIKE
-				'%$quoteId$%'
+				quoteId LIKE '%$quoteId$%'
 			</isNotNull>
 			<isNotNull property="orderId" prepend="AND">
-				orderId LIKE
-				'%$orderId$%'
+				orderId LIKE '%$orderId$%'
 			</isNotNull>
 			<isNotNull property="orderDate" prepend="AND">
-				orderDate LIKE
-				'%$orderDate$%'
+				orderDate LIKE '%$orderDate$%'
 			</isNotNull>
 			<isNotNull property="requiredCompletionDate" prepend="AND">
 				requiredCompletionDate LIKE '%$requiredCompletionDate$%'
 			</isNotNull>
 			<isNotNull property="canDelayDay" prepend="AND">
-				canDelayDay =
-				#canDelayDay#
+				canDelayDay = #canDelayDay#
 			</isNotNull>
 			<isNotNull property="orderContent" prepend="AND">
-				orderContent
-				LIKE '%$orderContent$%'
+				orderContent LIKE '%$orderContent$%'
 			</isNotNull>
 		</dynamic>
 	</sql>
