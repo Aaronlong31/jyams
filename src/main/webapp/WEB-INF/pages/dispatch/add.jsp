@@ -146,6 +146,7 @@
 				updateSearchYear(1);
 			}
 		});
+		
 	function updateSearchYear(incre){
 		$.ajax({
 			data : {"increYear" : incre, "_method" : "PUT"},
