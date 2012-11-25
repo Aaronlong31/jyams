@@ -17,12 +17,12 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.simpletip.js"></script>
 <style type="text/css">
 .ui-state-hover a, .ui-state-hover a:hover,.ui-widget-content a{color: #FC9604;}
-.helpContent{display:none}
 </style>
 </head>
 
 <body>
 <div class="container">
+	<div id="message"></div>
 	<div id="projectDiv">
 		<table id="projectList" title="施工流程列表" class="table"></table>
 		<div id="projectPager"></div>
@@ -81,6 +81,10 @@ $(function(){
 				var approval = "<a href=\"${ctx}/project/"+id+"\">查看</a>";
 				$("#projectList").jqGrid('setRowData', id, {act:approval});
 			});
+		},
+		loadError : function(xhr, status, error){
+			var errorInfo = JSON.parse(xhr.responseText).errorInfo;
+			$("#message").text(errorInfo.code + errorInfo.status + errorInfo.message);
 		}
 	}).jqGrid('navGrid','#projectPager',{edit:false,add:false,del:false,search:false})
 		.jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false})

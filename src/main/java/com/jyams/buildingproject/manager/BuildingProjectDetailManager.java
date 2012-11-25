@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.model.BuildingProjectDetail;
 import com.jyams.project.model.Dispatch;
 import com.jyams.purchase.model.Purchase;
+import com.jyams.util.DataPage;
 
 /**
  * @author zhanglong
@@ -24,7 +26,7 @@ public interface BuildingProjectDetailManager {
      * @throws BusinessException
      *             项目关闭时抛出
      */
-    long addBuildingProjectDetail(BuildingProjectDetail buildingProjectDetail)
+    long add(BuildingProjectDetail buildingProjectDetail)
             throws BusinessException;
 
     /**
@@ -36,7 +38,7 @@ public interface BuildingProjectDetailManager {
      * @throws BusinessException
      *             项目关闭时抛出
      */
-    long addBuildingProjectDetail(Dispatch dispatch) throws BusinessException;
+    long add(Dispatch dispatch) throws BusinessException;
 
     /**
      * 由采购订单生成在建项目明细<br>
@@ -46,7 +48,7 @@ public interface BuildingProjectDetailManager {
      * @throws BusinessException
      *             项目关闭时抛出
      */
-    void addBuildingProjectDetail(Purchase purchase) throws BusinessException;
+    void add(Purchase purchase) throws BusinessException;
 
     /**
      * 修改在建项目明细
@@ -54,8 +56,7 @@ public interface BuildingProjectDetailManager {
      * @param buildingProjectDetail
      * @return
      */
-    boolean modifyBuildingProjectDetail(
-            BuildingProjectDetail buildingProjectDetail);
+    boolean update(BuildingProjectDetail buildingProjectDetail);
 
     /**
      * 获取在建项目明细
@@ -64,7 +65,7 @@ public interface BuildingProjectDetailManager {
      * @return
      */
     @Transactional(readOnly = true)
-    BuildingProjectDetail getBuildingProjectDetail(int buildingProjectDetailId);
+    BuildingProjectDetail get(int buildingProjectDetailId);
 
     /**
      * 查询某个项目的在建项目明细
@@ -73,5 +74,9 @@ public interface BuildingProjectDetailManager {
      * @return
      */
     @Transactional(readOnly = true)
-    List<BuildingProjectDetail> listBuildingProjectDetail(long projectId);
+    List<BuildingProjectDetail> list(long projectId);
+
+    @Transactional(readOnly = true)
+    DataPage<BuildingProjectDetail> list(
+            BuildingProjectDetailQuery buildingProjectDetailQuery);
 }

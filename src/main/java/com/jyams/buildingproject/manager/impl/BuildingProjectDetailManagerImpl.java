@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
 import com.jyams.buildingproject.manager.BuildingProjectDetailManager;
+import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.dao.BuildingProjectDao;
 import com.jyams.project.dao.BuildingProjectDetailDao;
@@ -17,7 +18,9 @@ import com.jyams.project.model.BuildingProjectDetail;
 import com.jyams.project.model.Dispatch;
 import com.jyams.purchase.model.Purchase;
 import com.jyams.purchase.model.PurchaseItem;
+import com.jyams.util.DataPage;
 import com.jyams.util.IdUtil;
+import com.jyams.util.SpringSecurityUtils;
 
 /**
  * @author zhanglong
@@ -39,12 +42,19 @@ public class BuildingProjectDetailManagerImpl implements
      * @throws BusinessException
      */
     @Override
-    public long addBuildingProjectDetail(
-            BuildingProjectDetail buildingProjectDetail)
+    public long add(BuildingProjectDetail buildingProjectDetail)
             throws BusinessException {
 
         checkProjectIsClose(buildingProjectDetail.getProjectId());
         buildingProjectDetail.setCreatedTimestamp(System.currentTimeMillis());
+        buildingProjectDetail.setCreatorId(SpringSecurityUtils
+                .getCurrentUserId());
+        buildingProjectDetail.setCreatorName(SpringSecurityUtils
+                .getCurrentUserName());
+        buildingProjectDetail.setPersonId(SpringSecurityUtils
+                .getCurrentUserId());
+        buildingProjectDetail.setPersonName(SpringSecurityUtils
+                .getCurrentUserName());
         long detailId = IdUtil.nextLong();
         buildingProjectDetail.setDetailId(detailId);
         buildingProjectDetailDao.insert(buildingProjectDetail);
@@ -54,8 +64,7 @@ public class BuildingProjectDetailManagerImpl implements
     }
 
     @Override
-    public long addBuildingProjectDetail(Dispatch dispatch)
-            throws BusinessException {
+    public long add(Dispatch dispatch) throws BusinessException {
 
         checkProjectIsClose(dispatch.getProjectId());
 
@@ -80,8 +89,7 @@ public class BuildingProjectDetailManagerImpl implements
     }
 
     @Override
-    public void addBuildingProjectDetail(Purchase purchase)
-            throws BusinessException {
+    public void add(Purchase purchase) throws BusinessException {
 
         // 采购项
         List<PurchaseItem> purchaseItems = purchase.getPurchaseItems();
@@ -134,19 +142,24 @@ public class BuildingProjectDetailManagerImpl implements
     }
 
     @Override
-    public boolean modifyBuildingProjectDetail(
-            BuildingProjectDetail buildingProjectDetail) {
+    public boolean update(BuildingProjectDetail buildingProjectDetail) {
         return buildingProjectDetailDao.update(buildingProjectDetail) > 0;
     }
 
     @Override
-    public BuildingProjectDetail getBuildingProjectDetail(int detailId) {
+    public BuildingProjectDetail get(int detailId) {
         return buildingProjectDetailDao.get(detailId);
     }
 
     @Override
-    public List<BuildingProjectDetail> listBuildingProjectDetail(long projectId) {
+    public List<BuildingProjectDetail> list(long projectId) {
         return buildingProjectDetailDao.findBy("projectId", projectId);
+    }
+
+    @Override
+    public DataPage<BuildingProjectDetail> list(
+            BuildingProjectDetailQuery buildingProjectDetailQuery) {
+        return buildingProjectDetailDao.pageQuery(buildingProjectDetailQuery);
     }
 
     /**
@@ -158,7 +171,7 @@ public class BuildingProjectDetailManagerImpl implements
     private void checkProjectIsClose(long projectId) throws BusinessException {
         BuildingProject buildingProject = buildingProjectDao.get(projectId);
         if (buildingProject.getStatus() == BuildingProject.STATUS_COMPLETED) {
-            throw new BusinessException("该项目已完工，不能再添加详情");
+            throw new BusinessException("该项目已完工，不能再添加明细！");
         }
     }
 
@@ -179,4 +192,5 @@ public class BuildingProjectDetailManagerImpl implements
         buildingProjectDao.updateAcualCostAndStatus(projectId, totalCost,
                 bp.getStatus());
     }
+
 }

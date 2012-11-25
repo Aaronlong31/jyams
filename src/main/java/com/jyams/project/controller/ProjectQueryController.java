@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jyams.exception.BusinessException;
 import com.jyams.project.manager.ProjectManager;
 import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.Project;
@@ -48,8 +49,14 @@ public class ProjectQueryController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public DataPage<Project> list(ProjectQuery projectQuery) {
+    public DataPage<Project> list(ProjectQuery projectQuery)
+            throws BusinessException {
         long projectIdStart = getProjectIdStart();
+
+        if (projectQuery != null) {
+            throw new BusinessException("Test exception!");
+        }
+
         projectQuery.setProjectIdStart(projectIdStart);
         projectQuery.setProjectIdEnd(projectIdStart + 9999);
         return projectManager.listProjects(projectQuery);

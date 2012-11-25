@@ -3,6 +3,7 @@
 <sqlMap namespace="BuildingProjectDetail">
 	<typeAlias alias="BuildingProjectDetail"
 		type="com.jyams.project.model.BuildingProjectDetail" />
+	<typeAlias alias="BuildingProjectDetailQuery" type="com.jyams.buildingproject.query.BuildingProjectDetailQuery"/>
 
 	<sql id="selectByMapSql">
 		<dynamic prepend="WHERE">
@@ -11,6 +12,16 @@
 			</isNotNull>
 			<isNotNull property="referId" prepend="AND">
 				referId = #referId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="pageSql">
+		<dynamic>
+			<isNotNull property="startIndex">
+				<isNotNull property="pageSize">
+					LIMIT #startIndex#, #pageSize#
+				</isNotNull>
 			</isNotNull>
 		</dynamic>
 	</sql>
@@ -41,6 +52,28 @@
 		parameterClass="hashMap" resultClass="BuildingProjectDetail">
 		SELECT * FROM BuildingProjectDetail
 		<include refid="selectByMapSql"/>	
+	</select>
+	
+	<sql id="pageQueryWhere">
+		<dynamic prepend=" WHERE ">
+			<isNotNull property="projectId" prepend="AND">
+				projectId = #projectId#				
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="BuildingProjectDetailQuery.pageQuery" 
+		parameterClass="BuildingProjectDetailQuery" resultClass="BuildingProjectDetail">
+		SELECT * FROM BuildingProjectDetail
+		<include refid="pageQueryWhere"/>
+		$orderString$
+		<include refid="pageSql"/>
+	</select>
+	
+	<select id="BuildingProjectDetailQuery.pageQuery.Count" 
+		parameterClass="BuildingProjectDetailQuery" resultClass="int">
+		SELECT COUNT(1) FROM BuildingProjectDetail
+		<include refid="pageQueryWhere"/>
 	</select>
 	
 	<delete id="BuildingProjectDetailDao.removeByReferIdAndTypes"

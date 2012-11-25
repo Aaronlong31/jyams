@@ -8,7 +8,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.jyams.project.query.BuildingProjectQuery;
+import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
+import com.jyams.buildingproject.query.BuildingProjectQuery;
 import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.search.Query;
 import com.jyams.util.search.SearchFilter;
@@ -39,6 +40,9 @@ public class QueryArgumentResolver implements HandlerMethodArgumentResolver {
         }
         if (BuildingProjectQuery.class.isAssignableFrom(parameterType)) {
             return new BuildingProjectQuery(searchFilter);
+        }
+        if (BuildingProjectDetailQuery.class.isAssignableFrom(parameterType)) {
+            return new BuildingProjectDetailQuery(searchFilter);
         }
         return null;
     }

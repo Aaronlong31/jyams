@@ -7,8 +7,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="${ctx}/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/css/jquery-ui-1.9.1.custom.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/ui.jqgrid.css"/>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jquery-ui-1.9.1.custom.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jqgrid/grid.locale-cn.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jqgrid/jquery.jqGrid.js"></script>
 <title>${ctitle} - 在建项目详情</title>
 <style type="text/css">
 td.td_first{
@@ -112,6 +117,44 @@ td.td_first{
 			<td colspan="3">${buildingProject.project.orderContent}</td>
 		</tr>
 	</table>
+	<hr>
+	<h4><a name="detailList">在建项目明细列表</a></h4>
+	<div id="message_box">
+	<div id="message_template" class="alert"><a class="close" data-dismiss="alert">x</a><span class="msg"></span></div>
+	</div>
+	<a class="btn btn-primary" data-toggle="modal" href="#addDetailDiv">添加在建项目明细</a>
+	<div id="detailDiv">
+		<table id="detailList" title="在建项目明细列表"></table>
+		<div id="detailPager"></div>
+	</div>
+	<div class="modal hide fade in" id="addDetailDiv">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">x</a>
+			<h3>添加在建项目明细</h3>
+		</div>
+		<div class="modal-body">
+			<div id="error-message"></div>
+			<form action="#" class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" for="costType">花费类型</label>
+					<div class="controls">
+						<label class="radio"><input type="radio" name="costType" value="1" checked="checked"/>材料花费</label>
+					    <label class="radio"><input type="radio" name="costType" value="4"/>其他花费</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="cost">金额</label>
+					<div class="controls">
+						<input type="text" name="cost" class="input-big" id="cost" />
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a href="#detailList" id="addDetail" class="btn btn-primary" >添加</a>
+			<a href="#detailList" id="cancelAdd" class="btn">取消</a>
+		</div>
+	</div>
 </div>
 </body>
 <script type="text/javascript">
@@ -119,25 +162,71 @@ $(function(){
 	if($("#message").text() == ""){
 		$("#message").hide();
 	}
-	$("#addDetail").toggle(function(){
-		$("#addDetailDiv").show();
-	}, function(){
-		$("#addDetailDiv").hide();
+	$('#addDetailDiv').modal({
+	    backdrop:true,
+	    keyboard:true,
+	    show : false
 	});
-	$("#addDetailForm").validate({
-		rules:{
-			"buildingProjectDetail.cost":{
-				required: true,
-				number:true
-			}
+	$("#message_template").hide();
+	$('#cancelAdd').click(function(){
+		$('#addDetailDiv').modal('hide');
+	});
+	var detailListGrid = $("#detailList").jqGrid({
+		url : "${ctx}/buildingProject/${buildingProject.projectId}/detail",
+		datatype : "json",
+		colNames : ["日期", "经办人", "材料花费", "订单花费", "人工花费", "其他花费", "查看关联记录"],
+		caption : "施工流程列表",
+		colModel : [
+			{name : "createdTimestamp", width : 100, align : "center"},
+			{name : "personName",  width : 150, align : "center"},
+			{name : "cost", width : 150, align : "center"},
+			{name : "cost", width : 150, align : "center"},
+			{name : "cost", width : 150, align : "center"},
+			{name : "cost", width : 150, align : "center"},
+			{name : "view", width : 150, align : "center"}
+		],
+		rowNum : 20,
+		autowidth: true,
+		rownumbers: true,
+		gridview: true,
+		height: 300,
+		rowList : [10, 20, 30],
+		pager : "#detailPager",
+		emptyrecords: "没有记录！",
+		viewrecords : true,
+		sortorder: "desc",
+		jsonReader: {
+			repeatitems : false
 		},
-		messages:{
-			"buildingProjectDetail.cost":{
-				required: "请输入花费金额！",
-				number:"花费金额必须为数字！"
-			}
+		gridComplete : function(){
+			var ids = $("#projectList").jqGrid('getDataIDs');
+			$.each(ids, function(i, id){
+				var approval = "<a href=\"${ctx}/project/"+id+"\">查看</a>";
+				$("#projectList").jqGrid('setRowData', id, {act:approval});
+			});
 		}
+	}).jqGrid('navGrid','#detailPager',{edit:false,add:false,del:false,search:false});
+	$('#addDetail').click(function(){
+		$.ajax({
+			url : "${ctx}/buildingProject/${buildingProject.projectId}/detail",
+			async : false,
+			data : {costType : $('input[name=costType]:checked').val(), cost : $('#cost').val()},
+			type : "POST",
+			dataType : "json",
+			success : function(data, textStatus, jqXHR){
+				detailListGrid.trigger("reloadGrid");
+				$('#message_template').clone().addClass("alert-success").
+					find(".msg").text('添加明细成功！').end().appendTo($("#message_box"));
+				$('#addDetailDiv').modal('hide')
+			},
+			error : function(jqXHR, textStatus, errorThrown){
+				$('#message_template').clone().addClass("alert-error")
+					.find(".msg").text('添加明细失败：' + jqXHR).appendTo($("#error-message"));
+			}
+			
+		});
 	});
+	
 });
 </script>
 </html>

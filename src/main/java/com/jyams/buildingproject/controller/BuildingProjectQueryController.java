@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jyams.buildingproject.manager.BuildingProjectManager;
+import com.jyams.buildingproject.query.BuildingProjectQuery;
 import com.jyams.project.model.BuildingProject;
-import com.jyams.project.query.BuildingProjectQuery;
 import com.jyams.util.DataPage;
 
 /**

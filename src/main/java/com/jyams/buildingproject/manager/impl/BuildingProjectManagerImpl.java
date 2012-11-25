@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jyams.buildingproject.manager.BuildingProjectManager;
+import com.jyams.buildingproject.query.BuildingProjectQuery;
 import com.jyams.project.dao.BuildingProjectDao;
 import com.jyams.project.dao.BuildingProjectDetailDao;
 import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.BuildingProjectDetail;
 import com.jyams.project.model.ChangeStatusType;
 import com.jyams.project.model.Project;
-import com.jyams.project.query.BuildingProjectQuery;
 import com.jyams.purchase.model.Purchase;
 import com.jyams.purchase.model.PurchaseItem;
 import com.jyams.util.DataPage;

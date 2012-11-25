@@ -21,7 +21,7 @@
 <body>
 <div class="container">
 	<div id="projectDiv">
-		<table id="projectList" title="在建项目列表"></table>
+		<table id="projectList" title="在建项目列表" class="table"></table>
 		<div id="projectPager"></div>
 	</div>
 </div>

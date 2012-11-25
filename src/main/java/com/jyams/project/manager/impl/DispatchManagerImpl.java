@@ -54,8 +54,9 @@ public class DispatchManagerImpl implements
                             dispatch.getDispatchDay(),
                             dispatchWork.getStartTime(),
                             dispatchWork.getEndTime(),
-                            dispatchWork.getPersonId()) > 0)
+                            dispatchWork.getPersonId()) > 0) {
                 duplicatePersons.add(dispatchWork.getPersonName());
+            }
         }
 
         if (duplicatePersons.size() > 0) {
@@ -71,7 +72,7 @@ public class DispatchManagerImpl implements
         }
         // 批量插入
         dispatchWorkDao.batchInsert(dispatchWorks);
-        buildingProjectDetailManager.addBuildingProjectDetail(dispatch);
+        buildingProjectDetailManager.add(dispatch);
         return dispatchId;
     }
 

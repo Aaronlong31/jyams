@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>新增项目</title>
+<title>${ctitle} - 修改施工流程</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="../css/jquery.autocomplete.css" />
 <link rel="stylesheet" type="text/css" href="../css/jquery.ui.datepicker.css" />

@@ -3,7 +3,7 @@
 <sqlMap namespace="BuildingProject">
 	<typeAlias alias="BuildingProject" type="com.jyams.project.model.BuildingProject"/>
 	<typeAlias alias="Project" type="com.jyams.project.model.Project"/>
-	<typeAlias alias="BuildingProjectQuery" type="com.jyams.project.query.BuildingProjectQuery"/>
+	<typeAlias alias="BuildingProjectQuery" type="com.jyams.buildingproject.query.BuildingProjectQuery"/>
 	
 	<resultMap class="Project" id="projectResultMap">
 		<result property="projectId" column="p.projectId"/>

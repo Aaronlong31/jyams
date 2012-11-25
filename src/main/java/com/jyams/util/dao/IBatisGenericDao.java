@@ -259,7 +259,7 @@ public class IBatisGenericDao extends SqlMapClientDaoSupport {
                 .queryForObject(sqlName + POSTFIX_COUNT, query);
 
         // 如果总记录数为0，则返回空的分页对象
-        if (totalCount < 1) {
+        if (totalCount == null || totalCount < 1) {
             return new DataPage<T>();
         }
 
