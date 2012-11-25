@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jyams.buildingproject.manager.BuildingProjectManager;
 import com.jyams.buildingproject.query.BuildingProjectQuery;
+import com.jyams.exception.BusinessException;
 import com.jyams.project.dao.BuildingProjectDao;
 import com.jyams.project.dao.BuildingProjectDetailDao;
 import com.jyams.project.model.BuildingProject;
@@ -99,10 +100,16 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
     }
 
     @Override
-    public BuildingProject getBuildingProject(long buildingProjectId) {
+    public BuildingProject getBuildingProject(long buildingProjectId)
+            throws BusinessException {
 
         BuildingProject buildingProject = buildingProjectDao
                 .get(buildingProjectId);
+
+        if (buildingProject == null) {
+            throw new BusinessException("您要查看的在建项目不存在！");
+        }
+
         // 将在建项目明细一起查出
         buildingProject.setBuildingProjectDetails(buildingProjectDetailDao
                 .findBy("projectId", buildingProjectId));
@@ -222,8 +229,9 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
      * 修改项目的成本和状态
      * 
      * @param projectId
+     * @throws BusinessException
      */
-    private void updateCostAndStatus(long projectId) {
+    private void updateCostAndStatus(long projectId) throws BusinessException {
         BuildingProject bp = getBuildingProject(projectId);
         bp.setActualCost(bp.getCostFromDetail());
 

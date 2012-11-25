@@ -5,7 +5,7 @@ package com.jyams.exception;
  * 
  *         Nov 8, 2012 9:37:26 PM
  */
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
 
     public BusinessException() {
         super();

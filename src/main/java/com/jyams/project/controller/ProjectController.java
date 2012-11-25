@@ -64,8 +64,8 @@ public class ProjectController {
         return "redirect:/project/" + projectId;
     }
 
-    @RequestMapping(value = "/project/toEdit/{projectId}",
-            method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/project/toEdit/{projectId}", method = RequestMethod.GET)
     public String toEdit(@PathVariable("projectId") long projectId, Model model) {
         Project project = projectManager.getProject(projectId);
         model.addAttribute("editProjectForm", project);

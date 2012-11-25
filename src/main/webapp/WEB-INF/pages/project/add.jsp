@@ -9,17 +9,12 @@
 <title>${ctitle} - 新建施工流程</title>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/jquery-ui-1.9.1.custom.css"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/css/common.css"/>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/validator/jquery.validate.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/validator/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
-<style type="text/css">
-.controls{width:250px}
-.form-horizontal .control-group{margin-bottom:0}
-.control-label{font-weight: bold;}
-.error{color:#B94A48}
-</style>
 </head>
 <body>
 <div class="container">
@@ -34,7 +29,6 @@
 	<div id="message" class="alert alert-error"><form:errors path="*"/></div>
 	<form:form cssClass="form-horizontal" modelAttribute="addProjectForm" method="POST" 
 		action="${ctx}/project" id="addProjectForm">
-	  <fieldset>
 	    <table class="table table-striped table-condensed">
 	    	<tr>
 				<td>
@@ -142,7 +136,6 @@
 			<button type="submit" class="btn btn-primary" id="addProjectBut">新建</button>
 			<button type="button" class="btn" id="cancel">取消</button>
 	    </div>
-	  </fieldset>
 	</form:form>
 </div>
 </body>

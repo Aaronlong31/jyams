@@ -33,7 +33,7 @@
 	<hr/>
 	<div id="message" class="alert alert-error"><form:errors path="*"/></div>
 	<form:form cssClass="form-horizontal" modelAttribute="editProjectForm" method="PUT" 
-		action="${ctx}/project/${project.projectId}" id="modifyProjectForm">
+		action="${ctx}/project/${editProjectForm.projectId}" id="modifyProjectForm">
 	    <table class="table table-striped table-condensed">
 	    	<tr>
 				<td>
@@ -114,7 +114,7 @@
 					<div class="control-group">
 						<label class="control-label" for="orderDate">出订单日</label>
 						<div class="controls">
-							<form:input path="orderDate" cssClass="input-big" cssErrorClass="error" readonly="true"/>
+							<form:input path="orderDateString" cssClass="input-big" cssErrorClass="error" readonly="true"/>
 						</div>
 					</div>
 				</td>
@@ -124,7 +124,7 @@
 					<div class="control-group">
 						<label class="control-label" for="requiredCompletionDate">要求完工日<span class="red_star">*</span></label>
 						<div class="controls">
-							<form:input path="requiredCompletionDate" cssClass="input-big" cssErrorClass="error" readonly="true"/>
+							<form:input path="requiredCompletionDateString" cssClass="input-big" cssErrorClass="error" readonly="true"/>
 						</div>
 					</div>
 				</td>

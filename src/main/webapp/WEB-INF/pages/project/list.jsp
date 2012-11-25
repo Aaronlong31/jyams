@@ -22,7 +22,7 @@
 <div class="container">
 	<div id="message"></div>
 	<div id="projectDiv">
-		<table id="projectList" title="施工流程列表" class="table"></table>
+		<table id="projectList" title='施工流程列表' class="table"></table>
 		<div id="projectPager"></div>
 	</div>     	
 </div>

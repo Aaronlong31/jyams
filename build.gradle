@@ -23,13 +23,14 @@ dependencies {
     compile 'com.alibaba:druid:0.2.6'
     compile "org.codehaus.jackson:jackson-mapper-asl:1.9.6"
     compile "commons-codec:commons-codec:1.6"
-    providedCompile 'org.apache.tomcat:tomcat-servlet-api:7.0.28'
+    //providedCompile 'org.apache.tomcat:tomcat-servlet-api:7.0.28'
+    //providedCompile 'org.apache.tomcat:jsp-api:6.0.35'
 	compile 'org.hibernate:hibernate-validator:4.1.0.Final'
 	compile 'org.aspectj:aspectjrt:1.6.12'
 	compile 'org.aspectj:aspectjweaver:1.6.12'
 	compile 'org.apache.directory.studio:org.apache.commons.lang:2.6'
 	compile 'org.apache.ibatis:ibatis-sqlmap:2.3.4.726'
-	compile 'org.apache.poi:poi:3.8'
+	compile 'org.apache.poi:poi:3.7'
 	compile 'commons-beanutils:commons-beanutils:1.8.3'
 	compile 'org.springframework:spring-ibatis:2.0.8'
 	compile 'org.springframework.security:spring-security-core:3.1.2.RELEASE'
@@ -45,9 +46,9 @@ dependencies {
     compile "com.alibaba:fastjson:1.1.23"
     compile 'com.google.guava:guava:13.0.1'
     compile 'joda-time:joda-time:2.1'
-    compile 'org.apache.shiro:shiro-root:1.2.1'
-    compile 'org.mybatis:mybatis:3.1.1'
-    compile 'org.mybatis:mybatis-spring:1.1.1'
+    //compile 'org.apache.shiro:shiro-root:1.2.1'
+	//compile 'org.mybatis:mybatis:3.1.1'
+    //compile 'org.mybatis:mybatis-spring:1.1.1'
 
     //Log configuration
     compile "org.slf4j:slf4j-api:${rootProject['versions.slf4j']}"
@@ -70,6 +71,9 @@ dependencies {
 
 
 repositories {
+//	maven{
+//		url "http://mirrors.redv.com/maven2"
+//	}
     mavenCentral()
 }
 
@@ -122,6 +126,9 @@ eclipse {
                 }.each {
                     it.parent().remove(it)
                 }
+				def attrs = [kind : 'con', path : 'org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0']
+				new Node(xml.asNode(), 'classpathentry', attrs)
+
             }
         }
     }

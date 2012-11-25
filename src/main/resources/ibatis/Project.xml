@@ -158,7 +158,7 @@
 		<include refid="pageQueryWhere" />
 	</select>
 
-	<select id="Project.pageQueryBasic.pageQuery" parameterClass="ProjectQuery"
+	<select id="ProjectDao.pageQueryBasic.pageQuery" parameterClass="ProjectQuery"
 		resultClass="Project">
 		SELECT
 		projectId, projectName, companyPrincipalId, companyPrincipalName,
@@ -169,7 +169,7 @@
 		<include refid="pageSql" />
 	</select>
 
-	<select id="Project.pageQueryBasic.pageQuery.Count"
+	<select id="ProjectDao.pageQueryBasic.pageQuery.Count"
 		parameterClass="ProjectQuery" resultClass="int">
 		SELECT COUNT(1) FROM Project
 		<include refid="pageQueryWhere" />

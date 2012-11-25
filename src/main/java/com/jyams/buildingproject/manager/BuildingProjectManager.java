@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jyams.buildingproject.query.BuildingProjectQuery;
+import com.jyams.exception.BusinessException;
 import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.Project;
 import com.jyams.purchase.model.PurchaseItem;
@@ -59,9 +60,12 @@ public interface BuildingProjectManager {
 
     /**
      * 获取在建项目 在建项目中的项目对象也要得到
+     * 
+     * @throws BusinessException
      */
     @Transactional(readOnly = true)
-    BuildingProject getBuildingProject(long buildingProjectId);
+    BuildingProject getBuildingProject(long buildingProjectId)
+            throws BusinessException;
 
     @Transactional(readOnly = true)
     DataPage<BuildingProject> listAlarmProjects();

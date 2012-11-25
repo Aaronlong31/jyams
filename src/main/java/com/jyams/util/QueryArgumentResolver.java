@@ -10,6 +10,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
 import com.jyams.buildingproject.query.BuildingProjectQuery;
+import com.jyams.dispatch.query.DispatchWorkQuery;
 import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.search.Query;
 import com.jyams.util.search.SearchFilter;
@@ -43,6 +44,9 @@ public class QueryArgumentResolver implements HandlerMethodArgumentResolver {
         }
         if (BuildingProjectDetailQuery.class.isAssignableFrom(parameterType)) {
             return new BuildingProjectDetailQuery(searchFilter);
+        }
+        if (DispatchWorkQuery.class.isAssignableFrom(parameterType)) {
+            return new DispatchWorkQuery(searchFilter);
         }
         return null;
     }

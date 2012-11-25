@@ -83,6 +83,9 @@ public class ProjectManagerImpl implements ProjectManager {
      */
     @Override
     public boolean modifyProject(Project project) {
+        Person companyPrincipalPerson = personCache.get(project
+                .getCompanyPrincipalId());
+        project.setCompanyPrincipalName(companyPrincipalPerson.getPersonName());
         project.setCanDelayDay(Math.max(project.getCanDelayDay(), 0));
         setClient(project);
         project.setLastModifiedTimestamp(System.currentTimeMillis());
