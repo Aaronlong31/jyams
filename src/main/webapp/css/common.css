@@ -1,0 +1,17 @@
+.ui-state-hover a,.ui-state-hover a:hover,.ui-widget-content a {
+	color: #FC9604;
+}
+
+select.ui-pg-selbox {
+	padding: 0;
+	width: 60px;
+}
+
+input.ui-pg-input {
+	width: 60px;
+}
+
+td.td_first {
+	text-align: right;
+	font-weight: bold;
+}
