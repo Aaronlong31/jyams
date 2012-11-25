@@ -9,18 +9,13 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/jquery-ui-1.9.1.custom.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/ui.jqgrid.css"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/css/common.css"/>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-ui-1.9.1.custom.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jqgrid/grid.locale-cn.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jqgrid/jquery.jqGrid.js"></script>
 <title>${ctitle} - 在建项目详情</title>
-<style type="text/css">
-td.td_first{
-	text-align: right;
-	font-weight: bold;
-}
-</style>
 </head>
 <body>
 <div class="container">
@@ -179,20 +174,19 @@ $(function(){
 		colModel : [
 			{name : "createdTimestamp", width : 100, align : "center"},
 			{name : "personName",  width : 150, align : "center"},
-			{name : "cost", width : 150, align : "center"},
-			{name : "cost", width : 150, align : "center"},
-			{name : "cost", width : 150, align : "center"},
-			{name : "cost", width : 150, align : "center"},
+			{name : "materialCost", width : 150, align : "center"},
+			{name : "orderCost", width : 150, align : "center"},
+			{name : "laborCost", width : 150, align : "center"},
+			{name : "otherCost", width : 150, align : "center"},
 			{name : "view", width : 150, align : "center"}
 		],
 		rowNum : 20,
 		autowidth: true,
 		rownumbers: true,
 		gridview: true,
-		height: 300,
 		rowList : [10, 20, 30],
 		pager : "#detailPager",
-		emptyrecords: "没有记录！",
+		emptyrecords: "没有明细！",
 		viewrecords : true,
 		sortorder: "desc",
 		jsonReader: {

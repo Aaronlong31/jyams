@@ -32,7 +32,7 @@
 	</div>
 	<hr/>
 	<div id="message" class="alert alert-error"><form:errors path="*"/></div>
-	<form:form cssClass="form-horizontal" modelAttribute="project" method="PUT" 
+	<form:form cssClass="form-horizontal" modelAttribute="editProjectForm" method="PUT" 
 		action="${ctx}/project/${project.projectId}" id="modifyProjectForm">
 	    <table class="table table-striped table-condensed">
 	    	<tr>

@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/jquery-ui-1.9.1.custom.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/ui.jqgrid.css"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/css/common.css"/>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-ui-1.9.1.custom.min.js"></script>
