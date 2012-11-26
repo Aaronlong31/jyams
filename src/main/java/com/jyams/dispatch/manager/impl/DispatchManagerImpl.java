@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.jyams.buildingproject.manager.BuildingProjectDetailManager;
-import com.jyams.buildingproject.manager.BuildingProjectManager;
 import com.jyams.dispatch.dao.DispatchDao;
 import com.jyams.dispatch.dao.DispatchWorkDao;
 import com.jyams.dispatch.manager.DispatchManager;
@@ -33,8 +32,7 @@ public class DispatchManagerImpl implements DispatchManager {
     private DispatchDao dispatchDao;
     @Autowired
     private DispatchWorkDao dispatchWorkDao;
-    @Autowired
-    private BuildingProjectManager buildingProjectManager;
+
     @Autowired
     private BuildingProjectDetailManager buildingProjectDetailManager;
 
