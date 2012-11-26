@@ -32,7 +32,6 @@ public class DispatchManagerImpl implements DispatchManager {
     private DispatchDao dispatchDao;
     @Autowired
     private DispatchWorkDao dispatchWorkDao;
-
     @Autowired
     private BuildingProjectDetailManager buildingProjectDetailManager;
 
