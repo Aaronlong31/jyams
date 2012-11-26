@@ -4,7 +4,7 @@ apply plugin: 'war'
 apply plugin: 'jetty'
 apply plugin: 'project-report'
 apply plugin: 'sonar'
-apply plugin: 'groovy'
+//apply plugin: 'groovy'
 
 project.version = 3.0
 project.group = "com.jyams"

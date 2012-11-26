@@ -44,23 +44,6 @@ public class DispatchController {
 
     }
 
-    @RequestMapping(value = "/dispatch/add", method = RequestMethod.GET)
-    public String toAddDispatch() {
-        return "dispatch/add";
-    }
-
-    @RequestMapping(
-            value = "/dispatch", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public void addDispatch() {
-
-    }
-
-    public void edit() {
-
-    }
-
     public void listMonth() {
 
     }

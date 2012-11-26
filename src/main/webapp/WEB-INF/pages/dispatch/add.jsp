@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/taglibs.jsp" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,6 +21,7 @@
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 <style type="text/css">
 #projectPager_right{width:0}
+.uneditable-input{cursor: pointer;}
 </style>
 </head>
 <body>
@@ -40,8 +42,8 @@
 					<div class="control-group">
 						<label class="control-label" for="projectName">项目<span class="red_star">*</span></label>
 						<div class="controls" style="width:100%">
-							<span id="projectId" class="input-small"></span>
-							<span id="projectName" class="span5"></span>
+							<span id="projectId" class="input-small uneditable-input">${dispatch.projectId}</span>
+							<span id="projectName" class="span5 uneditable-input">${dispatch.projectName}</span>
 							<a class="btn btn-primary" data-toggle="modal" href="#selectProjectDiv">选择项目</a>
 						</div>
 					</div>
@@ -53,8 +55,9 @@
 						<label class="control-label" for="companyPrincipalId">派工类型<span class="red_star">*</span></label>
 						<div class="controls">
 							<div class="btn-group" data-toggle="buttons-radio">
-							  <button type="button" name="dispatchType" value="1" class="btn btn-primary active">正常派工</button>
-							  <button type="button" name="dispatchType" value="2" class="btn">加班派工</button>
+								<input type="hidden" id="dispatchType" value="${dispatch.dispatchType}"/>
+								<button type="button" name="dispatchType" value="1" class="btn dispatchType">正常派工</button>
+								<button type="button" name="dispatchType" value="2" class="btn dispatchType">加班派工</button>
 							</div>
 						</div>
 					</div>
@@ -63,7 +66,7 @@
 					<div class="control-group">
 						<label class="control-label" for="constructPlace">派工日期</label>
 						<div class="controls">
-							<input name="dispatchDayString" id="dispatchDay" type="text" class="input-big"/>
+							<input name="dispatchDayString" id="dispatchDay" value="${dispatch.dispatchDayString}" type="text" class="input-big"/>
 						</div>
 					</div>
 				</td>
@@ -97,13 +100,38 @@
 		    keyboard:true,
 		    show : false
 		});
+		$(".dispatchType").click(function(){
+			$(".dispatchType").removeClass("btn-primary");
+			$(this).addClass("btn-primary");
+			$.post("${ctx}/dispatch/session", {"_method" : "PUT", "dispatchType" : $(this).val()});
+		});
+		$(".dispatchType").each(function(){
+			if(this.value == $("#dispatchType").val()){
+				$(this).addClass("btn-primary active");
+			}
+		});
+		
+		$("#dispatchDay").change(function(){
+			$.post("${ctx}/dispatch/session", {"_method" : "PUT", "dispatchDayString" : this.value});
+		}).datepicker({ 
+			showButtonPanel:true,
+			showClearButton:true,
+			clearText: '清除', 
+			closeText: '关闭', 
+			currentText: '今天',
+			yearRange:'-80:+80',
+			changeYear:true,
+			changeMonth:true,
+			dayNamesMin: ['日','一', '二', '三', '四', '五', '六' ],
+	        dateFormat:'yy-mm-dd',
+	        monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+	        monthNamesShort:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+	    } );  
 		$("#cancel").click(function(){
 			$('#selectProjectDiv').modal("hide");
 		});
-		$("#selectProjectBtn, #projectId, #projectName").click(function(){
-			$(this).parent().parent().addClass("inSelect");
-			$("#selectProjectDiv").dialog("open");
-			return false;
+		$("#projectId, #projectName").click(function(){
+			$('#selectProjectDiv').modal("show");
 		});
 		var projectListGrid = $("#projectList").jqGrid({
 			url : "${ctx}/project/basic",
@@ -123,6 +151,13 @@
 			sortorder: "desc",
 			jsonReader: {
 				repeatitems : false
+			},
+			ondblClickRow : function(rowid, iRow, iCol, e){
+				var $tr = $($("#projectList").find("tr").get(iRow));
+				selectProject($tr);
+			},
+			onSelectRow : function(rowid, status){
+				$("#selectedRow").val(rowid);
 			}
 		}).jqGrid('navGrid','#projectPager',{edit:false,add:false,del:false,search:false})
 		.jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false})
@@ -146,20 +181,28 @@
 				updateSearchYear(1);
 			}
 		});
-		
-	function updateSearchYear(incre){
-		$.ajax({
-			data : {"increYear" : incre, "_method" : "PUT"},
-			url : "${ctx}/project/updateSearchYear",
-			type : "POST",
-			success : function (data){
+		$("#addDetail").click(function(){
+			selectProject($("#" + $("#selectedRow").val()));
+		});
+		function selectProject($tr){
+			var projectId = $($tr.find("td").get(1)).text();
+			var projectName = $($tr.find("td").get(2)).text();
+			$("#projectId").text(projectId).end()
+			$("#projectName").text(projectName);
+			$('#selectProjectDiv').modal("hide");
+			saveDispatchProject(projectId, projectName)
+		}
+		function saveDispatchProject(projectId, projectName){
+			$.post("${ctx}/dispatch/session", {"projectId" : projectId, "projectName" : projectName, "_method" : "PUT"});
+		}
+		function updateSearchYear(incre){
+			$.post("${ctx}/project/updateSearchYear", {"increYear" : incre, "_method" : "PUT"}, function (data){
 				$("#preYear, #curYear, #nextYear").each(function(){
 					$(this).find(".ui-pg-div").html(Number($(this).text()) + incre);
 				});
 				projectListGrid.trigger("reloadGrid");
-			}
-		});
-	}
+			});
+		}
 	});
 </script>
 </html>

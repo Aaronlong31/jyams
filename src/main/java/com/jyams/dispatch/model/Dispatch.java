@@ -114,6 +114,10 @@ public class Dispatch {
                 .convertStringToInteger(dispatchDayString);
     }
 
+    public String getDispatchDayString() {
+        return DateTimeUtils.convertIntegerDayToString(dispatchDay);
+    }
+
     public List<DispatchWork> getDispatchWorks() {
         return dispatchWorks;
     }
