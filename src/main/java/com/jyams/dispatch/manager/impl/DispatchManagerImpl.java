@@ -30,6 +30,7 @@ public class DispatchManagerImpl implements DispatchManager {
 
     @Autowired
     private DispatchDao dispatchDao;
+
     @Autowired
     private DispatchWorkDao dispatchWorkDao;
 
