@@ -30,3 +30,12 @@ td.td_first {
 .error {
 	color: #B94A48
 }
+
+.box {
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+	color: #9da0a4;
+	-webkit-border-radius: 4px 0 4px 0;
+	-moz-border-radius: 4px 0 4px 0;
+	border-radius: 4px 0 4px 0;
+}

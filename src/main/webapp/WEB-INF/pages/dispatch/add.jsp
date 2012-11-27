@@ -22,6 +22,35 @@
 <style type="text/css">
 #projectPager_right{width:0}
 .uneditable-input{cursor: pointer;}
+.box{
+	height: 500px;
+	text-align: center;
+}
+ul{
+	list-style-type: none;
+	border: 1px solid #ddd;
+	-webkit-border-radius: 4px 0 4px 0;
+	-moz-border-radius: 4px 0 4px 0;
+	border-radius: 4px 0 4px 0;
+	margin:0px;
+	overflow-y : auto;
+	height: 456px;
+}
+li{
+	height : 30px;
+	cursor:move;
+	text-align :center;
+	color : #4F4F4F;
+	background-color: #F5F5F5;
+	border: 1px solid #ddd;
+	margin: 2px;
+	line-height: 30px;
+	padding-left: 5px;
+}
+ul.department,ul.department-selected{padding: 20px;background-color: #ddd}
+div.departments{
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -72,6 +101,42 @@
 				</td>
 			</tr>
 		</table>
+		<div class="control-group departments">
+	    	<div class="btn-group" data-toggle="buttons-radio">
+	    		<button type="button" class="btn department active" value="0">全部</button>
+	    		<c:forEach items="${departments}" var="d">
+	    			<button type="button" class="btn department" value="${d.departmentId}">${d.departmentName}</button>
+	    		</c:forEach>
+	    	</div>
+    	</div>
+		<div class="container-fluid">
+		  <div class="row-fluid">
+		    <div class="span4 box">
+			    <ul class="department" departmentId="0" onselectstart="return false">
+		    	<c:forEach items="${departments}" var="d">
+		    		<c:forEach items="${d.persons}" var="p">
+		    			<li><span class="span3" personId="${p.personId }">${p.personName}</span></li>
+		    		</c:forEach>
+		    	</c:forEach>
+			    </ul>
+		    	<c:forEach items="${departments}" var="d">
+			    	<ul class="department" style="display:none;" departmentId="${d.departmentId}" onselectstart="return false">
+			    		<c:forEach items="${d.persons}" var="p">
+			    			<li><span class="span3" personId="${p.personId }">${p.personName}</span></li>
+			    		</c:forEach>
+			    	</ul>
+		    	</c:forEach>
+		    </div>
+		    <div class="span8 box">
+		    	<ul class="department-selected" departmentId="0" onselectstart="return false">
+			    </ul>
+		    	<c:forEach items="${departments}" var="d">
+			    	<ul class="department-selected" style="display:none;" departmentId="${d.departmentId}" onselectstart="return false">
+			    	</ul>
+		    	</c:forEach>
+		    </div>
+		  </div>
+		</div>
 	</form>
 	<div class="modal hide fade in"  id="selectProjectDiv">
 		<div class="modal-header">
@@ -92,9 +157,43 @@
 </body>
 <script language="javascript">
 	$(function() {
+		var times = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", 
+		     		 "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", 
+		     		 "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+		     		 "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
+		     		 "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30",
+		     		 "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "24:00"];
+		
 		if($("#message").text() == ""){
 			$("#message").hide();
 		}
+		$("ul.department").sortable({
+            connectWith: ".department-selected",
+            cursor: "move",
+            receive: function( event, ui ) {
+            	ui.item.find("select").remove();
+            }
+        });
+		$("ul.department-selected").sortable({
+            connectWith: ".department",
+            cursor: "move",
+            receive: function( event, ui ) {
+			  	var startSelect = $("<select>").addClass("startTime span4");
+			  	var endSelect = $("<select>").addClass("endTime span4");
+			  	$.each(times, function(i, time){
+					$("<option value='" + time + "'>" + time + "</option>").appendTo(startSelect);
+					$("<option value='" + time + "'>" + time + "</option>").appendTo(endSelect);
+				});
+			  	startSelect.val("08:00");
+			  	endSelect.val("17:00");
+			  	ui.item.append(startSelect);
+			  	ui.item.append(endSelect);
+			}
+        });
+		$("button.department").click(function(){
+			$("ul.department,ul.department-selected").hide();
+			$("ul[departmentId=" + this.value + "]").show();
+		});
 		$('#selectProjectDiv').modal({
 		    backdrop:true,
 		    keyboard:true,

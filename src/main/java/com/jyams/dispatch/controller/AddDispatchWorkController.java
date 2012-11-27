@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jyams.dispatch.DispatchCache;
 import com.jyams.dispatch.model.Dispatch;
+import com.jyams.hr.manager.DepartmentManager;
+import com.jyams.hr.model.Person;
 
 /**
  * @author zhanglong
@@ -23,10 +25,15 @@ public class AddDispatchWorkController {
     @Autowired
     private DispatchCache dispatchCache;
 
+    @Autowired
+    private DepartmentManager departmentManager;
+
     @RequestMapping(value = "/dispatch/add", method = RequestMethod.GET)
     public String toAddDispatch(@CookieValue("JSESSIONID") String sessionId,
             Model model) {
         model.addAttribute("dispatch", dispatchCache.get(sessionId));
+        model.addAttribute("departments",
+                departmentManager.listWithPersons(Person.SALARY_TYPE_DAILY));
         return "dispatch/add";
     }
 
