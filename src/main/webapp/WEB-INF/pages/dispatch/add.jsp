@@ -47,10 +47,11 @@ li{
 	line-height: 30px;
 	padding-left: 5px;
 }
-ul.department,ul.department-selected{padding: 20px;background-color: #ddd}
+ul.unDispatched, ul.dispatched{padding: 20px;background-color: #ddd}
 div.departments{
 	text-align: center;
 }
+ul.dispatched li span{width:120px;margin-right: 10px;}
 </style>
 </head>
 <body>
@@ -104,36 +105,32 @@ div.departments{
 		<div class="control-group departments">
 	    	<div class="btn-group" data-toggle="buttons-radio">
 	    		<button type="button" class="btn department active" value="0">全部</button>
-	    		<c:forEach items="${departments}" var="d">
+	    		<c:forEach items="${dp1}" var="d">
 	    			<button type="button" class="btn department" value="${d.departmentId}">${d.departmentName}</button>
 	    		</c:forEach>
 	    	</div>
     	</div>
 		<div class="container-fluid">
 		  <div class="row-fluid">
-		    <div class="span4 box">
-			    <ul class="department" departmentId="0" onselectstart="return false">
-		    	<c:forEach items="${departments}" var="d">
-		    		<c:forEach items="${d.persons}" var="p">
-		    			<li><span class="span3" personId="${p.personId }">${p.personName}</span></li>
-		    		</c:forEach>
-		    	</c:forEach>
-			    </ul>
-		    	<c:forEach items="${departments}" var="d">
-			    	<ul class="department" style="display:none;" departmentId="${d.departmentId}" onselectstart="return false">
+		    <div id="undispatched" class="span4 box ">
+		    	<ul class="unDispatched" onselectstart="return false">
+			    	<c:forEach items="${dp1}" var="d">
 			    		<c:forEach items="${d.persons}" var="p">
-			    			<li><span class="span3" personId="${p.personId }">${p.personName}</span></li>
+			    			<li personId="${p.personId }" departmentId="${d.departmentId}"><span>${d.departmentName} - ${p.personName}</span></li>
 			    		</c:forEach>
-			    	</ul>
-		    	</c:forEach>
-		    </div>
-		    <div class="span8 box">
-		    	<ul class="department-selected" departmentId="0" onselectstart="return false">
+		    		</c:forEach>
 			    </ul>
-		    	<c:forEach items="${departments}" var="d">
-			    	<ul class="department-selected" style="display:none;" departmentId="${d.departmentId}" onselectstart="return false">
-			    	</ul>
-		    	</c:forEach>
+		    </div>
+		    <div id="dispatched" class="span8 box ">
+		    	<ul class="dispatched" onselectstart="return false">
+			    	<c:forEach items="${dispatchWorks}" var="d" >
+		    			<li personId="${d.key.personId }" 
+		    				startTime="${d.key.startTimeString}" endTime="${d.key.endTimeString}" 
+		    				departmentId="${d.value.departmentId}">
+		    				<span>${d.value.departmentName} - ${d.key.personName}</span>
+		    			</li>
+			    	</c:forEach>
+			    </ul>
 		    </div>
 		  </div>
 		</div>
@@ -163,36 +160,65 @@ div.departments{
 		     		 "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
 		     		 "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30",
 		     		 "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "24:00"];
-		
+		var timeSelect = $("<select>");
+	  	$.each(times, function(i, time){
+			$("<option value='" + time + "'>" + time + "</option>").appendTo(timeSelect);
+		});
+	  	$(".dispatched li").each(function(){
+	  		var $this = $(this);
+	  		timeSelect.clone().addClass("startTime span4").val($this.attr("startTime")).appendTo($this);
+		  	timeSelect.clone().addClass("endTime span4").val($this.attr("endTime")).appendTo($this);
+	  	});
 		if($("#message").text() == ""){
 			$("#message").hide();
 		}
-		$("ul.department").sortable({
-            connectWith: ".department-selected",
+		$("ul.unDispatched").sortable({
+            connectWith: ".dispatched",
             cursor: "move",
             receive: function( event, ui ) {
             	ui.item.find("select").remove();
+            	$.post("${ctx}/dispatch/session", {
+			  		"_method" : "PUT", 
+			  		"_service" : "deleteDispatchWork",
+			  		"personId" : ui.item.attr("personId")
+			  	});
+            },
+            remove : function(event, ui){
+            	var personId = ui.item.attr("personId");
+            	$("#undispatched li[personId="+personId+"]").remove();
             }
+           
         });
-		$("ul.department-selected").sortable({
-            connectWith: ".department",
+		$("ul.dispatched").sortable({
+            connectWith: ".unDispatched",
             cursor: "move",
             receive: function( event, ui ) {
-			  	var startSelect = $("<select>").addClass("startTime span4");
-			  	var endSelect = $("<select>").addClass("endTime span4");
-			  	$.each(times, function(i, time){
-					$("<option value='" + time + "'>" + time + "</option>").appendTo(startSelect);
-					$("<option value='" + time + "'>" + time + "</option>").appendTo(endSelect);
-				});
+			  	var startSelect = timeSelect.clone().addClass("startTime span4");
+			  	var endSelect = timeSelect.clone().addClass("endTime span4");
 			  	startSelect.val("08:00");
 			  	endSelect.val("17:00");
 			  	ui.item.append(startSelect);
 			  	ui.item.append(endSelect);
+			  	$.post("${ctx}/dispatch/session", {
+			  		"_method" : "PUT", 
+			  		"_service" : "addDispatchWork",
+			  		"personId" : ui.item.attr("personId"), 
+			  		"startTime" : startSelect.val(), 
+			  		"endTime" : endSelect.val()
+			  	});
+			},
+			remove : function(event, ui){
+				var personId = ui.item.attr("personId");
+            	$("#dispatched li[personId="+personId+"]").remove();
 			}
         });
 		$("button.department").click(function(){
-			$("ul.department,ul.department-selected").hide();
-			$("ul[departmentId=" + this.value + "]").show();
+			if(this.value == 0){
+				$(".row-fluid li").show();
+			} else {
+				$("li[departmentId!="+this.value+"]").hide();
+				$("li[departmentId="+this.value+"]").show();
+			}
 		});
 		$('#selectProjectDiv').modal({
 		    backdrop:true,

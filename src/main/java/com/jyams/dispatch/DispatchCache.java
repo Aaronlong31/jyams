@@ -8,6 +8,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.jyams.dispatch.model.Dispatch;
+import com.jyams.util.SpringSecurityUtils;
 
 /**
  * @author zhangString
@@ -22,6 +23,11 @@ public class DispatchCache {
                 @Override
                 public Dispatch load(String key) throws Exception {
                     Dispatch dispatch = new Dispatch();
+                    dispatch.setPrincipalId(SpringSecurityUtils
+                            .getCurrentUserId());
+                    dispatch.setPrincipalName(SpringSecurityUtils
+                            .getCurrentUserName());
+                    dispatch.setProjectType(Dispatch.PROJECT_TYPE_BUILDING);
                     return dispatch;
                 }
             });
