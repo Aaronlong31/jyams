@@ -37,11 +37,6 @@
 		</li>
 	</ul>
 	<div style="display: none;" id="errorMessage">
-		<s:property value="exception"/>
-		<hr />
-		<s:iterator value="exception.stackTrace">
-			<s:property/>
-		</s:iterator>
 	</div>
 </div>
 </body>
