@@ -17,7 +17,6 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jqgrid/jquery.jqGrid.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.simpletip.js"></script>
 </head>
-
 <body>
 <div class="container">
 	<div id="message"></div>
@@ -30,13 +29,6 @@
 $(function(){
 	var dataPickerF = function(element){
 		$(element).datepicker({
-			yearRange:'-10:+10',
-			changeYear:true,
-			changeMonth:true,
-			dayNamesMin: ['日','一', '二', '三', '四', '五', '六' ],
-	        dateFormat:'yy-mm-dd',
-	        monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-	        monthNamesShort:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
 	        onSelect : function (dateText, inst){
 				$(this).focus();
 	        }
