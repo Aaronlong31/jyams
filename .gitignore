@@ -17,3 +17,4 @@ rebel.xml
 /src/main/webapp/WEB-INF/lib
 /out
 /.springBeans
+/.svn
