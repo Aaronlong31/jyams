@@ -166,4 +166,40 @@ public class AddDispatchWorkController {
         dispatchCache.put(sessionId, dispatch);
         return true;
     }
+
+    @RequestMapping(
+            value = "/dispatch/session",
+            method = RequestMethod.PUT,
+            params = { "_service=changeStartTime", "personId", "startTime" })
+    @ResponseBody
+    public boolean changeStartTime(@CookieValue("JSESSIONID") String sessionId,
+            long personId, String startTime) {
+        Dispatch dispatch = dispatchCache.get(sessionId);
+        for (DispatchWork dw : dispatch.getDispatchWorks()) {
+            if (dw.getPersonId() == personId) {
+                dw.setStartTimeString(startTime);
+                break;
+            }
+        }
+        dispatchCache.put(sessionId, dispatch);
+        return true;
+    }
+
+    @RequestMapping(
+            value = "/dispatch/session",
+            method = RequestMethod.PUT,
+            params = { "_service=changeEndTime", "personId", "endTime" })
+    @ResponseBody
+    public boolean changeEndTime(@CookieValue("JSESSIONID") String sessionId,
+            long personId, String endTime) {
+        Dispatch dispatch = dispatchCache.get(sessionId);
+        for (DispatchWork dw : dispatch.getDispatchWorks()) {
+            if (dw.getPersonId() == personId) {
+                dw.setEndTimeString(endTime);
+                break;
+            }
+        }
+        dispatchCache.put(sessionId, dispatch);
+        return true;
+    }
 }

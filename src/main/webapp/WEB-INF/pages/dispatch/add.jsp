@@ -15,10 +15,12 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/validator/jquery.validate.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/validator/messages_zh.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/jqgrid/grid.locale-cn.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jqgrid/jquery.jqGrid.js"></script>
+<script type="text/javascript" src="${ctx}/js/i18n/grid.i18n.js"></script>
+<script type="text/javascript" src="${ctx}/js/i18n/datepicker.i18n.js"></script>
+<script type="text/javascript" src="${ctx}/js/i18n/validator.i18n.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
+<script type="text/javascript" src="${ctx}/js/selectProject.js"></script>
 <style type="text/css">
 #projectPager_right{width:0}
 .uneditable-input{cursor: pointer;}
@@ -74,7 +76,7 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 						<div class="controls" style="width:100%">
 							<span id="projectId" class="input-small uneditable-input">${dispatch.projectId}</span>
 							<span id="projectName" class="span5 uneditable-input">${dispatch.projectName}</span>
-							<a class="btn btn-primary" data-toggle="modal" href="#selectProjectDiv">选择项目</a>
+							<a class="btn btn-primary" id="selectProjectBtn">选择项目</a>
 						</div>
 					</div>
 				</td>
@@ -102,6 +104,7 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 				</td>
 			</tr>
 		</table>
+		<hr/>
 		<div class="control-group departments">
 	    	<div class="btn-group" data-toggle="buttons-radio">
 	    		<button type="button" class="btn department active" value="0">全部</button>
@@ -110,9 +113,14 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 	    		</c:forEach>
 	    	</div>
     	</div>
+    	<div class="alert alert-success">
+    		<span class="label label-info">提示：</span>
+    		可以将左侧的员工拖动到右侧方框以添加派工，将右侧的员工拖动到左侧方框以取消派工。
+    	</div>
 		<div class="container-fluid">
 		  <div class="row-fluid">
 		    <div id="undispatched" class="span4 box ">
+		    	<h4>选择员工</h4>
 		    	<ul class="unDispatched" onselectstart="return false">
 			    	<c:forEach items="${dp1}" var="d">
 			    		<c:forEach items="${d.persons}" var="p">
@@ -122,6 +130,7 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 			    </ul>
 		    </div>
 		    <div id="dispatched" class="span8 box ">
+		    	<h4>已选择员工</h4>
 		    	<ul class="dispatched" onselectstart="return false">
 			    	<c:forEach items="${dispatchWorks}" var="d" >
 		    			<li personId="${d.key.personId }" 
@@ -135,21 +144,6 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 		  </div>
 		</div>
 	</form>
-	<div class="modal hide fade in"  id="selectProjectDiv">
-		<div class="modal-header">
-			<a class="close" data-dismiss="modal">x</a>
-			<h3>选择施工项目</h3>
-		</div>
-		<div class="modal-body">
-			<input type="hidden" id="selectedRow"/>
-			<table id="projectList"></table>
-			<div id="projectPager"></div>
-		</div>
-		<div class="modal-footer">
-			<a href="#detailList" id="addDetail" class="btn btn-primary" >选择</a>
-			<a href="#detailList" id="cancel" class="btn">取消</a>
-		</div>
-	</div>
 </div>
 </body>
 <script language="javascript">
@@ -172,6 +166,23 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 		if($("#message").text() == ""){
 			$("#message").hide();
 		}
+		
+		$(".startTime").bind("change", function(){
+			$.post("${ctx}/dispatch/session", {
+		  		"_method" : "PUT", 
+		  		"_service" : "changeStartTime",
+		  		"personId" : $(this).parent().attr("personId"), 
+		  		"startTime" : this.value
+		  	});
+		});
+		$(".endTime").bind("change", function(){
+			$.post("${ctx}/dispatch/session", {
+		  		"_method" : "PUT", 
+		  		"_service" : "changeEndTime",
+		  		"personId" : $(this).parent().attr("personId"), 
+		  		"endTime" : this.value
+		  	});
+		});
 		$("ul.unDispatched").sortable({
             connectWith: ".dispatched",
             cursor: "move",
@@ -220,17 +231,11 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 				$("li[departmentId="+this.value+"]").show();
 			}
 		});
-		$('#selectProjectDiv').modal({
-		    backdrop:true,
-		    keyboard:true,
-		    show : false
-		});
 		$(".dispatchType").click(function(){
 			$(".dispatchType").removeClass("btn-primary");
 			$(this).addClass("btn-primary");
 			$.post("${ctx}/dispatch/session", {"_method" : "PUT", "dispatchType" : $(this).val()});
-		});
-		$(".dispatchType").each(function(){
+		}).each(function(){
 			if(this.value == $("#dispatchType").val()){
 				$(this).addClass("btn-primary active");
 			}
@@ -238,95 +243,19 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 		
 		$("#dispatchDay").change(function(){
 			$.post("${ctx}/dispatch/session", {"_method" : "PUT", "dispatchDayString" : this.value});
-		}).datepicker({ 
-			showButtonPanel:true,
-			showClearButton:true,
-			clearText: '清除', 
-			closeText: '关闭', 
-			currentText: '今天',
-			yearRange:'-80:+80',
-			changeYear:true,
-			changeMonth:true,
-			dayNamesMin: ['日','一', '二', '三', '四', '五', '六' ],
-	        dateFormat:'yy-mm-dd',
-	        monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-	        monthNamesShort:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
-	    } );  
+		}).datepicker();  
 		$("#cancel").click(function(){
 			$('#selectProjectDiv').modal("hide");
 		});
-		$("#projectId, #projectName").click(function(){
-			$('#selectProjectDiv').modal("show");
+		$("#projectId, #projectName, #selectProjectBtn").click(function(){
+			$.selectProject(function(projectId, projectName){
+				$("#projectId").text(projectId);
+				$("#projectName").text(projectName);
+				saveDispatchProject(projectId, projectName)
+			});
 		});
-		var projectListGrid = $("#projectList").jqGrid({
-			url : "${ctx}/project/basic",
-			datatype : "json",
-			colNames : ["客户", "项目编号", "项目名称"],
-			colModel : [
-				{name : "clientName", index : "clientName", width : 100, search: true,searchoptions :{sopt:["eq", "cn"]}},
-				{name : "projectId", key : true, index : "projectId", width : 90, search: true,searchoptions :{sopt:["eq"]}, searchrules : {integer: true}},
-				{name : "projectName", index : "projectName", width : 322, search: true,searchoptions :{sopt:["eq", "cn"]}},
-			],
-			rowNum : 20,
-			width: "auto",
-			height: 300,
-			rowList : [10, 20, 30],
-			pager : "#projectPager",
-			viewRecords : true,
-			sortorder: "desc",
-			jsonReader: {
-				repeatitems : false
-			},
-			ondblClickRow : function(rowid, iRow, iCol, e){
-				var $tr = $($("#projectList").find("tr").get(iRow));
-				selectProject($tr);
-			},
-			onSelectRow : function(rowid, status){
-				$("#selectedRow").val(rowid);
-			}
-		}).jqGrid('navGrid','#projectPager',{edit:false,add:false,del:false,search:false})
-		.jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false})
-		.navButtonAdd('#projectPager', {
-			caption : "${searchYear - 1}",
-			id : "preYear",
-			buttonicon : "ui-icon-triangle-1-w",
-			onClickButton : function (){
-				updateSearchYear(-1);
-			}
-		})
-		.navButtonAdd('#projectPager', {
-			caption : "${searchYear}",
-			id : "curYear"
-		})
-		.navButtonAdd('#projectPager', {
-			caption : "${searchYear + 1}",
-			id : "nextYear",
-			buttonicon : "ui-icon-triangle-1-e",
-			onClickButton : function (){
-				updateSearchYear(1);
-			}
-		});
-		$("#addDetail").click(function(){
-			selectProject($("#" + $("#selectedRow").val()));
-		});
-		function selectProject($tr){
-			var projectId = $($tr.find("td").get(1)).text();
-			var projectName = $($tr.find("td").get(2)).text();
-			$("#projectId").text(projectId).end()
-			$("#projectName").text(projectName);
-			$('#selectProjectDiv').modal("hide");
-			saveDispatchProject(projectId, projectName)
-		}
 		function saveDispatchProject(projectId, projectName){
 			$.post("${ctx}/dispatch/session", {"projectId" : projectId, "projectName" : projectName, "_method" : "PUT"});
-		}
-		function updateSearchYear(incre){
-			$.post("${ctx}/project/updateSearchYear", {"increYear" : incre, "_method" : "PUT"}, function (data){
-				$("#preYear, #curYear, #nextYear").each(function(){
-					$(this).find(".ui-pg-div").html(Number($(this).text()) + incre);
-				});
-				projectListGrid.trigger("reloadGrid");
-			});
 		}
 	});
 </script>

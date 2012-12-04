@@ -13,7 +13,8 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/validator/jquery.validate.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/validator/messages_zh.js"></script>
+<script type="text/javascript" src="${ctx}/js/i18n/validator.i18n.js"></script>
+<script type="text/javascript" src="${ctx}/js/i18n/datepicker.i18n.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 </head>
 <body>
@@ -141,54 +142,10 @@
 </body>
 <script language="javascript">
 $(function() {
-	
 	if($("#message").text() == ""){
 		$("#message").hide();
 	}
-	$("#requiredCompletionDateString, #orderDateString").datepicker({ 
-		showButtonPanel:true,
-		showClearButton:true,
-		clearText: '清除', 
-		closeText: '关闭', 
-		currentText: '今天',
-		yearRange:'-80:+80',
-		changeYear:true,
-		changeMonth:true,
-		dayNamesMin: ['日','一', '二', '三', '四', '五', '六' ],
-        dateFormat:'yy-mm-dd',
-        monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-        monthNamesShort:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
-    } );   
-	/* $.postJSON("../client/listClients_JSON.action",{},function(data){
-		$("#clientName").autocomplete(data.clients,{
-			selectFrist:false,
-			matchContains: true,
-	        minChars: 0,
-			formatItem:function(row){
-				return row.clientName;
-			},
-			formatResult:function(row){
-				return row.clientName;
-			}
-		}).result(function(event,data,formatted){
-			$("#clientPrincipalName").val("").autocomplete(data.principals, {
-				selectFrist:false,
-				matchContains: true,
-		        minChars: 0,
-				formatItem:function(row){
-					return row.name;
-				}
-			});
-		});
-	});	
-	$.postJSON("../quote/listIds_JSON.action",{},function(data){
-		$("#quoteId").autocomplete(data.ids,{
-			selectFrist:false,
-			matchContains: true,
-			mustMatch:true,
-	        minChars: 0
-		});
-	}); */
+	$("#requiredCompletionDateString, #orderDateString").datepicker();   
 	$("#addProjectForm").validate({
 		rules:{
 			"projectName":{
