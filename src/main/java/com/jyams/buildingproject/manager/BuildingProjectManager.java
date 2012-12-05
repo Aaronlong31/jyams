@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jyams.buildingproject.model.BuildingProject;
 import com.jyams.buildingproject.query.BuildingProjectQuery;
 import com.jyams.exception.BusinessException;
-import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.Project;
 import com.jyams.purchase.model.PurchaseItem;
 import com.jyams.util.DataPage;

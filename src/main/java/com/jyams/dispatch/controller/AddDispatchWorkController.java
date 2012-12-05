@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jyams.cache.PersonCache;
 import com.jyams.dispatch.DispatchCache;
+import com.jyams.dispatch.manager.DispatchManager;
 import com.jyams.dispatch.model.Dispatch;
 import com.jyams.dispatch.model.DispatchWork;
 import com.jyams.hr.manager.DepartmentManager;
@@ -37,19 +38,25 @@ public class AddDispatchWorkController {
     private PersonCache personCache;
 
     @Autowired
+    private DispatchManager dispatchManager;
+
+    @Autowired
     private DepartmentManager departmentManager;
 
     @RequestMapping(value = "/dispatch/add", method = RequestMethod.GET)
-    public String toAddDispatch(@CookieValue("JSESSIONID") String sessionId,
-            Model model) {
+    public String toAddDispatch(@CookieValue("JSESSIONID") String sessionId, Model model) {
         Dispatch dispatch = dispatchCache.get(sessionId);
+        setDispatch(model, dispatch);
+        return "dispatch/add";
+    }
+
+    private void setDispatch(Model model, Dispatch dispatch) {
         model.addAttribute("dispatch", dispatch);
 
         List<Person> dispatchedPersons = Lists.newArrayList();
         List<DispatchWork> dispatchWorks = dispatch.getDispatchWorks();
 
-        Map<DispatchWork, Department> dispatchWorkWithDepartments = Maps
-                .newLinkedHashMap();
+        Map<DispatchWork, Department> dispatchWorkWithDepartments = Maps.newLinkedHashMap();
         for (DispatchWork dispatchWork : dispatchWorks) {
             Person person = personCache.get(dispatchWork.getPersonId());
             dispatchedPersons.add(person);
@@ -59,8 +66,7 @@ public class AddDispatchWorkController {
             dispatchWorkWithDepartments.put(dispatchWork, department);
         }
 
-        List<Department> departments = departmentManager
-                .listWithPersons(Person.SALARY_TYPE_DAILY);
+        List<Department> departments = departmentManager.listWithPersons(Person.SALARY_TYPE_DAILY);
 
         for (Department department : departments) {
             department.getPersons().removeAll(dispatchedPersons);
@@ -75,7 +81,14 @@ public class AddDispatchWorkController {
 
         model.addAttribute("dp1", departments);
         model.addAttribute("dispatchWorks", dispatchWorkWithDepartments);
-        return "dispatch/add";
+    }
+
+    public String toEditDispatch(@CookieValue("JSESSIONID") String sessionId, long dispatchId,
+            Model model) {
+        Dispatch dispatch = this.dispatchManager.getDispatch(dispatchId);
+        this.dispatchCache.put(sessionId, dispatch);
+        setDispatch(model, dispatch);
+        return "dispatch/edit";
     }
 
     @RequestMapping(
@@ -87,13 +100,10 @@ public class AddDispatchWorkController {
 
     }
 
-    @RequestMapping(
-            value = "/dispatch/session",
-            method = RequestMethod.PUT,
-            params = { "projectId", "projectName" })
+    @RequestMapping(value = "/dispatch/session", method = RequestMethod.PUT, params = {
+            "projectId", "projectName" })
     @ResponseBody
-    public boolean updateProjectInfo(
-            @CookieValue("JSESSIONID") String sessionId, long projectId,
+    public boolean updateProjectInfo(@CookieValue("JSESSIONID") String sessionId, long projectId,
             String projectName) {
         Dispatch dispatch = dispatchCache.get(sessionId);
         dispatch.setProjectId(projectId);
@@ -107,8 +117,7 @@ public class AddDispatchWorkController {
             method = RequestMethod.PUT,
             params = { "dispatchType" })
     @ResponseBody
-    public boolean updateProjectInfo(
-            @CookieValue("JSESSIONID") String sessionId, short dispatchType) {
+    public boolean updateProjectInfo(@CookieValue("JSESSIONID") String sessionId, short dispatchType) {
         Dispatch dispatch = dispatchCache.get(sessionId);
         dispatch.setDispatchType(dispatchType);
         dispatchCache.put(sessionId, dispatch);
@@ -120,8 +129,7 @@ public class AddDispatchWorkController {
             method = RequestMethod.PUT,
             params = { "dispatchDayString" })
     @ResponseBody
-    public boolean updateProjectInfo(
-            @CookieValue("JSESSIONID") String sessionId,
+    public boolean updateProjectInfo(@CookieValue("JSESSIONID") String sessionId,
             String dispatchDayString) {
         Dispatch dispatch = dispatchCache.get(sessionId);
         dispatch.setDispatchDayString(dispatchDayString);
@@ -129,14 +137,11 @@ public class AddDispatchWorkController {
         return true;
     }
 
-    @RequestMapping(
-            value = "/dispatch/session",
-            method = RequestMethod.PUT,
-            params = { "_service=addDispatchWork", "personId", "startTime",
-                    "endTime" })
+    @RequestMapping(value = "/dispatch/session", method = RequestMethod.PUT, params = {
+            "_service=addDispatchWork", "personId", "startTime", "endTime" })
     @ResponseBody
-    public boolean addDispatchWork(@CookieValue("JSESSIONID") String sessionId,
-            long personId, String startTime, String endTime) {
+    public boolean addDispatchWork(@CookieValue("JSESSIONID") String sessionId, long personId,
+            String startTime, String endTime) {
         Dispatch dispatch = dispatchCache.get(sessionId);
         DispatchWork dw = new DispatchWork();
         dw.setPersonId(personId);
@@ -148,13 +153,10 @@ public class AddDispatchWorkController {
         return true;
     }
 
-    @RequestMapping(
-            value = "/dispatch/session",
-            method = RequestMethod.PUT,
-            params = { "_service=deleteDispatchWork", "personId" })
+    @RequestMapping(value = "/dispatch/session", method = RequestMethod.PUT, params = {
+            "_service=deleteDispatchWork", "personId" })
     @ResponseBody
-    public boolean deleteDispatchWork(
-            @CookieValue("JSESSIONID") String sessionId, long personId,
+    public boolean deleteDispatchWork(@CookieValue("JSESSIONID") String sessionId, long personId,
             String startTime, String endTime) {
         Dispatch dispatch = dispatchCache.get(sessionId);
         for (DispatchWork dw : dispatch.getDispatchWorks()) {
@@ -167,13 +169,11 @@ public class AddDispatchWorkController {
         return true;
     }
 
-    @RequestMapping(
-            value = "/dispatch/session",
-            method = RequestMethod.PUT,
-            params = { "_service=changeStartTime", "personId", "startTime" })
+    @RequestMapping(value = "/dispatch/session", method = RequestMethod.PUT, params = {
+            "_service=changeStartTime", "personId", "startTime" })
     @ResponseBody
-    public boolean changeStartTime(@CookieValue("JSESSIONID") String sessionId,
-            long personId, String startTime) {
+    public boolean changeStartTime(@CookieValue("JSESSIONID") String sessionId, long personId,
+            String startTime) {
         Dispatch dispatch = dispatchCache.get(sessionId);
         for (DispatchWork dw : dispatch.getDispatchWorks()) {
             if (dw.getPersonId() == personId) {
@@ -185,13 +185,11 @@ public class AddDispatchWorkController {
         return true;
     }
 
-    @RequestMapping(
-            value = "/dispatch/session",
-            method = RequestMethod.PUT,
-            params = { "_service=changeEndTime", "personId", "endTime" })
+    @RequestMapping(value = "/dispatch/session", method = RequestMethod.PUT, params = {
+            "_service=changeEndTime", "personId", "endTime" })
     @ResponseBody
-    public boolean changeEndTime(@CookieValue("JSESSIONID") String sessionId,
-            long personId, String endTime) {
+    public boolean changeEndTime(@CookieValue("JSESSIONID") String sessionId, long personId,
+            String endTime) {
         Dispatch dispatch = dispatchCache.get(sessionId);
         for (DispatchWork dw : dispatch.getDispatchWorks()) {
             if (dw.getPersonId() == personId) {
@@ -201,5 +199,13 @@ public class AddDispatchWorkController {
         }
         dispatchCache.put(sessionId, dispatch);
         return true;
+    }
+
+    @RequestMapping(value = "/dispatch", method = RequestMethod.POST)
+    @ResponseBody
+    public void save(@CookieValue("JSESSIONID") String sessionId) {
+        Dispatch dispatch = dispatchCache.get(sessionId);
+        this.dispatchManager.addDispatch(dispatch);
+        dispatchCache.delete(sessionId);
     }
 }

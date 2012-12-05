@@ -9,18 +9,17 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
 import com.jyams.buildingproject.manager.BuildingProjectDetailManager;
+import com.jyams.buildingproject.model.BuildingProject;
+import com.jyams.buildingproject.model.BuildingProjectDetail;
 import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
 import com.jyams.dispatch.model.Dispatch;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.dao.BuildingProjectDao;
 import com.jyams.project.dao.BuildingProjectDetailDao;
-import com.jyams.project.model.BuildingProject;
-import com.jyams.project.model.BuildingProjectDetail;
 import com.jyams.purchase.model.Purchase;
 import com.jyams.purchase.model.PurchaseItem;
 import com.jyams.util.DataPage;
 import com.jyams.util.IdUtil;
-import com.jyams.util.SpringSecurityUtils;
 
 /**
  * @author zhanglong
@@ -28,8 +27,7 @@ import com.jyams.util.SpringSecurityUtils;
  *         Nov 8, 2012 10:18:26 PM
  */
 @Service
-public class BuildingProjectDetailManagerImpl implements
-        BuildingProjectDetailManager {
+public class BuildingProjectDetailManagerImpl implements BuildingProjectDetailManager {
 
     @Autowired
     private BuildingProjectDao buildingProjectDao;
@@ -38,57 +36,25 @@ public class BuildingProjectDetailManagerImpl implements
 
     /**
      * @param buildingProjectDetail
-     *            必设属性 ：creatorId, creatorName, projectId, personId, personName
      * @throws BusinessException
      */
     @Override
-    public long add(BuildingProjectDetail buildingProjectDetail)
-            throws BusinessException {
+    public long add(BuildingProjectDetail buildingProjectDetail) throws BusinessException {
 
         checkProjectIsClose(buildingProjectDetail.getProjectId());
-        buildingProjectDetail.setCreatedTimestamp(System.currentTimeMillis());
-        buildingProjectDetail.setCreatorId(SpringSecurityUtils
-                .getCurrentUserId());
-        buildingProjectDetail.setCreatorName(SpringSecurityUtils
-                .getCurrentUserName());
-        buildingProjectDetail.setPersonId(SpringSecurityUtils
-                .getCurrentUserId());
-        buildingProjectDetail.setPersonName(SpringSecurityUtils
-                .getCurrentUserName());
+
         long detailId = IdUtil.nextLong();
         buildingProjectDetail.setDetailId(detailId);
         buildingProjectDetailDao.insert(buildingProjectDetail);
-        addProjectActualCost(buildingProjectDetail.getProjectId(),
-                buildingProjectDetail.getCost());
+        calculateProjectActualCost(buildingProjectDetail.getProjectId());
         return detailId;
     }
 
-    @Override
-    public long add(Dispatch dispatch) throws BusinessException {
-
-        checkProjectIsClose(dispatch.getProjectId());
-
-        BuildingProjectDetail bpd = new BuildingProjectDetail();
-        long detailId = IdUtil.nextLong();
-        bpd.setDetailId(detailId);
-        bpd.setCreatedTimestamp(System.currentTimeMillis());
-        bpd.setCreatorId(dispatch.getPrincipalId());
-        bpd.setCreatorName(dispatch.getPrincipalName());
-
-        bpd.setPersonId(bpd.getCreatorId());
-        bpd.setPersonName(bpd.getCreatorName());
-        bpd.setProjectId(dispatch.getProjectId());
-
-        // 设置在建项目明细花费类型为人工花费
-        bpd.setCostType(BuildingProjectDetail.COSTTYPE_LABOR);
-        bpd.setCost(dispatch.getCost());
-        bpd.setReferId(dispatch.getDispatchId() + "");
-        buildingProjectDetailDao.insert(bpd);
-        addProjectActualCost(bpd.getProjectId(), bpd.getCost());
-        return detailId;
+    public void delete(Dispatch dispatch) {
+        buildingProjectDetailDao.removeByReferIdAndTypes(dispatch.getDispatchId() + "",
+                BuildingProjectDetail.COSTTYPE_LABOR);
     }
 
-    @Override
     public void add(Purchase purchase) throws BusinessException {
 
         // 采购项
@@ -116,8 +82,7 @@ public class BuildingProjectDetailManagerImpl implements
             bpd.setPersonId(purchase.getApproverId()); // 设置审批人为采购经办人
             bpd.setPersonName(purchase.getApproverName());
             bpd.setProjectId(purchaseItem.getProjectId()); // 关联项目-明细
-            bpd.setReferId(purchase.getPurchaseId() + ""
-                    + (char) purchase.getVersion()); // 关联明细-采购项
+            bpd.setReferId(purchase.getPurchaseId() + "" + (char) purchase.getVersion()); // 关联明细-采购项
             buildingProjectDetailDao.insert(bpd);
 
             Long projectId = purchaseItem.getProjectId();
@@ -129,14 +94,13 @@ public class BuildingProjectDetailManagerImpl implements
 
             // 下面是计算每个项目的本次采购总花费，为防止nullpointException，
             // 这里将之前map中没有存放的项目的花费设置为0
-            float cost = projectCosts.get(projectId) != null ? projectCosts
-                    .get(projectId) : 0F;
+            float cost = projectCosts.get(projectId) != null ? projectCosts.get(projectId) : 0F;
             projectCosts.put(projectId, cost + purchaseItem.getCost());
         }
 
         // 为项目增加实际成本
         for (Entry<Long, Float> projectCost : projectCosts.entrySet()) {
-            addProjectActualCost(projectCost.getKey(), projectCost.getValue());
+            calculateProjectActualCost(projectCost.getKey());
         }
 
     }
@@ -181,16 +145,15 @@ public class BuildingProjectDetailManagerImpl implements
      * @param projectId
      * @param totalCost
      */
-    private void addProjectActualCost(long projectId, float totalCost) {
+    private void calculateProjectActualCost(long projectId) {
         BuildingProject bp = buildingProjectDao.get(projectId);
-        bp.setActualCost(bp.getActualCost() + totalCost);
+        float actualCost = buildingProjectDetailDao.calculateActualCost(projectId);
 
         // 若项目的实际成本大于预估成本，则将项目状态加上报警和超支
-        if (bp.getActualCost() > bp.getEstimateCost()) {
+        if (actualCost > bp.getEstimateCost()) {
             bp.setStatus((short) (bp.getStatus() | BuildingProject.STATUS_OVERRUN));
         }
-        buildingProjectDao.updateAcualCostAndStatus(projectId, totalCost,
-                bp.getStatus());
+        buildingProjectDao.updateAcualCostAndStatus(projectId, actualCost, bp.getStatus());
     }
 
 }

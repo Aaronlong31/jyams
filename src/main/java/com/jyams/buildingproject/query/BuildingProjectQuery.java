@@ -1,6 +1,6 @@
 package com.jyams.buildingproject.query;
 
-import com.jyams.project.model.BuildingProject;
+import com.jyams.buildingproject.model.BuildingProject;
 import com.jyams.util.search.Query;
 import com.jyams.util.search.SearchFilter;
 import com.jyams.util.search.SqlOrder;

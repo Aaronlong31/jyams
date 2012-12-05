@@ -15,10 +15,10 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/validator/jquery.validate.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/jqgrid/jquery.jqGrid.js"></script>
 <script type="text/javascript" src="${ctx}/js/i18n/grid.i18n.js"></script>
 <script type="text/javascript" src="${ctx}/js/i18n/datepicker.i18n.js"></script>
 <script type="text/javascript" src="${ctx}/js/i18n/validator.i18n.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jqgrid/jquery.jqGrid.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ctx}/js/selectProject.js"></script>
 <style type="text/css">
@@ -65,10 +65,9 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 			</div>
 		</div>
 	</div>
-	<hr/>
 	<div id="message" class="alert alert-error"></div>
 	<form action="" class="form-horizontal ">
-		<table class="table table-striped table-condensed">
+		<table class="table table-condensed">
 	    	<tr>
 				<td colspan="2">
 					<div class="control-group">
@@ -144,6 +143,10 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 		  </div>
 		</div>
 	</form>
+	<div class="form-actions center">
+		<button type="submit" class="btn btn-primary" id="addDispatchBtn" data-loading-text="保存中......">保存</button>
+		<button type="button" class="btn" id="cancel">取消</button>
+    </div>
 </div>
 </body>
 <script language="javascript">
@@ -240,7 +243,15 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 				$(this).addClass("btn-primary active");
 			}
 		});
-		
+		$("#addDispatchBtn").click(function(){
+			$.post("${ctx}/dispatch").success(function(){
+				alert("保存成功！");
+				$(this).button('reset');
+			}).error(function(e, jqxhr, settings, exception){
+				var errorInfo = JSON.parse(e.responseText).errorInfo;
+				alert("保存失败！" + errorInfo.message);
+			});
+		});
 		$("#dispatchDay").change(function(){
 			$.post("${ctx}/dispatch/session", {"_method" : "PUT", "dispatchDayString" : this.value});
 		}).datepicker();  

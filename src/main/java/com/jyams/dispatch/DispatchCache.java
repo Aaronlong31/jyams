@@ -17,16 +17,13 @@ import com.jyams.util.SpringSecurityUtils;
  */
 @Component
 public class DispatchCache {
-    private final LoadingCache<String, Dispatch> cache = CacheBuilder
-            .newBuilder().maximumSize(500)
+    private final LoadingCache<String, Dispatch> cache = CacheBuilder.newBuilder().maximumSize(500)
             .build(new CacheLoader<String, Dispatch>() {
                 @Override
                 public Dispatch load(String key) throws Exception {
                     Dispatch dispatch = new Dispatch();
-                    dispatch.setPrincipalId(SpringSecurityUtils
-                            .getCurrentUserId());
-                    dispatch.setPrincipalName(SpringSecurityUtils
-                            .getCurrentUserName());
+                    dispatch.setPrincipalId(SpringSecurityUtils.getCurrentUserId());
+                    dispatch.setPrincipalName(SpringSecurityUtils.getCurrentUserName());
                     dispatch.setProjectType(Dispatch.PROJECT_TYPE_BUILDING);
                     return dispatch;
                 }
@@ -46,6 +43,10 @@ public class DispatchCache {
 
     public void refresh(String key) {
         cache.refresh(key);
+    }
+
+    public void delete(String key) {
+        cache.invalidate(key);
     }
 
 }

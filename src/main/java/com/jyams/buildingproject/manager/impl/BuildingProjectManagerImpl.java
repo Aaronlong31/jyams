@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jyams.buildingproject.manager.BuildingProjectManager;
+import com.jyams.buildingproject.model.BuildingProject;
+import com.jyams.buildingproject.model.BuildingProjectDetail;
 import com.jyams.buildingproject.query.BuildingProjectQuery;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.dao.BuildingProjectDao;
 import com.jyams.project.dao.BuildingProjectDetailDao;
-import com.jyams.project.model.BuildingProject;
-import com.jyams.project.model.BuildingProjectDetail;
 import com.jyams.project.model.ChangeStatusType;
 import com.jyams.project.model.Project;
 import com.jyams.purchase.model.Purchase;
@@ -61,8 +61,7 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
 
     @Override
     public boolean closeProject(long projectId, long personId, String personName) {
-        return buildingProjectDao.completeProject(projectId, personId,
-                personName) > 0;
+        return buildingProjectDao.completeProject(projectId, personId, personName) > 0;
     }
 
     @Override
@@ -81,10 +80,8 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
     }
 
     @Override
-    public boolean clearCollection(long projectId, long personId,
-            String personName) {
-        return buildingProjectDao.clearCollection(projectId, personId,
-                personName) > 0;
+    public boolean clearCollection(long projectId, long personId, String personName) {
+        return buildingProjectDao.clearCollection(projectId, personId, personName) > 0;
     }
 
     @Override
@@ -100,19 +97,17 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
     }
 
     @Override
-    public BuildingProject getBuildingProject(long buildingProjectId)
-            throws BusinessException {
+    public BuildingProject getBuildingProject(long buildingProjectId) throws BusinessException {
 
-        BuildingProject buildingProject = buildingProjectDao
-                .get(buildingProjectId);
+        BuildingProject buildingProject = buildingProjectDao.get(buildingProjectId);
 
         if (buildingProject == null) {
             throw new BusinessException("您要查看的在建项目不存在！");
         }
 
         // 将在建项目明细一起查出
-        buildingProject.setBuildingProjectDetails(buildingProjectDetailDao
-                .findBy("projectId", buildingProjectId));
+        buildingProject.setBuildingProjectDetails(buildingProjectDetailDao.findBy("projectId",
+                buildingProjectId));
 
         return buildingProject;
     }
@@ -154,41 +149,37 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
     }
 
     @Override
-    public DataPage<BuildingProject> listBuildingProject(
-            BuildingProjectQuery query) {
+    public DataPage<BuildingProject> listBuildingProject(BuildingProjectQuery query) {
         return buildingProjectDao.pageQuery(query);
     }
 
     @Override
-    public void updateBuildingProjectDetail(PurchaseItem purchaseItem,
-            Long oldPurchaseItemId, short purchaseType) {
+    public void updateBuildingProjectDetail(PurchaseItem purchaseItem, Long oldPurchaseItemId,
+            short purchaseType) {
 
         Long oldPorjectId = null;
-        short[] costTypes = { BuildingProjectDetail.COSTTYPE_MATERIAL,
-                BuildingProjectDetail.COSTTYPE_ORDER };
         String referId = purchaseItem.getPurchaseItemId() + "";
 
         // 1.如果purchaseItem的状态为删除，则删除BuildingProjectDetail表中，referId为
         // purchaesItemId且costType 为1或2的记录
         if (purchaseItem.getStatus() == PurchaseItem.STATUS_DELETED
                 || purchaseItem.getStatus() == PurchaseItem.STATUS_SUBSPENDED) {
-            buildingProjectDetailDao
-                    .removeByReferIdAndTypes(referId, costTypes);
+            buildingProjectDetailDao.removeByReferIdAndTypes(referId,
+                    BuildingProjectDetail.COSTTYPE_MATERIAL, BuildingProjectDetail.COSTTYPE_ORDER);
         } else if (purchaseItem.getStatus() == PurchaseItem.STATUS_PASS_REVIEW) {
             // 2. 如果purchaseItem的状态不为删除，根据referId=oldPurchaseItemId
             // 查找BuildingProjectDetail表
-            BuildingProjectDetail detail = buildingProjectDetailDao
-                    .findUniqueBy("referId", oldPurchaseItemId + "");
+            BuildingProjectDetail detail = buildingProjectDetailDao.findUniqueBy("referId",
+                    oldPurchaseItemId + "");
 
             // 如果修改前后项目标识有变动，则要修改两个项目的成本和状态
-            if (detail != null
-                    && detail.getProjectId() != purchaseItem.getProjectId()) {
+            if (detail != null && detail.getProjectId() != purchaseItem.getProjectId()) {
                 oldPorjectId = detail.getProjectId();
             }
 
             // 删除之前的detail
-            buildingProjectDetailDao
-                    .removeByReferIdAndTypes(referId, costTypes);
+            buildingProjectDetailDao.removeByReferIdAndTypes(referId,
+                    BuildingProjectDetail.COSTTYPE_MATERIAL, BuildingProjectDetail.COSTTYPE_ORDER);
 
             // 新增detail
             addBuildingProjectDetail(purchaseItem, purchaseType);
@@ -202,8 +193,7 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
         updateCostAndStatus(purchaseItem.getProjectId());
     }
 
-    private void addBuildingProjectDetail(PurchaseItem purchaseItem,
-            short purchaseType) {
+    private void addBuildingProjectDetail(PurchaseItem purchaseItem, short purchaseType) {
         BuildingProjectDetail detail = new BuildingProjectDetail();
         detail.setDetailId(IdUtil.nextLong());
         detail.setCost(purchaseItem.getCost());
@@ -241,7 +231,6 @@ public class BuildingProjectManagerImpl implements BuildingProjectManager {
         } else {
             bp.setStatus((short) (bp.getStatus() & ~BuildingProject.STATUS_OVERRUN));
         }
-        buildingProjectDao.updateAcualCostAndStatus(projectId,
-                bp.getActualCost(), bp.getStatus());
+        buildingProjectDao.updateAcualCostAndStatus(projectId, bp.getActualCost(), bp.getStatus());
     }
 }

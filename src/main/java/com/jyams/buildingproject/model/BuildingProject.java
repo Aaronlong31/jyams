@@ -1,4 +1,4 @@
-package com.jyams.project.model;
+package com.jyams.buildingproject.model;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.google.common.collect.Lists;
+import com.jyams.project.model.Project;
 
 /**
  * 在建项目
@@ -59,8 +60,7 @@ public class BuildingProject {
     private short status; // 状态
 
     private Project project; // 项目
-    private List<BuildingProjectDetail> BuildingProjectDetails = Lists
-            .newArrayList();
+    private List<BuildingProjectDetail> BuildingProjectDetails = Lists.newArrayList();
 
     /**
      * @return the projectId
@@ -298,8 +298,7 @@ public class BuildingProject {
      * @param buildingProjectDetails
      *            the buildingProjectDetails to set
      */
-    public void setBuildingProjectDetails(
-            List<BuildingProjectDetail> buildingProjectDetails) {
+    public void setBuildingProjectDetails(List<BuildingProjectDetail> buildingProjectDetails) {
         BuildingProjectDetails = buildingProjectDetails;
     }
 
@@ -352,8 +351,7 @@ public class BuildingProject {
         if (project == null || getContractPrice() <= 0) {
             return "";
         }
-        double i = Math
-                .floor(((getContractPrice() - actualCost) / getContractPrice()) * 10000);
+        double i = Math.floor(((getContractPrice() - actualCost) / getContractPrice()) * 10000);
         return i / 100 + "%";
     }
 
@@ -430,8 +428,7 @@ public class BuildingProject {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     public float getCostFromDetail() {

@@ -2,7 +2,7 @@
 	var successFunction = null;
 	var projectListGrid;
 	$(function(){
-		$("<div>").load("../js/selectProject.html", function(){
+		$("<div>").load("../html/selectProject.html", function(){
 			$('#_selectProjectDiv').modal({
 				backdrop:true,
 				keyboard:true,
@@ -64,6 +64,9 @@
 				var projectId = $($tr.find("td").get(1)).text();
 				var projectName = $($tr.find("td").get(2)).text();
 				successFunction(projectId, projectName);
+				$('#_selectProjectDiv').modal("hide");
+			});
+			$("#_cancel").click(function(){
 				$('#_selectProjectDiv').modal("hide");
 			});
 		}).appendTo($("body"));

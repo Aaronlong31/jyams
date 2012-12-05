@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jyams.buildingproject.model.BuildingProjectDetail;
 import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
-import com.jyams.dispatch.model.Dispatch;
 import com.jyams.exception.BusinessException;
-import com.jyams.project.model.BuildingProjectDetail;
-import com.jyams.purchase.model.Purchase;
 import com.jyams.util.DataPage;
 
 /**
@@ -26,29 +24,7 @@ public interface BuildingProjectDetailManager {
      * @throws BusinessException
      *             项目关闭时抛出
      */
-    long add(BuildingProjectDetail buildingProjectDetail)
-            throws BusinessException;
-
-    /**
-     * 由派工信息生成在建项目明细<br>
-     * 注意：项目关闭时不能添加
-     * 
-     * @param dispatch
-     * @return
-     * @throws BusinessException
-     *             项目关闭时抛出
-     */
-    long add(Dispatch dispatch) throws BusinessException;
-
-    /**
-     * 由采购订单生成在建项目明细<br>
-     * 注意：项目关闭时不能添加
-     * 
-     * @param purchaseOrder
-     * @throws BusinessException
-     *             项目关闭时抛出
-     */
-    void add(Purchase purchase) throws BusinessException;
+    long add(BuildingProjectDetail buildingProjectDetail) throws BusinessException;
 
     /**
      * 修改在建项目明细
@@ -77,6 +53,5 @@ public interface BuildingProjectDetailManager {
     List<BuildingProjectDetail> list(long projectId);
 
     @Transactional(readOnly = true)
-    DataPage<BuildingProjectDetail> list(
-            BuildingProjectDetailQuery buildingProjectDetailQuery);
+    DataPage<BuildingProjectDetail> list(BuildingProjectDetailQuery buildingProjectDetailQuery);
 }

@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jyams.buildingproject.model.BuildingProject;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.manager.ProjectManager;
-import com.jyams.project.model.BuildingProject;
 import com.jyams.project.model.Project;
 import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;

@@ -21,13 +21,12 @@ public class WebConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/js/**", "/images/**", "/css/**")
-                .addResourceLocations("/js/", "/images/", "/css/");
+        registry.addResourceHandler("/js/**", "/images/**", "/css/**", "/html/**")
+                .addResourceLocations("/js/", "/images/", "/css/", "/html/");
     }
 
     @Override
-    protected void addArgumentResolvers(
-            List<HandlerMethodArgumentResolver> argumentResolvers) {
+    protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         QueryArgumentResolver queryArgumentResolver = new QueryArgumentResolver();
         argumentResolvers.add(queryArgumentResolver);
     }

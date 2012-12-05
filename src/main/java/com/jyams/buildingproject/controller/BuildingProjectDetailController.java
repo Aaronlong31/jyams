@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jyams.buildingproject.manager.BuildingProjectDetailManager;
+import com.jyams.buildingproject.model.BuildingProjectDetail;
 import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
 import com.jyams.exception.BusinessException;
-import com.jyams.project.model.BuildingProjectDetail;
 import com.jyams.util.DataPage;
+import com.jyams.util.SpringSecurityUtils;
 
 /**
  * @author zhanglong
@@ -29,24 +30,24 @@ public class BuildingProjectDetailController {
     @Autowired
     private BuildingProjectDetailManager buildingProjectDetailManager;
 
-    @RequestMapping(value = "/buildingProject/{projectId}/detail",
+    @RequestMapping(
+            value = "/buildingProject/{projectId}/detail",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public DataPage<BuildingProjectDetail> list(
-            @PathVariable("projectId") long projectId,
+    public DataPage<BuildingProjectDetail> list(@PathVariable("projectId") long projectId,
             @Valid BuildingProjectDetailQuery buildingProjectDetailQuery) {
         buildingProjectDetailQuery.setProjectId(projectId);
         return buildingProjectDetailManager.list(buildingProjectDetailQuery);
     }
 
-    @RequestMapping(value = "/buildingProject/{projectId}/detail",
+    @RequestMapping(
+            value = "/buildingProject/{projectId}/detail",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Object add(@PathVariable("projectId") long projectId,
-            @Valid AddDetailForm addDetailForm, BindingResult result)
-            throws BusinessException {
+            @Valid AddDetailForm addDetailForm, BindingResult result) throws BusinessException {
 
         if (result.hasErrors()) {
             return result.getAllErrors();
@@ -56,6 +57,11 @@ public class BuildingProjectDetailController {
 
         BeanUtils.copyProperties(addDetailForm, buildingProjectDetail);
         buildingProjectDetail.setProjectId(projectId);
+        buildingProjectDetail.setCreatedTimestamp(System.currentTimeMillis());
+        buildingProjectDetail.setCreatorId(SpringSecurityUtils.getCurrentUserId());
+        buildingProjectDetail.setCreatorName(SpringSecurityUtils.getCurrentUserName());
+        buildingProjectDetail.setPersonId(SpringSecurityUtils.getCurrentUserId());
+        buildingProjectDetail.setPersonName(SpringSecurityUtils.getCurrentUserName());
         return buildingProjectDetailManager.add(buildingProjectDetail) > 0;
     }
 }

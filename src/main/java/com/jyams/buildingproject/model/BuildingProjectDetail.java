@@ -1,4 +1,4 @@
-package com.jyams.project.model;
+package com.jyams.buildingproject.model;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;

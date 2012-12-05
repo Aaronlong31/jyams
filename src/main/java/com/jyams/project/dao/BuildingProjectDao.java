@@ -7,7 +7,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Maps;
-import com.jyams.project.model.BuildingProject;
+import com.jyams.buildingproject.model.BuildingProject;
 import com.jyams.project.model.ChangeStatusType;
 import com.jyams.util.DataPage;
 import com.jyams.util.dao.IBatisEntityDao;
@@ -20,9 +20,8 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
      * 查询在建项目
      */
     public DataPage<BuildingProject> listBuildingProject(Long projectId,
-            String companyPrincipalName, String clientName,
-            String clientPrincipalName, Integer status, String orderString,
-            Integer pageNo, Integer pageSize, boolean hidden) {
+            String companyPrincipalName, String clientName, String clientPrincipalName,
+            Integer status, String orderString, Integer pageNo, Integer pageSize, boolean hidden) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("projectId", projectId);
         map.put("companyPrincipalName", companyPrincipalName);
@@ -31,8 +30,7 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("orderString", orderString);
         map.put("status", status);
         map.put("hidden", hidden);
-        return pagedQuery("BuildingProjectDao.listBuildingProject", map,
-                pageNo, pageSize);
+        return pagedQuery("BuildingProjectDao.listBuildingProject", map, pageNo, pageSize);
     }
 
     /**
@@ -44,8 +42,7 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("personId", personId);
         map.put("personName", personName);
         map.put("invoiceTimestamp", System.currentTimeMillis());
-        return getSqlMapClientTemplate().update("BuildingProjectDao.invoice",
-                map);
+        return getSqlMapClientTemplate().update("BuildingProjectDao.invoice", map);
     }
 
     /**
@@ -57,15 +54,14 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("completionTimestamp", System.currentTimeMillis());
         map.put("personId", personId);
         map.put("personName", personName);
-        return getSqlMapClientTemplate().update(
-                "BuildingProjectDao.completeProject", map);
+        return getSqlMapClientTemplate().update("BuildingProjectDao.completeProject", map);
     }
 
     /**
      * 修改在建项目状态
      */
-    public int updateStatus(long projectId, long personId, String personName,
-            int status, ChangeStatusType changeType) {
+    public int updateStatus(long projectId, long personId, String personName, int status,
+            ChangeStatusType changeType) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("projectId", projectId);
         map.put("personId", personId);
@@ -73,34 +69,29 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("timestamp", System.currentTimeMillis());
         map.put("status", status);
         map.put("changeType", changeType);
-        return getSqlMapClientTemplate().update(
-                "BuildingProjectDao.updateStatus", map);
+        return getSqlMapClientTemplate().update("BuildingProjectDao.updateStatus", map);
     }
 
     /**
      * 修改实际成本和状态
      */
-    public void updateAcualCostAndStatus(long projectId, float actualCost,
-            int status) {
+    public void updateAcualCostAndStatus(long projectId, float actualCost, int status) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("projectId", projectId);
         map.put("actualCost", actualCost);
         map.put("status", status);
-        getSqlMapClientTemplate().update(
-                "BuildingProjectDao.updateAcualCostAndStatus", map);
+        getSqlMapClientTemplate().update("BuildingProjectDao.updateAcualCostAndStatus", map);
     }
 
     public List<Long> listProjectIds(Integer status) {
-        return getSqlMapClientTemplate().queryForList(
-                "BuildingProjectDao.listProjectIds", status);
+        return getSqlMapClientTemplate().queryForList("BuildingProjectDao.listProjectIds", status);
     }
 
     /**
      * 检查延迟项目
      */
     public void checkDelayProject() {
-        getSqlMapClientTemplate()
-                .update("BuildingProjectDao.checkDelayProject");
+        getSqlMapClientTemplate().update("BuildingProjectDao.checkDelayProject");
     }
 
     /**
@@ -113,8 +104,7 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("personName", personName);
         map.put("timestamp", System.currentTimeMillis());
         try {
-            return getSqlMapClientTemplate().update(
-                    "BuildingProjectDao.collection", map);
+            return getSqlMapClientTemplate().update("BuildingProjectDao.collection", map);
         } catch (DataAccessException e) {
             throw e;
         }
@@ -126,8 +116,7 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("personId", personId);
         map.put("personName", personName);
         map.put("invoiceTimestamp", System.currentTimeMillis());
-        return getSqlMapClientTemplate().update(
-                "BuildingProjectDao.clearInvoice", map);
+        return getSqlMapClientTemplate().update("BuildingProjectDao.clearInvoice", map);
     }
 
     public int clearCollection(long projectId, long personId, String personName) {
@@ -136,7 +125,6 @@ public class BuildingProjectDao extends IBatisEntityDao<BuildingProject> {
         map.put("personId", personId);
         map.put("personName", personName);
         map.put("invoiceTimestamp", System.currentTimeMillis());
-        return getSqlMapClientTemplate().update(
-                "BuildingProjectDao.clearCollection", map);
+        return getSqlMapClientTemplate().update("BuildingProjectDao.clearCollection", map);
     }
 }
