@@ -2,14 +2,15 @@
 	var successFunction = null;
 	var projectListGrid;
 	$(function(){
-		$("<div>").load("../html/selectProject.html", function(){
+		var contextPath = "/jyams";
+		$("<div>").load(contextPath + "/html/selectProject.html", function(){
 			$('#_selectProjectDiv').modal({
 				backdrop:true,
 				keyboard:true,
 				show : false
 			});
 			projectListGrid = $("#_projectList").jqGrid({
-				url : "../project/basic",
+				url : contextPath + "/project/basic",
 				datatype : "json",
 				colNames : ["客户", "项目编号", "项目名称"],
 				colModel : [
@@ -72,7 +73,7 @@
 		}).appendTo($("body"));
 	});
 	function updateSearchYear(incre){
-		$.post("../project/updateSearchYear", {"increYear" : incre, "_method" : "PUT"}, function (data){
+		$.post(contextPath + "/project/updateSearchYear", {"increYear" : incre, "_method" : "PUT"}, function (data){
 			$("#_preYear, #_curYear, #_nextYear").each(function(){
 				$(this).find(".ui-pg-div").html(Number($(this).text()) + incre);
 			});

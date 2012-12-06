@@ -61,7 +61,7 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container">
-				<h4>新增派工</h4>
+				<h4 id="title"></h4>
 			</div>
 		</div>
 	</div>
@@ -151,6 +151,11 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 </body>
 <script language="javascript">
 	$(function() {
+		if($("#message").text() == ""){
+			$("#message").hide();
+		}
+		var dispatchId = "${dispatch.dispatchId}";
+		$("#title").text(dispatchId == "" ? "新建派工" : "编辑派工"); 
 		var times = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", 
 		     		 "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", 
 		     		 "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
@@ -166,9 +171,6 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 	  		timeSelect.clone().addClass("startTime span4").val($this.attr("startTime")).appendTo($this);
 		  	timeSelect.clone().addClass("endTime span4").val($this.attr("endTime")).appendTo($this);
 	  	});
-		if($("#message").text() == ""){
-			$("#message").hide();
-		}
 		
 		$(".startTime").bind("change", function(){
 			$.post("${ctx}/dispatch/session", {
@@ -243,8 +245,11 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 				$(this).addClass("btn-primary active");
 			}
 		});
+		
+		var saveUrl = (dispatchId == "") ? "${ctx}/dispatch" : "${ctx}/dispatch/" + dispatchId;
+		var saveMethod = (dispatchId == "") ? "POST" : "PUT";
 		$("#addDispatchBtn").click(function(){
-			$.post("${ctx}/dispatch").success(function(){
+			$.post(saveUrl, {"_method" : saveMethod}).success(function(){
 				alert("保存成功！");
 				$(this).button('reset');
 			}).error(function(e, jqxhr, settings, exception){

@@ -25,9 +25,8 @@ public class DispatchWorkDao extends IBatisEntityDao<DispatchWork> {
     }
 
     @SuppressWarnings("unchecked")
-    public DataPage<DispatchWork> listDispatchWorks(Long projectId,
-            Long personId, String personName, Integer month, Integer day,
-            Integer pageNo, Integer pageSize) {
+    public DataPage<DispatchWork> listDispatchWorks(Long projectId, Long personId,
+            String personName, Integer month, Integer day, Integer pageNo, Integer pageSize) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("projectId", projectId);
         map.put("personId", personId);
@@ -37,12 +36,10 @@ public class DispatchWorkDao extends IBatisEntityDao<DispatchWork> {
             map.put("dispatchDayEnd", month * 100 + 31);
         }
         map.put("dispatchDay", day);
-        return pagedQuery("DispatchWorkDao.listDispatchWorks", map, pageNo,
-                pageSize);
+        return pagedQuery("DispatchWorkDao.listDispatchWorks", map, pageNo, pageSize);
     }
 
-    public int checkDuplicateTime(int dispatchDay, int startTime, int endTime,
-            long personId) {
+    public int checkDuplicateTime(int dispatchDay, int startTime, int endTime, long personId) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("dispatchDay", dispatchDay);
         map.put("startTime", startTime);
@@ -50,5 +47,9 @@ public class DispatchWorkDao extends IBatisEntityDao<DispatchWork> {
         map.put("personId", personId);
         return (Integer) getSqlMapClientTemplate().queryForObject(
                 "DispatchWorkDao.checkDuplicateTime", map);
+    }
+
+    public void removeByDispatchId(long dispatchId) {
+        getSqlMapClientTemplate().delete("DispatchWorkDao.removeByDispatchId", dispatchId);
     }
 }

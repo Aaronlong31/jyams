@@ -27,4 +27,15 @@ public class BuildingProjectDetailDao extends IBatisEntityDao<BuildingProjectDet
         return Float.parseFloat(result.toString());
     }
 
+    public Long findProjectIdByReferId(String referId, short costType) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("referId", referId);
+        map.put("costType", costType);
+        Object result = getSqlMapClientTemplate().queryForObject(
+                "BuildingProjectDetailDao.findProjectIdByReferId", map);
+        if (result == null) {
+            return null;
+        }
+        return Long.parseLong(result.toString());
+    }
 }

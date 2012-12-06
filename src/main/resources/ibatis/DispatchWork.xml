@@ -144,4 +144,8 @@
 		ON d.dispatchId = dw.dispatchId	
 		<include refid="pageQueryWhere"/>
 	</select>
+	
+	<delete id="DispatchWorkDao.removeByDispatchId" parameterClass="Long">
+		DELETE FROM DispatchWork WHERE dispatchId = #value#
+	</delete>
 </sqlMap>

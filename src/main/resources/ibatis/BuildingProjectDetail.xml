@@ -2,7 +2,7 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="BuildingProjectDetail">
 	<typeAlias alias="BuildingProjectDetail"
-		type="com.jyams.project.model.BuildingProjectDetail" />
+		type="com.jyams.buildingproject.model.BuildingProjectDetail" />
 	<typeAlias alias="BuildingProjectDetailQuery" type="com.jyams.buildingproject.query.BuildingProjectDetailQuery"/>
 
 	<sql id="selectByMapSql">
@@ -74,6 +74,17 @@
 		parameterClass="BuildingProjectDetailQuery" resultClass="int">
 		SELECT COUNT(1) FROM BuildingProjectDetail
 		<include refid="pageQueryWhere"/>
+	</select>
+	
+	<select id="BuildingProjectDetailDao.calculateActualCost" parameterClass="Long"
+		resultClass="Float">
+		SELECT SUM(cost) FROM BuildingProjectDetail WHERE projectId = #value#
+	</select>
+	
+	<select id="BuildingProjectDetailDao.findProjectIdByReferId" 
+		parameterClass="hashMap" resultClass="Long">
+		SELECT projectId FROM BuildingProjectDetail 
+		WHERE referId = #referId# AND costType = #costType# LIMIT 1
 	</select>
 	
 	<delete id="BuildingProjectDetailDao.removeByReferIdAndTypes"

@@ -120,4 +120,8 @@
 		ON d.dispatchId = dw.dispatchId		
 		<include refid="whereSql"/>	
 	</select>
+	
+	<delete id="Dispatch.deleteByPrimaryKey" parameterClass="Long">
+		DELETE FROM Dispatch WHERE dispatchId = #deleteByPrimaryKey#
+	</delete>
 </sqlMap>

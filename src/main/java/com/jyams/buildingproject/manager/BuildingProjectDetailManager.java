@@ -54,4 +54,6 @@ public interface BuildingProjectDetailManager {
 
     @Transactional(readOnly = true)
     DataPage<BuildingProjectDetail> list(BuildingProjectDetailQuery buildingProjectDetailQuery);
+
+    void deleteByReferId(long dispatchId, short costType);
 }

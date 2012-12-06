@@ -12,7 +12,6 @@ import com.jyams.buildingproject.manager.BuildingProjectDetailManager;
 import com.jyams.buildingproject.model.BuildingProject;
 import com.jyams.buildingproject.model.BuildingProjectDetail;
 import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
-import com.jyams.dispatch.model.Dispatch;
 import com.jyams.exception.BusinessException;
 import com.jyams.project.dao.BuildingProjectDao;
 import com.jyams.project.dao.BuildingProjectDetailDao;
@@ -41,18 +40,13 @@ public class BuildingProjectDetailManagerImpl implements BuildingProjectDetailMa
     @Override
     public long add(BuildingProjectDetail buildingProjectDetail) throws BusinessException {
 
-        checkProjectIsClose(buildingProjectDetail.getProjectId());
+        checkProjectIsCompleted(buildingProjectDetail.getProjectId());
 
         long detailId = IdUtil.nextLong();
         buildingProjectDetail.setDetailId(detailId);
         buildingProjectDetailDao.insert(buildingProjectDetail);
         calculateProjectActualCost(buildingProjectDetail.getProjectId());
         return detailId;
-    }
-
-    public void delete(Dispatch dispatch) {
-        buildingProjectDetailDao.removeByReferIdAndTypes(dispatch.getDispatchId() + "",
-                BuildingProjectDetail.COSTTYPE_LABOR);
     }
 
     public void add(Purchase purchase) throws BusinessException {
@@ -66,7 +60,7 @@ public class BuildingProjectDetailManagerImpl implements BuildingProjectDetailMa
         // 遍历采购项，将每个采购项作为一个明细存到数据库中
         for (PurchaseItem purchaseItem : purchaseItems) {
 
-            checkProjectIsClose(purchaseItem.getProjectId());
+            checkProjectIsCompleted(purchaseItem.getProjectId());
 
             BuildingProjectDetail bpd = new BuildingProjectDetail();
             bpd.setDetailId(IdUtil.nextLong()); // 设置明细标识
@@ -126,13 +120,20 @@ public class BuildingProjectDetailManagerImpl implements BuildingProjectDetailMa
         return buildingProjectDetailDao.pageQuery(buildingProjectDetailQuery);
     }
 
+    @Override
+    public void deleteByReferId(long dispatchId, short costType) {
+        long projectId = buildingProjectDetailDao.findProjectIdByReferId(dispatchId + "", costType);
+        buildingProjectDetailDao.removeByReferIdAndTypes(dispatchId + "", costType);
+        calculateProjectActualCost(projectId);
+    }
+
     /**
      * 检查项目是否完工
      * 
      * @param projectId
      * @throws BusinessException
      */
-    private void checkProjectIsClose(long projectId) throws BusinessException {
+    private void checkProjectIsCompleted(long projectId) throws BusinessException {
         BuildingProject buildingProject = buildingProjectDao.get(projectId);
         if (buildingProject.getStatus() == BuildingProject.STATUS_COMPLETED) {
             throw new BusinessException("该项目已完工，不能再添加明细！");
