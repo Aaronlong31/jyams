@@ -18,3 +18,5 @@ rebel.xml
 /out
 /.springBeans
 /.svn
+/src/main/webapp-build
+gradle-app.setting

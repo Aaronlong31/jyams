@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'war'
 apply plugin: 'jetty'
@@ -10,6 +11,7 @@ project.version = 3.0
 project.group = "com.jyams"
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 configurations.all {
@@ -25,6 +27,7 @@ dependencies {
     compile "commons-codec:commons-codec:1.6"
     //providedCompile 'org.apache.tomcat:tomcat-servlet-api:7.0.28'
     //providedCompile 'org.apache.tomcat:jsp-api:6.0.35'
+	providedCompile "javax.servlet:servlet-api:2.5"
 	compile 'org.hibernate:hibernate-validator:4.1.0.Final'
 	compile 'org.aspectj:aspectjrt:1.6.12'
 	compile 'org.aspectj:aspectjweaver:1.6.12'
@@ -151,4 +154,8 @@ sonar {
         language = "java,groovy"
         sourceEncoding = "UTF-8"
     }
+}
+
+war {
+	project.webAppDirName = "src/main/webapp"
 }

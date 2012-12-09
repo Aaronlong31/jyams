@@ -9,6 +9,10 @@
 				keyboard:true,
 				show : false
 			});
+			var searchYear = 0;
+			$.get(contextPath + "/project/searchYear", function(data){
+				searchYear = data;
+			})
 			projectListGrid = $("#_projectList").jqGrid({
 				url : contextPath + "/project/basic",
 				datatype : "json",
@@ -41,7 +45,7 @@
 			}).jqGrid('navGrid','#_projectPager',{edit:false,add:false,del:false,search:false})
 			.jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false})
 			.navButtonAdd('#_projectPager', {
-				caption : "2011",
+				caption : searchYear - 1,
 				id : "_preYear",
 				buttonicon : "ui-icon-triangle-1-w",
 				onClickButton : function (){
@@ -49,11 +53,11 @@
 				}
 			})
 			.navButtonAdd('#_projectPager', {
-				caption : "2012",
+				caption : searchYear,
 				id : "_curYear"
 			})
 			.navButtonAdd('#_projectPager', {
-				caption : "2013",
+				caption : searchYear + 1,
 				id : "_nextYear",
 				buttonicon : "ui-icon-triangle-1-e",
 				onClickButton : function (){

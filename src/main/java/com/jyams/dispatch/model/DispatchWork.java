@@ -3,7 +3,9 @@ package com.jyams.dispatch.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyams.util.DateTimeUtils;
+import com.jyams.util.LongToStringJsonSerializer;
 import com.jyams.util.SalaryCalculator;
 
 /**
@@ -40,6 +42,7 @@ public class DispatchWork {
         this.dispatchWorkId = dispatchWorkId;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getDispatchId() {
         return dispatchId;
     }
@@ -157,8 +160,7 @@ public class DispatchWork {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     /**
