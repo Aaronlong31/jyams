@@ -1,21 +1,22 @@
 require(["jquery", 
-         "../bootstrap", 
-         "../common", 
-         "../jquery/jquery-ui-1.9.1.custom",
-         "../jquery/validator/jquery.validate",
-         "../i18n/datepicker.i18n",
-         "../i18n/validator.i18n",
-         "../i18n/grid.i18n",
-         "../jquery/jqgrid/jquery.jqGrid",
-         "../selectProject",
-         ], function($) {
+    "../common",
+    "../jquery/jquery-ui-1.9.1.custom",
+    "../jquery/validator/jquery.validate",
+    "../i18n/datepicker.i18n",
+    "../i18n/validator.i18n",
+    "../i18n/grid.i18n",
+    "../jquery/jqgrid/jquery.jqGrid",
+    "../selectProject",
+    "../bootstrap"
+], function($) {
 	$(function() {
-		if($("#message").text() == ""){
-			$("#message").hide();
+        var $message = $("#message");
+		if($message.text() != ""){
+            $message.show();
 		}
 		var ctx = getContextPath();
 		var dispatchId = "${dispatch.dispatchId}";
-		$("#title").text(dispatchId == "" ? "新建派工" : "编辑派工"); 
+//		$("#title").text(dispatchId == "" ? "新建派工" : "编辑派工");
 		var times = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", 
 		     		 "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", 
 		     		 "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
@@ -85,7 +86,7 @@ require(["jquery",
 			},
 			remove : function(event, ui){
 				var personId = ui.item.attr("personId");
-            	$("#dispatched li[personId="+personId+"]").remove();
+            	$("#dispatched li[personId=" + personId + "]").remove();
 			}
         });
 		$("button.department").click(function(){

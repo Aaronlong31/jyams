@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/taglibs.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -17,7 +18,7 @@
 #projectPager_right{width:0}
 .uneditable-input{cursor: pointer;}
 .box{
-	height: 500px;
+	height: 400px;
 	text-align: center;
 }
 ul{
@@ -28,7 +29,7 @@ ul{
 	border-radius: 4px 0 4px 0;
 	margin:0px;
 	overflow-y : auto;
-	height: 456px;
+	height: 317px;
 }
 li{
 	height : 30px;
@@ -53,11 +54,18 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container">
-				<h4 id="title"></h4>
+				<h4 id="title">
+                    <c:if test="${not empty dispatch.dispatchId}">
+                        编辑派工
+                    </c:if>
+                    <c:if test="${empty dispatch.dispatchId}">
+                        新建派工
+                    </c:if>
+				</h4>
 			</div>
 		</div>
 	</div>
-	<div id="message" class="alert alert-error"></div>
+	<div id="message" class="alert alert-error hide"></div>
 	<form action="" class="form-horizontal ">
 		<table class="table table-condensed">
 	    	<tr>
@@ -73,9 +81,9 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 				</td>
 			</tr>
 			<tr>
-				<td class="td_first">
+				<td>
 					<div class="control-group">
-						<label class="control-label" for="companyPrincipalId">派工类型<span class="red_star">*</span></label>
+						<label class="control-label" for="dispatchType">派工类型<span class="red_star">*</span></label>
 						<div class="controls">
 							<div class="btn-group" data-toggle="buttons-radio">
 								<input type="hidden" id="dispatchType" value="${dispatch.dispatchType}"/>
@@ -85,9 +93,9 @@ ul.dispatched li span{width:120px;margin-right: 10px;}
 						</div>
 					</div>
 				</td>
-				<td class="td_first">
+				<td>
 					<div class="control-group">
-						<label class="control-label" for="constructPlace">派工日期</label>
+						<label class="control-label" for="dispatchDay">派工日期</label>
 						<div class="controls">
 							<input name="dispatchDayString" id="dispatchDay" value="${dispatch.dispatchDayString}" type="text" class="input-big"/>
 						</div>

@@ -13,6 +13,7 @@ input.ui-pg-input {
 
 td.td_first {
 	font-weight: bold;
+    text-align: right;
 }
 
 .controls {
@@ -39,6 +40,6 @@ td.td_first {
 	-moz-border-radius: 4px 0 4px 0;
 	border-radius: 4px 0 4px 0;
 }
-.center{
+.center, td.center, th.center{
 	text-align: center;
 }

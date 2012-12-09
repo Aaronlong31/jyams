@@ -1,7 +1,9 @@
 package com.jyams.dispatch.model;
 
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -16,6 +18,10 @@ import com.jyams.util.DateTimeUtils;
  */
 public class Dispatch {
 
+    public static final Map<Short, String> DISPATCH_TYPE_MAP = Maps.newHashMap();
+
+    public static final Map<Short, String> PROJECT_TYPE_MAP = Maps.newHashMap();
+
     /*** 派工类型 - 正常派工 */
     public static final short DISPATCH_TYPE_NORMAL = 1;
     /*** 派工类型 - 加班派工 */
@@ -25,6 +31,15 @@ public class Dispatch {
     public static final short PROJECT_TYPE_BUILDING = 1;
     /*** 派工项目类型 - 临时项目 */
     public static final short PROJECT_TYPE_TEMP = 2;
+
+    static {
+        DISPATCH_TYPE_MAP.put(DISPATCH_TYPE_NORMAL, "正常派工");
+        DISPATCH_TYPE_MAP.put(DISPATCH_TYPE_OVERTIME, "加班派工");
+
+        PROJECT_TYPE_MAP.put(PROJECT_TYPE_BUILDING, "在建项目");
+        PROJECT_TYPE_MAP.put(PROJECT_TYPE_TEMP, "临时项目");
+    }
+
 
     private Long dispatchId; // 派工编号
     private Long projectId; // 项目标识
@@ -118,6 +133,10 @@ public class Dispatch {
         return DateTimeUtils.convertIntegerDayToString(dispatchDay);
     }
 
+    public String getCreatedTimestampString(){
+        return DateTimeUtils.convertLongToString(this.createdTimestamp);
+    }
+
     public List<DispatchWork> getDispatchWorks() {
         return dispatchWorks;
     }
@@ -127,31 +146,15 @@ public class Dispatch {
     }
 
     public String getProjectTypeString() {
-        switch (projectType) {
-        case PROJECT_TYPE_BUILDING:
-            return "在建项目";
-        case PROJECT_TYPE_TEMP:
-            return "临时项目";
-        default:
-            return null;
-        }
+        return PROJECT_TYPE_MAP.get(this.projectType);
     }
 
     public String getDispatchTypeString() {
-        switch (dispatchType) {
-        case DISPATCH_TYPE_NORMAL:
-            return "正常派工";
-        case DISPATCH_TYPE_OVERTIME:
-            return "加班派工";
-        default:
-            return null;
-        }
+        return DISPATCH_TYPE_MAP.get(this.dispatchType);
     }
 
     /**
      * 计算派工总费用
-     * 
-     * @return
      */
     public float getCost() {
         float totalCost = 0F;

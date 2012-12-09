@@ -1,9 +1,9 @@
 require(["jquery", 
          "../bootstrap", 
          "../common", 
-         "../i18n/grid.i18n",
          "../jquery/jquery-ui-1.9.1.custom",
          "../i18n/datepicker.i18n",
+         "../i18n/grid.i18n",
          "../jquery/jqgrid/jquery.jqGrid"], function($) {
 	$(function(){
 		var dataPickerF = function(element){
@@ -59,9 +59,8 @@ require(["jquery",
 					var approval = "<a href=\"" + ctx + "/dispatch/"+id+"/edit\">编辑</a>";
 					$("#dispatchList").jqGrid('setRowData', id, {act:approval});
 				});
-			},
-		});
-		$("#dispatchList").jqGrid('navGrid','#dispatchPager',{edit:false,add:false,del:false,search:false});
-		$("#dispatchList").jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false});
+			}
+		}).jqGrid('navGrid','#dispatchPager',{edit:false,add:false,del:false,search:false})
+          .jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false});
 	});
 });

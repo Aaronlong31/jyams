@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/css/jquery-ui-1.9.1.custom.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/ui.jqgrid.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/common.css"/>
-<script data-main="../js/dispatch/list" src="../js/require-jquery.js"></script>
+<script data-main="${ctx}/js/dispatch/list" src="${ctx}/js/require-jquery.js"></script>
 </head>
 <body>
 <div class="container">
