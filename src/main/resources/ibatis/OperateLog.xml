@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="OperateLog">
-	<typeAlias alias="OperateLog" type="com.jyams.secure.model.OperateLog"/>
-	<typeAlias alias="OperateLogQuery" type="com.jyams.secure.manager.OperateLogQuery"/>
+	<typeAlias alias="OperateLog" type="com.jyams.security.model.OperateLog"/>
+	<typeAlias alias="OperateLogQuery" type="com.jyams.security.OperateLogQuery"/>
 	
 	<sql id="pageSql">
 		<dynamic>

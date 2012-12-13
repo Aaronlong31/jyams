@@ -30,7 +30,7 @@ if(window.location.href != window.top.location.href){
 		  		<div class="error ${param.error == true ? '' : 'hide'}">
 				  ${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}
 				</div>
-				<form action="j_spring_security_check" method="POST">
+				<form action="login" method="POST">
 					<table  class="table_normal" style="margin: 0px;">
 						<tr>
 							<td>用户名：</td>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.jyams.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,6 @@ import com.jyams.project.manager.ProjectManager;
 import com.jyams.project.model.Project;
 import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;
-import com.jyams.util.SpringSecurityUtils;
 import com.jyams.util.WebUtils;
 
 /**
@@ -68,7 +68,7 @@ public class ProjectQueryController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public DataPage<Project> listMine(ProjectQuery projectQuery) {
-        projectQuery.setCompanyPrincipalId(SpringSecurityUtils.getCurrentUserId());
+        projectQuery.setCompanyPrincipalId(SecurityUtils.getCurrentUserId());
         return projectManager.listProjects(projectQuery);
     }
 

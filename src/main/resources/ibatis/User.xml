@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="User">
-	<typeAlias alias="User" type="com.jyams.secure.model.User"/>
-	<typeAlias alias="Authority" type="com.jyams.secure.model.Authority"/>
+	<typeAlias alias="User" type="com.jyams.security.model.User"/>
+	<typeAlias alias="Authority" type="com.jyams.security.model.Authority"/>
 	
 	<resultMap class="Authority" id="AuthorityMap" groupBy="authorityId">
 		<result property="authorityId" column="a.authorityId"/>
@@ -85,7 +85,13 @@
 		ON ua.authorityId = a.authorityId
 		WHERE u.username = #value#
 	</select>
-	
+
+    <select id="UserDao.getUserByUsernameAndPassword"
+        parameterClass="map" resultClass="User">
+        SELECT
+    </select>
+
+
 	<update id="User.update" parameterClass="User">
 		UPDATE User SET 
 			status=#status#

@@ -2,6 +2,7 @@ package com.jyams.dispatch.manager.impl;
 
 import java.util.List;
 
+import com.jyams.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,6 @@ import com.jyams.hr.model.Person;
 import com.jyams.util.DataPage;
 import com.jyams.util.DateTimeUtils;
 import com.jyams.util.IdUtil;
-import com.jyams.util.SpringSecurityUtils;
 
 /**
  * 
@@ -54,8 +54,8 @@ public class DispatchManagerImpl implements DispatchManager {
         long dispatchId = IdUtil.nextLong();
         dispatch.setDispatchId(dispatchId);
         dispatch.setCreatedTimestamp(System.currentTimeMillis());
-        dispatch.setPrincipalId(SpringSecurityUtils.getCurrentUserId());
-        dispatch.setPrincipalName(SpringSecurityUtils.getCurrentUserName());
+        dispatch.setPrincipalId(SecurityUtils.getCurrentUserId());
+        dispatch.setPrincipalName(SecurityUtils.getCurrentUsername());
         dispatch.setProjectName(projectNameCache.get(dispatch.getProjectId()));
 
         doAddDispatch(dispatch);
@@ -115,8 +115,8 @@ public class DispatchManagerImpl implements DispatchManager {
         long dispatchId = dispatch.getDispatchId();
         deleteDispatch(dispatchId);
 
-        dispatch.setPrincipalId(SpringSecurityUtils.getCurrentUserId());
-        dispatch.setPrincipalName(SpringSecurityUtils.getCurrentUserName());
+        dispatch.setPrincipalId(SecurityUtils.getCurrentUserId());
+        dispatch.setPrincipalName(SecurityUtils.getCurrentUsername());
         dispatch.setProjectName(projectNameCache.get(dispatch.getProjectId()));
         doAddDispatch(dispatch);
     }

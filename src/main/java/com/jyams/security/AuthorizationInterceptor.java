@@ -1,9 +1,11 @@
 package com.jyams.security;
 
+import com.jyams.exception.InActiveUserException;
 import com.jyams.exception.NoPermissionException;
 import com.jyams.exception.UnLoginException;
-import com.jyams.secure.model.User;
+import com.jyams.security.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,25 +18,44 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 12-12-10
  * Time: 下午9:22
  */
+@Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
 
-    private PermissionChecker permissionChecker;
+    @Autowired
+    private SecurityService securityService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
+
+
+        if (!(handler instanceof  HandlerMethod)){
+            return true;
+        }
+
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
-        String permission = auth.value();
+
+        NoAuth noAuth = handlerMethod.getMethodAnnotation(NoAuth.class);
+
+        if (noAuth != null) {
+            return true;
+        }
 
         User user = SecurityUtils.getCurrentUser();
-
         if (user == null) {
             throw new UnLoginException();
         }
 
+        if (user.getStatus() == User.STATUS_INACTIVE) {
+            throw new InActiveUserException();
+        }
 
-        if (this.permissionChecker.checkPermission(user.getUsername(), permission)) {
+        Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
+        if (auth == null) {
+            return true;
+        }
+
+        if (this.securityService.checkPermission(user.getUsername(), auth.value())) {
             throw new NoPermissionException();
         }
 
@@ -49,11 +70,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
                                 Exception ex) throws Exception {
-    }
-
-    @Autowired
-    public void setPermissionChecker(PermissionChecker permissionChecker) {
-        this.permissionChecker = permissionChecker;
     }
 
 }

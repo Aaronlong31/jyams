@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="Role">
-	<typeAlias alias="Role" type="com.jyams.secure.model.Role"/>
+	<typeAlias alias="Role" type="com.jyams.security.model.Role"/>
 	
 	<select id="Role.select" 
 		parameterClass="long" resultClass="Role">

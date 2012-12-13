@@ -2,6 +2,8 @@ package com.jyams.purchase.manager.impl;
 
 import java.util.List;
 
+import com.jyams.security.SecurityUtils;
+import com.jyams.security.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,7 +78,9 @@ public class PurchaseItemManagerImpl implements PurchaseItemManager {
 	@Override
 	public boolean arrivePurchaseItem(long purchaseItemId) {
 		PurchaseItem pi = purchaseItemDao.get(purchaseItemId);
-		purchaseItemDao.arrive(purchaseItemId, PurchaseItem.STATUS_ARRIVAL);
+
+        User user = SecurityUtils.getCurrentUser();
+        purchaseItemDao.arrive(purchaseItemId, PurchaseItem.STATUS_ARRIVAL, user.getUserId(), user.getUsername());
 		// 修改采购单状态
 		Purchase purchase = purchaseDao.get(pi.getPurchaseId());
 		short newStatus = purchase.getStatusFromItems();

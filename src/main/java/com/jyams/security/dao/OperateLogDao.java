@@ -1,4 +1,4 @@
-package com.jyams.secure.dao;
+package com.jyams.security.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Maps;
-import com.jyams.secure.model.OperateLog;
+import com.jyams.security.model.OperateLog;
 import com.jyams.util.DataPage;
 import com.jyams.util.dao.IBatisEntityDao;
 

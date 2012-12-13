@@ -1,11 +1,11 @@
-package com.jyams.secure.dao;
+package com.jyams.security.dao;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.jyams.secure.model.Authority;
-import com.jyams.secure.model.Module;
+import com.jyams.security.model.Authority;
+import com.jyams.security.model.Module;
 import com.jyams.util.dao.IBatisEntityDao;
 
 @Repository

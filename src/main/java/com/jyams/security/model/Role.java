@@ -1,4 +1,4 @@
-package com.jyams.secure.model;
+package com.jyams.security.model;
 
 import java.util.ArrayList;
 import java.util.List;

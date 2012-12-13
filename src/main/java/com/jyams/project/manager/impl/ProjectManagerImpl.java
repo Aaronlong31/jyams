@@ -5,6 +5,7 @@ import static com.jyams.util.KeyGenerator.getProjectId;
 import java.util.Calendar;
 import java.util.List;
 
+import com.jyams.security.SecurityUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,6 @@ import com.jyams.project.model.Project;
 import com.jyams.project.query.ProjectQuery;
 import com.jyams.util.DataPage;
 import com.jyams.util.KeyGenerator;
-import com.jyams.util.SpringSecurityUtils;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -46,8 +46,8 @@ public class ProjectManagerImpl implements ProjectManager {
         Person companyPrincipalPerson = personCache.get(project
                 .getCompanyPrincipalId());
         project.setCompanyPrincipalName(companyPrincipalPerson.getPersonName());
-        project.setCreatedTimestamp(SpringSecurityUtils.getCurrentUserId());
-        project.setCreatorName(SpringSecurityUtils.getCurrentUserName());
+        project.setCreatedTimestamp(SecurityUtils.getCurrentUserId());
+        project.setCreatorName(SecurityUtils.getCurrentUsername());
 
         setClient(project);
 

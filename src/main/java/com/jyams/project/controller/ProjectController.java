@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.jyams.security.SecurityUtils;
+import com.jyams.security.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,6 @@ import com.jyams.hr.manager.PersonManager;
 import com.jyams.hr.model.Person;
 import com.jyams.project.manager.ProjectManager;
 import com.jyams.project.model.Project;
-import com.jyams.util.SpringSecurityUtils;
 
 /**
  * @author zhanglong
@@ -84,8 +85,10 @@ public class ProjectController {
         Project project = new Project();
         BeanUtils.copyProperties(editProjectForm, project);
         project.setProjectId(projectId);
-        project.setLastModifierId(SpringSecurityUtils.getCurrentUserId());
-        project.setLastModifierName(SpringSecurityUtils.getCurrentUserName());
+
+        User user = SecurityUtils.getCurrentUser();
+        project.setLastModifierId(user.getUserId());
+        project.setLastModifierName(user.getUsername());
         project.setLastModifiedTimestamp(System.currentTimeMillis());
         projectManager.modifyProject(project);
         return "redirect:/project/" + project.getProjectId();

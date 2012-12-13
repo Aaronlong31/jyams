@@ -1,4 +1,4 @@
-package com.jyams.secure.manager.impl;
+package com.jyams.security.manager;
 
 import java.util.List;
 
@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jyams.secure.dao.RoleDao;
-import com.jyams.secure.manager.RoleManager;
-import com.jyams.secure.model.Role;
+import com.jyams.security.dao.RoleDao;
+import com.jyams.security.model.Role;
 
 @Service
 @Transactional(rollbackFor = Exception.class)

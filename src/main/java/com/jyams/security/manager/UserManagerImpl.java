@@ -1,4 +1,4 @@
-package com.jyams.secure.manager.impl;
+package com.jyams.security.manager;
 
 import java.util.List;
 
@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.jyams.secure.dao.AuthorityDao;
-import com.jyams.secure.dao.UserDao;
-import com.jyams.secure.manager.UserManager;
-import com.jyams.secure.model.Authority;
-import com.jyams.secure.model.Module;
-import com.jyams.secure.model.User;
+import com.jyams.security.dao.AuthorityDao;
+import com.jyams.security.dao.UserDao;
+import com.jyams.security.model.Authority;
+import com.jyams.security.model.Module;
+import com.jyams.security.model.User;
 import com.jyams.util.DataPage;
 
 /**
@@ -61,8 +60,8 @@ public class UserManagerImpl implements UserManager {
 
     @Transactional(readOnly = true)
     @Override
-    public DataPage<User> listUsers(String usernameLike, Short status,
-            Integer pageNo, Integer pageSize) {
+    public DataPage<User> listUsers(String usernameLike, Short status, Integer pageNo,
+            Integer pageSize) {
         return userDao.listUsers(usernameLike, status, pageNo, pageSize);
     }
 
@@ -84,27 +83,29 @@ public class UserManagerImpl implements UserManager {
         return userDao.resetPassword(userId, password) > 0;
     }
 
+    @Override
+    public List<User> getAllUser() {
+        return userDao.getAll();
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<Module> listAuthorities() {
         List<Module> modules = authorityDao.getModules();
-        List<Module> moduleWithAuthority = authorityDao
-                .getModuleWithAuthority();
+        List<Module> moduleWithAuthority = authorityDao.getModuleWithAuthority();
         List<Module> tempModules = Lists.newArrayList();
 
         for (Module module : modules) {
             int index = moduleWithAuthority.indexOf(module);
             if (index >= 0) {
-                module.setAuthorities(moduleWithAuthority.get(index)
-                        .getAuthorities());
+                module.setAuthorities(moduleWithAuthority.get(index).getAuthorities());
             }
         }
 
         for (Module module : modules) {
             for (Module module2 : module.getModules()) {
                 if (modules.contains(module2)) {
-                    module.getModules().set(
-                            module.getModules().indexOf(module2),
+                    module.getModules().set(module.getModules().indexOf(module2),
                             modules.get(modules.indexOf(module2)));
                     tempModules.add(module2);
                 }

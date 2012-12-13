@@ -1,10 +1,10 @@
-package com.jyams.secure.manager;
+package com.jyams.security.manager;
 
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jyams.secure.model.Role;
+import com.jyams.security.model.Role;
 
 @Transactional(rollbackFor = Exception.class)
 public interface RoleManager {

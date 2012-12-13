@@ -8,6 +8,8 @@ import static com.jyams.util.KeyGenerator.getPurchaseNo;
 
 import java.util.List;
 
+import com.jyams.security.SecurityUtils;
+import com.jyams.security.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +20,9 @@ import com.jyams.purchase.dao.PurchaseItemDaoIbatis;
 import com.jyams.purchase.model.Purchase;
 import com.jyams.purchase.model.PurchaseItem;
 import com.jyams.purchase.query.PurchaseQuery;
-import com.jyams.secure.manager.impl.UserInfo;
 import com.jyams.util.DataPage;
 import com.jyams.util.IdUtil;
 import com.jyams.util.RestrictModifyException;
-import com.jyams.util.SpringSecurityUtils;
 
 /**
  * @author zhanglong
@@ -248,7 +248,7 @@ public class PurchaseManagerImpl implements
     public boolean approvedPurchase(short approvalType, long purchaseId,
             String approvalOpinion) throws RestrictModifyException {
 
-        UserInfo userInfo = SpringSecurityUtils.getCurrentUser();
+        User currentUser = SecurityUtils.getCurrentUser();
         Purchase purchase = getPurchase(purchaseId);
         short initStatus = Purchase.STATUS_SUBMITED;
         if (purchase.getType() == Purchase.TYPE_MATERIAL) {
@@ -278,7 +278,7 @@ public class PurchaseManagerImpl implements
 
         // 修改采购单记录
         boolean result = purchaseDao.approvePurchase(purchaseId, status,
-                userInfo.getUserId(), userInfo.getUsername(), approvalOpinion,
+                currentUser.getUserId(), currentUser.getUsername(), approvalOpinion,
                 System.currentTimeMillis()) > 0;
 
         // 修改采购单项状态
@@ -288,10 +288,6 @@ public class PurchaseManagerImpl implements
 
     /**
      * 检查条件
-     * 
-     * @param approvalType
-     * @param type
-     * @param status
      * @throws RestrictModifyException
      */
     private void checkCondition(short approvalType, short initStatus,

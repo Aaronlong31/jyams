@@ -2,6 +2,8 @@ package com.jyams.buildingproject.controller;
 
 import javax.validation.Valid;
 
+import com.jyams.security.SecurityUtils;
+import com.jyams.security.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +19,6 @@ import com.jyams.buildingproject.model.BuildingProjectDetail;
 import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
 import com.jyams.exception.BusinessException;
 import com.jyams.util.DataPage;
-import com.jyams.util.SpringSecurityUtils;
 
 /**
  * @author zhanglong
@@ -55,13 +56,14 @@ public class BuildingProjectDetailController {
 
         BuildingProjectDetail buildingProjectDetail = new BuildingProjectDetail();
 
+        User user = SecurityUtils.getCurrentUser();
         BeanUtils.copyProperties(addDetailForm, buildingProjectDetail);
         buildingProjectDetail.setProjectId(projectId);
         buildingProjectDetail.setCreatedTimestamp(System.currentTimeMillis());
-        buildingProjectDetail.setCreatorId(SpringSecurityUtils.getCurrentUserId());
-        buildingProjectDetail.setCreatorName(SpringSecurityUtils.getCurrentUserName());
-        buildingProjectDetail.setPersonId(SpringSecurityUtils.getCurrentUserId());
-        buildingProjectDetail.setPersonName(SpringSecurityUtils.getCurrentUserName());
+        buildingProjectDetail.setCreatorId(user.getUserId());
+        buildingProjectDetail.setCreatorName(user.getUsername());
+        buildingProjectDetail.setPersonId(user.getUserId());
+        buildingProjectDetail.setPersonName(user.getUsername());
         return buildingProjectDetailManager.add(buildingProjectDetail) > 0;
     }
 }

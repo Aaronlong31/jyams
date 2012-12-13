@@ -1,9 +1,9 @@
-package com.jyams.secure.manager;
+package com.jyams.security.manager;
 
 import java.util.List;
 
-import com.jyams.secure.model.Module;
-import com.jyams.secure.model.User;
+import com.jyams.security.model.Module;
+import com.jyams.security.model.User;
 import com.jyams.util.DataPage;
 
 public interface UserManager {
@@ -24,4 +24,7 @@ public interface UserManager {
     List<Module> listAuthorities();
 
     boolean resetPassword(Long userId, String password);
+
+    List<User> getAllUser();
+
 }

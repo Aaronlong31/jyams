@@ -66,9 +66,9 @@ public class IBatisEntityDao<T> extends IBatisGenericDao {
 
     /**
      * 根据属性的名值对查询唯一对象
-     * 
+     *
      * @param map
-     * @return
+     * @return   T t
      * @throws SQLException
      */
     public T findUniqueByMap(Map<String, Object> map) {

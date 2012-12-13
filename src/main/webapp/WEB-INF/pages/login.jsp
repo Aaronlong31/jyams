@@ -22,21 +22,18 @@ if(window.location.href != window.top.location.href){
 </head>
 <body>
 	<div class="container">
-		<div class="error ${param.error == true ? '' : 'hide'}">
-		  ${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}
-		</div>
-		<form action="j_spring_security_check" method="POST" class="form-horizontal">
+		<form action="login" method="POST" class="form-horizontal">
 			<fieldset>登录</fieldset>
 			<div class="control-group">
 				<label class="control-label" for="username"></label>
 				<div class="controls">
-					<input type="text" class="input-xlarge" id="username" name="j_username"/>
+					<input type="text" class="input-xlarge" id="username" name="username"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="password"></label>
 				<div class="controls">
-					<input type="password" class="input-xlarge" id="password" name="j_password"/>
+					<input type="password" class="input-xlarge" id="password" name="password"/>
 					<input type="hidden" name="randomNum" value="<%=new Random().nextInt() %>"/>
 				</div>
 			</div>

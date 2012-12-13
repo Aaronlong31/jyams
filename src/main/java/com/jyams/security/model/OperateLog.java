@@ -1,4 +1,4 @@
-package com.jyams.secure.model;
+package com.jyams.security.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

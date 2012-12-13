@@ -1,6 +1,6 @@
-package com.jyams.secure.manager;
+package com.jyams.security;
 
-import com.jyams.secure.model.OperateLog;
+import com.jyams.security.model.OperateLog;
 import com.jyams.util.DateTimeUtils;
 import com.jyams.util.search.Query;
 import com.jyams.util.search.SearchFilter;

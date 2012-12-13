@@ -8,7 +8,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
-import com.jyams.exceptionhandle.BusinessExceptionResolver;
+import com.jyams.exceptionhandle.JyamsDefaultExceptionResolver;
 import com.jyams.exceptionhandle.RequestParameterExceptionResolver;
 
 /**
@@ -34,7 +34,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
     @Override
     protected void configureHandlerExceptionResolvers(
             List<HandlerExceptionResolver> exceptionResolvers) {
-        exceptionResolvers.add(new BusinessExceptionResolver());
+        exceptionResolvers.add(new JyamsDefaultExceptionResolver());
         exceptionResolvers.add(new RequestParameterExceptionResolver());
     }
 }

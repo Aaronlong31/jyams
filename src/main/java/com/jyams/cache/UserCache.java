@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheLoader;
-import com.jyams.secure.dao.UserDao;
-import com.jyams.secure.model.User;
+import com.jyams.security.dao.UserDao;
+import com.jyams.security.model.User;
 
 /**
  * @author zhanglong

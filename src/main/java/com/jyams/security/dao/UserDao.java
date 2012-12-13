@@ -1,4 +1,4 @@
-package com.jyams.secure.dao;
+package com.jyams.security.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Maps;
-import com.jyams.secure.model.Authority;
-import com.jyams.secure.model.User;
+import com.jyams.security.model.Authority;
+import com.jyams.security.model.User;
 import com.jyams.util.DataPage;
 import com.jyams.util.dao.IBatisEntityDao;
 
@@ -47,4 +47,10 @@ public class UserDao extends IBatisEntityDao<User> {
         return getSqlMapClientTemplate().update("UserDao.resetPassword", map);
     }
 
+    public User getUserByUsernameAndPassword(String username, String encodedPassword) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("username", username);
+        map.put("password", encodedPassword);
+        return (User) getSqlMapClientTemplate().queryForObject("UserDao.getUserByUsernameAndPassword", map);
+    }
 }
