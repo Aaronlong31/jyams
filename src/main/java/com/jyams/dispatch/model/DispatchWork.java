@@ -1,12 +1,15 @@
 package com.jyams.dispatch.model;
 
+import java.util.Map;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.Maps;
 import com.jyams.util.DateTimeUtils;
-import com.jyams.util.LongToStringJsonSerializer;
 import com.jyams.util.SalaryCalculator;
+import com.jyams.util.json.LongToStringJsonSerializer;
 
 /**
  * 派工工作
@@ -21,6 +24,13 @@ public class DispatchWork {
     /*** 施工人员类型 - 临时人员 */
     public static final short PERSON_TYPE_TEMP = 2;
 
+    public static final Map<Short, String> PERSON_TYPE_MAP = Maps.newHashMap();
+
+    static {
+        PERSON_TYPE_MAP.put(PERSON_TYPE_COMPANY, "公司员工");
+        PERSON_TYPE_MAP.put(PERSON_TYPE_TEMP, "临时员工");
+    }
+
     private Long dispatchWorkId; // 工作标识
     private long dispatchId; // 派工标识
     private Long personId; // 施工人编号
@@ -34,6 +44,7 @@ public class DispatchWork {
 
     private Dispatch dispatch;
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getDispatchWorkId() {
         return dispatchWorkId;
     }
@@ -51,6 +62,7 @@ public class DispatchWork {
         this.dispatchId = dispatchId;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getPersonId() {
         return personId;
     }
@@ -128,14 +140,7 @@ public class DispatchWork {
     }
 
     public String getPersonTypeString() {
-        switch (personType) {
-        case PERSON_TYPE_COMPANY:
-            return "公司员工";
-        case PERSON_TYPE_TEMP:
-            return "临时员工";
-        default:
-            return null;
-        }
+        return PERSON_TYPE_MAP.get(this.personType);
     }
 
     public Dispatch getDispatch() {

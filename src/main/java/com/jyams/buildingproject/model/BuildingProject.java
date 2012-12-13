@@ -5,8 +5,11 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
 import com.jyams.project.model.Project;
+import com.jyams.util.json.DateToStringJsonSerializer;
+import com.jyams.util.json.LongToStringJsonSerializer;
 
 /**
  * 在建项目
@@ -62,287 +65,160 @@ public class BuildingProject {
     private Project project; // 项目
     private List<BuildingProjectDetail> BuildingProjectDetails = Lists.newArrayList();
 
-    /**
-     * @return the projectId
-     */
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getProjectId() {
         return projectId;
     }
 
-    /**
-     * @param projectId
-     *            the projectId to set
-     */
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
     }
 
-    /**
-     * @return the estimateCost
-     */
     public float getEstimateCost() {
         return estimateCost;
     }
 
-    /**
-     * @param estimateCost
-     *            the estimateCost to set
-     */
     public void setEstimateCost(float estimateCost) {
         this.estimateCost = estimateCost;
     }
 
-    /**
-     * @return the actualCost
-     */
     public float getActualCost() {
         return actualCost;
     }
 
-    /**
-     * @param actualCost
-     *            the actualCost to set
-     */
     public void setActualCost(float actualCost) {
         this.actualCost = actualCost;
     }
 
-    /**
-     * @return the contractPrice
-     */
     public float getContractPrice() {
         return contractPrice;
     }
 
-    /**
-     * @param contractPrice
-     *            the contractPrice to set
-     */
     public void setContractPrice(float contractPrice) {
         this.contractPrice = contractPrice;
     }
 
-    /**
-     * @return the paidMoney
-     */
     public float getPaidMoney() {
         return paidMoney;
     }
 
-    /**
-     * @param paidMoney
-     *            the paidMoney to set
-     */
     public void setPaidMoney(float paidMoney) {
         this.paidMoney = paidMoney;
     }
 
-    /**
-     * @return the unpaidMoney
-     */
     public float getUnpaidMoney() {
         return unpaidMoney;
     }
 
-    /**
-     * @param unpaidMoney
-     *            the unpaidMoney to set
-     */
     public void setUnpaidMoney(float unpaidMoney) {
         this.unpaidMoney = unpaidMoney;
     }
 
-    /**
-     * @return the marginControl
-     */
     public int getMarginControl() {
         return marginControl;
     }
 
-    /**
-     * @param marginControl
-     *            the marginControl to set
-     */
     public void setMarginControl(int marginControl) {
         this.marginControl = marginControl;
     }
 
-    /**
-     * @return the invoiceTimestamp
-     */
     public Long getInvoiceTimestamp() {
         return invoiceTimestamp;
     }
 
-    /**
-     * @param invoiceTimestamp
-     *            the invoiceTimestamp to set
-     */
     public void setInvoiceTimestamp(Long invoiceTimestamp) {
         this.invoiceTimestamp = invoiceTimestamp;
     }
 
-    /**
-     * @return the invoicerId
-     */
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getInvoicerId() {
         return invoicerId;
     }
 
-    /**
-     * @param invoicerId
-     *            the invoicerId to set
-     */
     public void setInvoicerId(Long invoicerId) {
         this.invoicerId = invoicerId;
     }
 
-    /**
-     * @return the invoicerName
-     */
     public String getInvoicerName() {
         return invoicerName;
     }
 
-    /**
-     * @param invoicerName
-     *            the invoicerName to set
-     */
     public void setInvoicerName(String invoicerName) {
         this.invoicerName = invoicerName;
     }
 
-    /**
-     * @return the completionTimestamp
-     */
+    @JsonSerialize(using = DateToStringJsonSerializer.class)
     public Long getCompletionTimestamp() {
         return completionTimestamp;
     }
 
-    /**
-     * @param completionTimestamp
-     *            the completionTimestamp to set
-     */
     public void setCompletionTimestamp(Long completionTimestamp) {
         this.completionTimestamp = completionTimestamp;
     }
 
-    /**
-     * @return the completionPersonId
-     */
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getCompletionPersonId() {
         return completionPersonId;
     }
 
-    /**
-     * @param completionPersonId
-     *            the completionPersonId to set
-     */
     public void setCompletionPersonId(Long completionPersonId) {
         this.completionPersonId = completionPersonId;
     }
 
-    /**
-     * @return the completionPersonName
-     */
     public String getCompletionPersonName() {
         return completionPersonName;
     }
 
-    /**
-     * @param completionPersonName
-     *            the completionPersonName to set
-     */
     public void setCompletionPersonName(String completionPersonName) {
         this.completionPersonName = completionPersonName;
     }
 
-    /**
-     * @return the status
-     */
     public short getStatus() {
         return status;
     }
 
-    /**
-     * @param status
-     *            the status to set
-     */
     public void setStatus(short status) {
         this.status = status;
     }
 
-    /**
-     * @return the project
-     */
     public Project getProject() {
         return project;
     }
 
-    /**
-     * @param project
-     *            the project to set
-     */
     public void setProject(Project project) {
         this.project = project;
     }
 
-    /**
-     * @return the buildingProjectDetails
-     */
     public List<BuildingProjectDetail> getBuildingProjectDetails() {
         return BuildingProjectDetails;
     }
 
-    /**
-     * @param buildingProjectDetails
-     *            the buildingProjectDetails to set
-     */
     public void setBuildingProjectDetails(List<BuildingProjectDetail> buildingProjectDetails) {
         BuildingProjectDetails = buildingProjectDetails;
     }
 
-    /**
-     * @return the lastModifierId
-     */
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getLastModifierId() {
         return lastModifierId;
     }
 
-    /**
-     * @param lastModifierId
-     *            the lastModifierId to set
-     */
     public void setLastModifierId(Long lastModifierId) {
         this.lastModifierId = lastModifierId;
     }
 
-    /**
-     * @return the lastModifierName
-     */
     public String getLastModifierName() {
         return lastModifierName;
     }
 
-    /**
-     * @param lastModifierName
-     *            the lastModifierName to set
-     */
     public void setLastModifierName(String lastModifierName) {
         this.lastModifierName = lastModifierName;
     }
 
-    /**
-     * @return the lastModifiedTimestamp
-     */
+    @JsonSerialize(using = DateToStringJsonSerializer.class)
     public Long getLastModifiedTimestamp() {
         return lastModifiedTimestamp;
     }
 
-    /**
-     * @param lastModifiedTimestamp
-     *            the lastModifiedTimestamp to set
-     */
     public void setLastModifiedTimestamp(Long lastModifiedTimestamp) {
         this.lastModifiedTimestamp = lastModifiedTimestamp;
     }
@@ -355,47 +231,28 @@ public class BuildingProject {
         return i / 100 + "%";
     }
 
-    /**
-     * @return the payeeId
-     */
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getPayeeId() {
         return payeeId;
     }
 
-    /**
-     * @param payeeId
-     *            the payeeId to set
-     */
     public void setPayeeId(Long payeeId) {
         this.payeeId = payeeId;
     }
 
-    /**
-     * @return the payeeName
-     */
     public String getPayeeName() {
         return payeeName;
     }
 
-    /**
-     * @param payeeName
-     *            the payeeName to set
-     */
     public void setPayeeName(String payeeName) {
         this.payeeName = payeeName;
     }
 
-    /**
-     * @return the collectionTimestamp
-     */
+    @JsonSerialize(using = DateToStringJsonSerializer.class)
     public Long getCollectionTimestamp() {
         return collectionTimestamp;
     }
 
-    /**
-     * @param collectionTimestamp
-     *            the collectionTimestamp to set
-     */
     public void setColletionTimestamp(Long collectionTimestamp) {
         this.collectionTimestamp = collectionTimestamp;
     }

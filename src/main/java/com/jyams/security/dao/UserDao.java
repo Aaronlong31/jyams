@@ -15,13 +15,8 @@ import com.jyams.util.dao.IBatisEntityDao;
 @SuppressWarnings("unchecked")
 public class UserDao extends IBatisEntityDao<User> {
 
-    public User findUserByUsername(String username) {
-        return (User) getSqlMapClientTemplate().queryForObject(
-                "UserDao.findUserByUsername", username);
-    }
-
-    public DataPage<User> listUsers(String usernameLike, Short status,
-            Integer pageNo, Integer pageSize) {
+    public DataPage<User> listUsers(String usernameLike, Short status, Integer pageNo,
+            Integer pageSize) {
         Map<String, Object> map = Maps.newHashMap();
         map.put("usernameLike", usernameLike);
         map.put("status", status);
@@ -51,6 +46,11 @@ public class UserDao extends IBatisEntityDao<User> {
         Map<String, Object> map = Maps.newHashMap();
         map.put("username", username);
         map.put("password", encodedPassword);
-        return (User) getSqlMapClientTemplate().queryForObject("UserDao.getUserByUsernameAndPassword", map);
+        return (User) getSqlMapClientTemplate().queryForObject(
+                "UserDao.getUserByUsernameAndPassword", map);
+    }
+
+    public List<User> getAllWithAuthorities() {
+        return getSqlMapClientTemplate().queryForList("UserDao.getAllWithAuthorities");
     }
 }

@@ -38,8 +38,6 @@ public class JyamsDefaultExceptionResolver implements HandlerExceptionResolver {
         String errorPage = null;
         String errorCode = null;
 
-        logger.error(ex.getMessage(), ex);
-
         if (ex instanceof BusinessException) {
             logger.error(ex.getMessage(), ex);
             ErrorPage errorPageA = handlerMethod.getMethodAnnotation(ErrorPage.class);
@@ -49,13 +47,13 @@ public class JyamsDefaultExceptionResolver implements HandlerExceptionResolver {
                 errorPage = "error";
             }
         } else if (ex instanceof UnLoginException) {
-            errorPage = "redirect:toLogin";
+            errorPage = "redirect:/toLogin";
             errorCode = "NEED_LOGIN";
         } else if (ex instanceof NoPermissionException) {
             errorPage = "noPermission";
             errorCode = "NO_PERMISSION";
         } else if (ex instanceof InActiveUserException) {
-            errorPage = "redirect:toLogin";
+            errorPage = "redirect:/toLogin";
             errorCode = "USER_INACTIVE";
         } else {
             logger.error(ex.getMessage(), ex);

@@ -16,10 +16,7 @@ public interface UserManager {
 
     boolean modifyUser(User user);
 
-    DataPage<User> listUsers(String usernameLike, Short status, Integer pageNo,
-            Integer pageSize);
-
-    User findUserByUsername(String username);
+    DataPage<User> listUsers(String usernameLike, Short status, Integer pageNo, Integer pageSize);
 
     List<Module> listAuthorities();
 

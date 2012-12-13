@@ -75,15 +75,13 @@
 		<include refid="whereSql"/>
 	</select>
 	
-	<select id="UserDao.findUserByUsername" 
-		parameterClass="string" resultMap="UserMap">
+	<select id="UserDao.getAllWithAuthorities" resultMap="UserMap">
 		SELECT u.username, u.password, u.userId, u.status, a.* 
 		FROM User u
 		LEFT JOIN User_Authority ua
 		ON u.userId = ua.userId
 		LEFT JOIN Authority a
 		ON ua.authorityId = a.authorityId
-		WHERE u.username = #value#
 	</select>
 
     <select id="UserDao.getUserByUsernameAndPassword"

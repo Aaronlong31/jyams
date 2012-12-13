@@ -3,6 +3,10 @@ package com.jyams.buildingproject.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jyams.util.json.DateToStringJsonSerializer;
+import com.jyams.util.json.LongToStringJsonSerializer;
+
 /**
  * 在建项目明细
  * 
@@ -34,10 +38,12 @@ public class BuildingProjectDetail {
 
     private BuildingProject buildingProject;
 
+    @JsonSerialize(using = DateToStringJsonSerializer.class)
     public long getCreatedTimestamp() {
         return createdTimestamp;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getCreatorId() {
         return creatorId;
     }
@@ -46,10 +52,12 @@ public class BuildingProjectDetail {
         return creatorName;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getDetailId() {
         return detailId;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getPersonId() {
         return personId;
     }
@@ -58,6 +66,7 @@ public class BuildingProjectDetail {
         return personName;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getProjectId() {
         return projectId;
     }
@@ -169,7 +178,6 @@ public class BuildingProjectDetail {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

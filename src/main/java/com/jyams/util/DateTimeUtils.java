@@ -30,7 +30,7 @@ public final class DateTimeUtils {
     /**
      * 默认的格式化日期
      */
-    private static final String DEFAULT_FULL_DATE = "yyyy-MM-dd";
+    private static final String DEFAULT_FULL_DATE = "yyyy-MM-dd HH:mm:ss";
 
     private DateTimeUtils() {
     }

@@ -25,7 +25,7 @@ public class LoginController {
     @NoAuth
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
         if (this.securityService.login(username, password)) {
-            return "redirect:project";
+            return "redirect:/project";
         }
 
         model.addAttribute("message", "用户名或密码错误！");

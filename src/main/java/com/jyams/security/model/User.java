@@ -1,9 +1,15 @@
 package com.jyams.security.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.Maps;
+import com.jyams.util.json.LongToStringJsonSerializer;
 
 /**
  * 用户
@@ -23,12 +29,20 @@ public class User {
      */
     public static final short STATUS_INACTIVE = 0;
 
+    public static final Map<Short, String> STATUS_MAP = Maps.newHashMap();
+
+    static {
+        STATUS_MAP.put(STATUS_ACTIVE, "激活");
+        STATUS_MAP.put(STATUS_INACTIVE, "未激活");
+    }
+
     private long userId;
     private String username;
     private String password;
     private short status;
     private List<Authority> authorities;
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getUserId() {
         return userId;
     }
@@ -45,6 +59,7 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -57,10 +72,12 @@ public class User {
         return status;
     }
 
+    @JsonIgnore
     public void setStatus(short status) {
         this.status = status;
     }
 
+    @JsonIgnore
     public List<Authority> getAuthorities() {
         return authorities;
     }
@@ -69,20 +86,36 @@ public class User {
         this.authorities = authorities;
     }
 
+    @JsonIgnore
     public String getStatusString() {
-        switch (status) {
-        case STATUS_ACTIVE:
-            return "激活";
-        case STATUS_INACTIVE:
-            return "未激活";
-        default:
-            return "";
-        }
+        return STATUS_MAP.get(this.status);
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (userId ^ (userId >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (userId != other.userId)
+            return false;
+        return true;
+    }
+
 }

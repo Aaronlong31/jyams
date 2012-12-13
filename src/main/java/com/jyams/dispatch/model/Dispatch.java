@@ -3,12 +3,15 @@ package com.jyams.dispatch.model;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.jyams.util.DateTimeUtils;
+import com.jyams.util.json.DateToStringJsonSerializer;
+import com.jyams.util.json.LongToStringJsonSerializer;
 
 /**
  * 派工信息
@@ -40,7 +43,6 @@ public class Dispatch {
         PROJECT_TYPE_MAP.put(PROJECT_TYPE_TEMP, "临时项目");
     }
 
-
     private Long dispatchId; // 派工编号
     private Long projectId; // 项目标识
     private String projectName; // 项目名称
@@ -52,14 +54,17 @@ public class Dispatch {
     private long createdTimestamp; // 创建时戳
     private List<DispatchWork> dispatchWorks = Lists.newArrayList(); // 派工工作
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getDispatchId() {
         return dispatchId;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getProjectId() {
         return projectId;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getPrincipalId() {
         return principalId;
     }
@@ -72,6 +77,7 @@ public class Dispatch {
         return dispatchType;
     }
 
+    @JsonSerialize(using = DateToStringJsonSerializer.class)
     public long getCreatedTimestamp() {
         return createdTimestamp;
     }
@@ -116,6 +122,7 @@ public class Dispatch {
         this.projectType = projectType;
     }
 
+    @JsonSerialize(using = DateToStringJsonSerializer.class)
     public int getDispatchDay() {
         return dispatchDay;
     }
@@ -125,15 +132,14 @@ public class Dispatch {
     }
 
     public void setDispatchDayString(String dispatchDayString) {
-        this.dispatchDay = DateTimeUtils
-                .convertStringToInteger(dispatchDayString);
+        this.dispatchDay = DateTimeUtils.convertStringToInteger(dispatchDayString);
     }
 
     public String getDispatchDayString() {
         return DateTimeUtils.convertIntegerDayToString(dispatchDay);
     }
 
-    public String getCreatedTimestampString(){
+    public String getCreatedTimestampString() {
         return DateTimeUtils.convertLongToString(this.createdTimestamp);
     }
 
@@ -166,7 +172,6 @@ public class Dispatch {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

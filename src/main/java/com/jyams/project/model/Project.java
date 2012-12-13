@@ -3,7 +3,9 @@ package com.jyams.project.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyams.util.DateTimeUtils;
+import com.jyams.util.json.LongToStringJsonSerializer;
 
 /**
  * 项目
@@ -36,6 +38,7 @@ public class Project {
 
     // private int status; // 状态
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getProjectId() {
         return projectId;
     }
@@ -44,6 +47,7 @@ public class Project {
         return projectName;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getCompanyPrincipalId() {
         return companyPrincipalId;
     }
@@ -52,6 +56,7 @@ public class Project {
         return companyPrincipalName;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getClientId() {
         return clientId;
     }
@@ -60,6 +65,7 @@ public class Project {
         return clientName;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getClientPrincipalId() {
         return clientPrincipalId;
     }
@@ -96,6 +102,7 @@ public class Project {
         return orderContent;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getCreatorId() {
         return creatorId;
     }
@@ -108,6 +115,7 @@ public class Project {
         return createdTimestamp;
     }
 
+    @JsonSerialize(using = LongToStringJsonSerializer.class)
     public Long getLastModifierId() {
         return lastModifierId;
     }
@@ -213,8 +221,7 @@ public class Project {
     }
 
     public void setRequiredCompletionDateString(String requiredCompletionDate) {
-        this.requiredCompletionDate = DateTimeUtils
-                .convertStringToInteger(requiredCompletionDate);
+        this.requiredCompletionDate = DateTimeUtils.convertStringToInteger(requiredCompletionDate);
     }
 
     public String getRequiredCompletionDateString() {
@@ -231,7 +238,6 @@ public class Project {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

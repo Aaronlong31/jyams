@@ -2,8 +2,6 @@ package com.jyams.buildingproject.controller;
 
 import javax.validation.Valid;
 
-import com.jyams.security.SecurityUtils;
-import com.jyams.security.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +16,8 @@ import com.jyams.buildingproject.manager.BuildingProjectDetailManager;
 import com.jyams.buildingproject.model.BuildingProjectDetail;
 import com.jyams.buildingproject.query.BuildingProjectDetailQuery;
 import com.jyams.exception.BusinessException;
+import com.jyams.security.SecurityUtils;
+import com.jyams.security.model.User;
 import com.jyams.util.DataPage;
 
 /**
@@ -31,8 +31,7 @@ public class BuildingProjectDetailController {
     @Autowired
     private BuildingProjectDetailManager buildingProjectDetailManager;
 
-    @RequestMapping(
-            value = "/buildingProject/{projectId}/detail",
+    @RequestMapping(value = "/buildingProject/{projectId}/detail",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -42,8 +41,7 @@ public class BuildingProjectDetailController {
         return buildingProjectDetailManager.list(buildingProjectDetailQuery);
     }
 
-    @RequestMapping(
-            value = "/buildingProject/{projectId}/detail",
+    @RequestMapping(value = "/buildingProject/{projectId}/detail",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

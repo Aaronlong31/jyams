@@ -1,4 +1,4 @@
-package com.jyams.util;
+package com.jyams.util.json;
 
 import java.io.IOException;
 

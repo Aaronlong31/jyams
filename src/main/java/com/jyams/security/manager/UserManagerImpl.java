@@ -29,11 +29,6 @@ public class UserManagerImpl implements UserManager {
     private AuthorityDao authorityDao;
 
     @Override
-    public User findUserByUsername(String username) {
-        return userDao.findUserByUsername(username);
-    }
-
-    @Override
     public User addUser(User user) {
         user.setStatus(User.STATUS_ACTIVE);
         userDao.insert(user);
@@ -85,7 +80,7 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public List<User> getAllUser() {
-        return userDao.getAll();
+        return userDao.getAllWithAuthorities();
     }
 
     @Transactional(readOnly = true)
