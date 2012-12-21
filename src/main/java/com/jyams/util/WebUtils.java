@@ -1,5 +1,6 @@
 package com.jyams.util;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -34,7 +35,11 @@ public final class WebUtils extends org.springframework.web.util.WebUtils {
     }
 
     public static String getCookie(String name) {
-        return getCookie(getHttpRequest(), name).getValue();
+        Cookie cookie = getCookie(getHttpRequest(), name);
+        if (cookie == null) {
+            return null;
+        }
+        return cookie.getValue();
     }
 
 }

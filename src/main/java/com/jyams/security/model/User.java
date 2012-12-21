@@ -5,9 +5,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jyams.util.json.LongToStringJsonSerializer;
 
@@ -18,6 +21,8 @@ import com.jyams.util.json.LongToStringJsonSerializer;
  * 
  */
 public class User {
+
+    private static Logger logger = LoggerFactory.getLogger(User.class);
 
     /**
      * 状态_激活
@@ -41,6 +46,7 @@ public class User {
     private String password;
     private short status;
     private List<Authority> authorities;
+    private List<String> permissions;
 
     @JsonSerialize(using = LongToStringJsonSerializer.class)
     public long getUserId() {
@@ -84,11 +90,23 @@ public class User {
 
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
+        this.permissions = Lists.newArrayList();
+        if (authorities == null) {
+            return;
+        }
+        for (Authority authority : authorities) {
+            this.permissions.add(authority.getName());
+        }
+        logger.info(this.permissions.toString());
     }
 
     @JsonIgnore
     public String getStatusString() {
         return STATUS_MAP.get(this.status);
+    }
+
+    public List<String> getPermissions() {
+        return permissions;
     }
 
     @Override

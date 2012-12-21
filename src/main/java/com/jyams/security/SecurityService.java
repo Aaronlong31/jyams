@@ -5,8 +5,6 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.jyams.exception.InActiveUserException;
-import com.jyams.exception.UnLoginException;
-import com.jyams.security.model.Authority;
 import com.jyams.security.model.LoggedUser;
 import com.jyams.security.model.User;
 import com.jyams.util.WebUtils;
@@ -50,19 +48,4 @@ public class SecurityService {
         securityHolder.removeLoginUser(jsessionid);
     }
 
-    public boolean checkPermission(String username, String permission) {
-
-        User user = SecurityUtils.getUser(username);
-
-        if (user == null) {
-            throw new UnLoginException();
-        }
-
-        for (Authority authority : user.getAuthorities()) {
-            if (authority.getName().equals(permission)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

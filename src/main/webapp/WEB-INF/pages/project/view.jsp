@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/taglibs.jsp" %>
+<%@taglib prefix="se" uri="/WEB-INF/security.tld" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,7 +28,15 @@ td.td_first{
 		</div>
 	</div>
 	<hr/>
+	<se:permission one="修改施工流程">
 	<a class="btn btn-warning" href="${ctx}/project/toEdit/${project.projectId}">编辑施工流程</a>
+	</se:permission>
+	<se:permission any="查看在建项目, 修改在建项目, 在建项目完工, 在建项目开工">
+	查看在建项目, 修改在建项目, 在建项目完工, 在建项目开工,
+	</se:permission>
+	<se:permission all="查看在建项目, 修改在建项目, 在建项目完工, 在建项目开工,家的">
+	查看在建项目, 修改在建项目, 在建项目完工, 在建项目开工,
+	</se:permission>
 	<div id="message" class="alert alert-success">${message}</div>
 	<table class="table table-striped table-condensed">
 		<tr>
