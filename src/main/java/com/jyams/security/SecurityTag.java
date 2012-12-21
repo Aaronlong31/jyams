@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
  */
 public class SecurityTag extends TagSupport {
 
-    private static final String PERMISSION_DELIMITER = ",";
+    private static final String PERMISSION_DELIMITER = "\\s*,\\s*";
 
     private String one;
 
@@ -29,13 +29,13 @@ public class SecurityTag extends TagSupport {
         }
 
         if (StringUtils.hasText(any)) {
-            String[] permissions = any.replaceAll("\\s+", "").split(PERMISSION_DELIMITER);
+            String[] permissions = StringUtils.tokenizeToStringArray(any, PERMISSION_DELIMITER);
             return SecurityUtils.hasAnyPermissions(permissions) ? Tag.EVAL_BODY_INCLUDE
                     : Tag.SKIP_BODY;
         }
 
         if (StringUtils.hasText(all)) {
-            String[] permissions = all.replaceAll("\\s+", "").split(PERMISSION_DELIMITER);
+            String[] permissions = StringUtils.tokenizeToStringArray(any, PERMISSION_DELIMITER);
             return SecurityUtils.hasAllPermissions(permissions) ? Tag.EVAL_BODY_INCLUDE
                     : Tag.SKIP_BODY;
         }
