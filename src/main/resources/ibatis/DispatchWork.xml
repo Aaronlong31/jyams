@@ -122,6 +122,12 @@
 			<isNotNull property="dispatchDay" prepend="AND">
 				d.dispatchDay LIKE '%$dispatchDay$%'
 			</isNotNull>
+			<isNotNull property="dispatchDayStart" prepend="AND">
+				d.dispatchDay &gt;= #dispatchDayStart#
+			</isNotNull>
+			<isNotNull property="dispatchDayEnd" prepend="AND">
+				d.dispatchDay &lt;= #dispatchDayEnd#
+			</isNotNull>
 			<isNotNull property="dispatchType" prepend="AND">
 				d.dispatchType = #dispatchType#
 			</isNotNull>

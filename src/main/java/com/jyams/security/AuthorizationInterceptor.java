@@ -28,9 +28,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
 
-        NoAuth noAuth = handlerMethod.getMethodAnnotation(NoAuth.class);
-
-        if (noAuth != null) {
+        Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
+        if (auth == null) {
             return true;
         }
 
@@ -40,11 +39,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
         if (!SecurityUtils.isActive()) {
             throw new InActiveUserException();
-        }
-
-        Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
-        if (auth == null) {
-            return true;
         }
 
         if (!SecurityUtils.hasPermission(auth.value())) {

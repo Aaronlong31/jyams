@@ -10,11 +10,14 @@ public class DispatchWorkQuery extends Query<DispatchWork> {
     private String personName;
     private Integer startTime;
     private Integer endTime;
+    private Long personId;
 
     // Dispatch
     private Long projectId;
     private String projectName;
     private Integer dispatchDay;
+    private Integer dispatchDayStart;
+    private Integer dispatchDayEnd;
     private Short dispatchType;
 
     public DispatchWorkQuery() {
@@ -31,6 +34,14 @@ public class DispatchWorkQuery extends Query<DispatchWork> {
 
     public String getPersonName() {
         return personName;
+    }
+
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
     public Integer getStartTime() {
@@ -91,6 +102,22 @@ public class DispatchWorkQuery extends Query<DispatchWork> {
 
     public void setDispatchType(Short dispatchType) {
         this.dispatchType = dispatchType;
+    }
+
+    public Integer getDispatchDayStart() {
+        return dispatchDayStart;
+    }
+
+    public void setDispatchDayStart(Integer dispatchDayStart) {
+        this.dispatchDayStart = dispatchDayStart;
+    }
+
+    public Integer getDispatchDayEnd() {
+        return dispatchDayEnd;
+    }
+
+    public void setDispatchDayEnd(Integer dispatchDayEnd) {
+        this.dispatchDayEnd = dispatchDayEnd;
     }
 
 }

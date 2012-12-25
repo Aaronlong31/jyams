@@ -16,13 +16,11 @@ public class LoginController {
     private SecurityService securityService;
 
     @RequestMapping(value = "/toLogin")
-    @NoAuth
     public String toLogin(Model model) {
         return "login";
     }
 
     @RequestMapping(value = "/login", params = { "username", "password" })
-    @NoAuth
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
         if (this.securityService.login(username, password)) {
             return "redirect:/project";
